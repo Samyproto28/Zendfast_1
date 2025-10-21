@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"generatedAt": "2025-10-21T17:49:14.219Z",
+		"generatedAt": "2025-10-21T22:42:34.397Z",
 		"tasksAnalyzed": 45,
 		"totalTasks": 45,
 		"analysisCount": 45,
@@ -11,363 +11,363 @@
 	"complexityAnalysis": [
 		{
 			"taskId": 1,
-			"taskTitle": "Configurar proyecto Flutter con dependencias básicas",
+			"taskTitle": "Configurar el entorno de desarrollo Flutter",
 			"complexityScore": 4,
 			"recommendedSubtasks": 6,
-			"expansionPrompt": "Dividir en subtareas: crear proyecto Flutter base, configurar pubspec.yaml con dependencias específicas, configurar build_runner para Isar, verificar compatibilidad de dependencias, configurar estructura básica de directorios, y ejecutar tests iniciales de configuración.",
-			"reasoning": "Aunque es configuración inicial, requiere manejo cuidadoso de versiones de dependencias y configuración de build_runner. Las múltiples dependencias (10+) pueden tener conflictos de versiones."
+			"expansionPrompt": "Dividir la configuración del entorno en pasos específicos: configuración de pubspec.yaml con dependencias, configuración de flavors de desarrollo y producción, establecimiento de estructura de carpetas modular, configuración de assets y recursos, configuración de permisos específicos por plataforma, y validación del setup completo",
+			"reasoning": "Configuración inicial estándar de Flutter con dependencias conocidas. Requiere atención a flavors y estructura modular pero es proceso bien documentado."
 		},
 		{
 			"taskId": 2,
-			"taskTitle": "Establecer sistema de diseño y tema",
+			"taskTitle": "Crear el sistema de diseño (design system) base",
 			"complexityScore": 5,
-			"recommendedSubtasks": 4,
-			"expansionPrompt": "Crear subtareas para: definir paleta de colores y constantes, configurar tipografías personalizadas, implementar ThemeData global con espaciado y elevaciones, y crear widgets base del sistema de diseño.",
-			"reasoning": "Sistema de diseño requiere planificación cuidadosa de tokens, tipografías personalizadas y estructura escalable. Impacta toda la UI futura."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Desglosar el sistema de diseño en: definición de paleta de colores y tokens, configuración de tipografías Inter/Source Sans/Nunito, implementación de ThemeData para modo claro y oscuro, creación de sistema de espaciado y elevación, desarrollo de componentes base reutilizables, validación de contraste WCAG 2.1 AA, y documentación del design system",
+			"reasoning": "Tarea fundamental que requiere decisiones de diseño importantes. La implementación de temas dual y componentes base es estándar pero crítica para toda la app."
 		},
 		{
 			"taskId": 3,
-			"taskTitle": "Configurar base de datos Isar con esquemas",
+			"taskTitle": "Configurar base de datos local Isar",
 			"complexityScore": 6,
-			"recommendedSubtasks": 5,
-			"expansionPrompt": "Dividir en: crear modelos Isar para FastingSession, crear modelos para UserProfile y HydrationLog, crear modelo ContentItem, configurar índices y relaciones, y ejecutar build_runner con validación.",
-			"reasoning": "Isar requiere comprensión de annotations específicas, manejo de build_runner, y diseño cuidadoso de esquemas. Los 4 modelos con relaciones añaden complejidad."
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: creación de modelos de datos con anotaciones Isar, configuración del DatabaseService e inicialización, implementación de generación de código con build_runner, creación de índices para optimización, implementación de migraciones de esquema, configuración de colecciones y relaciones, testing de operaciones CRUD, y optimización de rendimiento",
+			"reasoning": "Isar requiere configuración específica de generación de código y manejo cuidadoso de esquemas. Las migraciones y optimización añaden complejidad técnica."
 		},
 		{
 			"taskId": 4,
 			"taskTitle": "Configurar cliente Supabase y autenticación",
 			"complexityScore": 7,
-			"recommendedSubtasks": 6,
-			"expansionPrompt": "Crear subtareas: inicializar cliente Supabase, configurar autenticación básica, crear tablas en Supabase con RLS, implementar AuthService base, configurar políticas de seguridad RLS, y testing de integración.",
-			"reasoning": "Supabase con RLS es complejo, requiere configuración tanto en cliente como servidor. Las políticas RLS son críticas para seguridad y pueden ser complicadas."
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Desglosar en: configuración inicial del cliente Supabase, diseño e implementación de esquemas PostgreSQL, configuración de Row Level Security (RLS), implementación de Supabase Auth para email/password, creación de políticas de seguridad por usuario, configuración de sincronización bidireccional, manejo de tokens y sesiones, testing de autenticación completa, y configuración de webhooks",
+			"reasoning": "Configuración de backend complejo que involucra base de datos, autenticación y seguridad. RLS y políticas de seguridad requieren conocimiento específico de PostgreSQL."
 		},
 		{
 			"taskId": 5,
-			"taskTitle": "Implementar servicio background para timer persistente",
+			"taskTitle": "Implementar servicio de background para timer",
 			"complexityScore": 8,
-			"recommendedSubtasks": 7,
-			"expansionPrompt": "Dividir en: configurar flutter_background_service, implementar comunicación bidireccional, manejar permisos de background, implementar persistencia de estado, configurar notificaciones foreground, testing de persistencia entre reinicios, y optimización de batería.",
-			"reasoning": "Servicios background son complejos en Flutter, especialmente la persistencia a través de force-quit. Requiere manejo de permisos específicos por plataforma y optimización de batería."
-		},
-		{
-			"taskId": 9,
-			"taskTitle": "Implementar AuthService con Supabase Auth",
-			"complexityScore": 6,
-			"recommendedSubtasks": 5,
-			"expansionPrompt": "Crear subtareas: implementar login/register básico, manejar persistencia de sesión, implementar refresh automático de tokens, añadir manejo de errores específicos, y testing de flows de autenticación.",
-			"reasoning": "AuthService requiere manejo robusto de estados, refresh tokens, y diversos casos de error. La integración con Supabase Auth añade complejidad específica."
-		},
-		{
-			"taskId": 11,
-			"taskTitle": "Implementar providers de estado con Riverpod",
-			"complexityScore": 5,
-			"recommendedSubtasks": 4,
-			"expansionPrompt": "Dividir en: crear providers básicos de auth, implementar computed providers, configurar dependency injection, y testing de estado y dependencias.",
-			"reasoning": "Riverpod requiere comprensión de reactive programming y manejo correcto de dependencias. Los computed providers añaden complejidad."
-		},
-		{
-			"taskId": 36,
-			"taskTitle": "Integrar youtube_player_flutter",
-			"complexityScore": 5,
-			"recommendedSubtasks": 4,
-			"expansionPrompt": "Crear subtareas: configurar player básico, implementar controls y fullscreen, añadir progress tracking y autoplay, y configurar fallbacks y manejo de errores de red.",
-			"reasoning": "youtube_player_flutter puede tener issues específicos por plataforma. Fullscreen mode y fallbacks requieren testing cuidadoso en ambas plataformas."
-		},
-		{
-			"taskId": 39,
-			"taskTitle": "Configurar OneSignal para push notifications",
-			"complexityScore": 6,
-			"recommendedSubtasks": 5,
-			"expansionPrompt": "Dividir en: integrar SDK OneSignal, configurar permisos por plataforma, implementar deep linking, configurar segmentación de usuarios, y testing de delivery end-to-end.",
-			"reasoning": "Push notifications requieren configuración específica por plataforma (iOS/Android), manejo de permisos, y deep linking que puede ser complejo de debuggear."
-		},
-		{
-			"taskId": 43,
-			"taskTitle": "Configurar Sentry para error monitoring",
-			"complexityScore": 4,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Crear subtareas: integrar Sentry SDK básico, configurar filtros PII y breadcrumbs, y configurar performance monitoring con source maps.",
-			"reasoning": "Sentry es relativamente directo de configurar, pero requiere configuración cuidadosa de filtros PII y performance monitoring para ser efectivo."
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Dividir en: configuración de flutter_background_service, implementación de persistencia de estado en background, manejo de reinicio de dispositivo y kill de app, configuración de notificación persistente, implementación de recuperación de estado, manejo de precisión temporal, configuración específica por plataforma (iOS/Android), testing de continuidad tras kill, validación de precisión temporal, y optimización de batería",
+			"reasoning": "Servicios en background son complejos por las diferencias entre plataformas y restricciones del sistema. Requiere manejo cuidadoso de estados y ciclo de vida de la app."
 		},
 		{
 			"taskId": 6,
-			"taskTitle": "Crear DatabaseService para inicialización Isar",
+			"taskTitle": "Configurar OneSignal para notificaciones push",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear databaseservice para inicialización isar.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Desglosar en: configuración inicial de OneSignal SDK, implementación de manejo de tokens de dispositivo, configuración de permisos para iOS y Android, implementación de manejadores de click de notificación, configuración de deep linking, testing de delivery en ambas plataformas, y preparación de estructura para diferentes tipos de notificaciones",
+			"reasoning": "OneSignal es un SDK maduro con buena documentación. La complejidad principal está en las diferencias entre plataformas y configuración de deep linking."
 		},
 		{
 			"taskId": 7,
-			"taskTitle": "Implementar SyncManager para sincronización bidireccional",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar syncmanager para sincronización bidireccional.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar sistema de gestión de estado con Riverpod",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: configuración inicial de Riverpod providers, implementación de providers principales (auth, timer, hydration, metrics), creación de StateNotifiers para lógica compleja, establecimiento de dependency injection patterns, configuración de persistencia de estado crítico, implementación de manejo de errores a nivel provider, testing de reactividad de estado, y optimización de performance de providers",
+			"reasoning": "Riverpod requiere diseño arquitectónico cuidadoso. La gestión de estado reactivo y dependency injection añaden complejidad pero son fundamentales para la app."
 		},
 		{
 			"taskId": 8,
-			"taskTitle": "Crear modelos FastingSession y UserProfile",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelos fastingsession y userprofile.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear modelos de datos para FastingSession",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Desglosar en: definición de clase FastingSession con campos requeridos, implementación de serialización JSON, configuración de mapeo a Isar, implementación de validaciones de datos, creación de computed properties, y configuración de relaciones con otros modelos",
+			"reasoning": "Creación de modelos es relativamente directa con herramientas como json_annotation. La complejidad está en las validaciones y relaciones."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implementar servicio de autenticación",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: implementación de métodos básicos de AuthService (login, register, logout), manejo de tokens y persistencia segura, implementación de auto-login y refresh de tokens, configuración de manejo de errores específicos, integración con Riverpod para estado reactivo, implementación de getCurrentUser, configuración de resetPassword, y testing de flujos completos de autenticación",
+			"reasoning": "Autenticación requiere manejo cuidadoso de seguridad y tokens. La integración con Riverpod y manejo de estados de error añaden complejidad."
 		},
 		{
 			"taskId": 10,
-			"taskTitle": "Crear pantallas de login y registro",
+			"taskTitle": "Diseñar e implementar pantallas de onboarding",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear pantallas de login y registro.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: implementación de SplashScreen con animación, creación de IntroScreen con beneficios, implementación de pantallas de registro, creación de cuestionario interactivo, implementación de navegación con PageController, integración de paywall en flujo, configuración de persistencia de respuestas, y testing de flujo completo end-to-end",
+			"reasoning": "Onboarding involucra múltiples pantallas y navegación. La coordinación entre pantallas y persistencia de datos del usuario requiere planificación cuidadosa."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implementar pantalla de detox de 48 horas",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: implementación de timer de 48 horas con precisión, creación de interfaz de lista de alimentos permitidos, implementación de checklist diario interactivo, creación de progress ring visual, implementación de flujo de skip con advertencia, y persistencia de estado de completion",
+			"reasoning": "Pantalla específica con timer y UI interactiva. Relativamente directa pero requiere manejo de estado temporal y persistencia."
 		},
 		{
 			"taskId": 12,
-			"taskTitle": "Diseñar flujo de onboarding de 6 pasos",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on diseñar flujo de onboarding de 6 pasos.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear modelos para planes de ayuno predefinidos",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: definición de clase FastingPlan con campos específicos, implementación de datos seed para 6 planes, desarrollo de lógica de cálculo de ventanas temporales, configuración de storage en Supabase, implementación de cache local, y testing de cálculos temporales",
+			"reasoning": "Modelos de datos con lógica de cálculo temporal. La complejidad está en los cálculos precisos de ventanas de tiempo y sincronización."
 		},
 		{
 			"taskId": 13,
-			"taskTitle": "Crear QuizScreen para datos de usuario",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear quizscreen para datos de usuario.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Diseñar pantalla de selección de planes",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: implementación de cards visuales para planes, creación de sistema de filtrado por experiencia, implementación de preview de horarios, integración de opción de plan personalizado premium, configuración de navegación tras selección, y testing de interfaz de usuario",
+			"reasoning": "Pantalla de UI con filtrado y navegación. Relativamente estándar pero requiere buena experiencia de usuario y manejo de estados."
 		},
 		{
 			"taskId": 14,
-			"taskTitle": "Implementar pantalla de detox de 48 horas",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar pantalla de detox de 48 horas.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar núcleo del TimerService",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Dividir en: implementación de métodos core del TimerService, configuración de cálculos precisos con DateTime, implementación de persistencia en SharedPreferences e Isar, manejo de transiciones entre fases, configuración de callbacks para UI, implementación de recovery tras app restart, manejo de precisión temporal, testing de edge cases, y optimización de performance",
+			"reasoning": "Core crítico de la aplicación que requiere precisión temporal extrema. Manejo de estados complejos y persistencia hacen esta tarea técnicamente desafiante."
 		},
 		{
 			"taskId": 15,
-			"taskTitle": "Crear servicio de timer principal (TimerService)",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear servicio de timer principal (timerservice).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear FastingHomeScreen principal",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: diseño de layout con timer central, implementación de progress ring/barra, creación de botones Start/Stop con estados, implementación de información del plan actual, configuración de actualizaciones en tiempo real, implementación de transiciones visuales, optimización de performance de UI, y testing de componentes",
+			"reasoning": "Pantalla principal compleja con timer en tiempo real y múltiples estados visuales. Requiere optimización cuidadosa para actualizaciones frecuentes."
 		},
 		{
 			"taskId": 16,
-			"taskTitle": "Implementar modelos de planes de ayuno",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar modelos de planes de ayuno.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar botón de pánico (Panic Button)",
+			"complexityScore": 3,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en: implementación de FloatingActionButton con diseño específico, configuración de visibilidad basada en estado de ayuno, implementación de animación de pulso, configuración de haptic feedback, y implementación de tracking de eventos",
+			"reasoning": "Componente UI específico y relativamente simple. La complejidad está en las animaciones y feedback háptico multiplataforma."
 		},
 		{
 			"taskId": 17,
-			"taskTitle": "Crear pantalla de selección de planes",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear pantalla de selección de planes.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear modal de pánico con contenido motivacional",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: implementación de overlay modal con diseño, integración de selección aleatoria de frases, creación de opciones de navegación (continuar, meditar, no puedo), implementación de animaciones de entrada/salida, configuración de colores zen y diseño calmante, y testing de flujos de navegación",
+			"reasoning": "Modal con navegación condicional y contenido dinámico. Diseño centrado en UX requiere atención pero implementación es estándar."
 		},
 		{
 			"taskId": 18,
-			"taskTitle": "Diseñar FastingHomeScreen principal",
+			"taskTitle": "Integrar animación Lottie para meditación",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on diseñar fastinghomescreen principal.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: configuración de lottie package, creación de MeditationScreen, implementación de animación de respiración 4-4-8, creación de controles start/stop, implementación de contador de ciclos, optimización de performance para 60fps, y testing en dispositivos de gama baja",
+			"reasoning": "Integración de Lottie con timing preciso para meditación. Optimización de performance y timing exacto añaden complejidad técnica."
 		},
 		{
 			"taskId": 19,
-			"taskTitle": "Implementar providers de estado para timer",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar providers de estado para timer.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear sistema de frases motivacionales",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: creación de tabla en Supabase con categorías, población de 24 frases en español, implementación de MotivationalService, configuración de selección aleatoria sin repetición, implementación de cache local, y configuración de actualización periódica",
+			"reasoning": "Sistema de contenido con backend y cache local. Lógica de selección aleatoria y sincronización añaden algo de complejidad."
 		},
 		{
 			"taskId": 20,
-			"taskTitle": "Implementar lógica de completion de sesiones",
+			"taskTitle": "Implementar flujo de interrupción de ayuno",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar lógica de completion de sesiones.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: implementación de lógica para marcar sesión como 'interrupted', creación de confirmación con advertencia, implementación de cálculo de tiempo parcial para métricas, configuración de actualización de streaks, implementación de opción de continuar, testing de edge cases, y validación de impacto en métricas",
+			"reasoning": "Flujo que afecta múltiples sistemas (timer, métricas, streaks). Requiere manejo cuidadoso de estados y validación de lógica de negocio."
 		},
 		{
 			"taskId": 21,
-			"taskTitle": "Crear botón de pánico flotante",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear botón de pánico flotante.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear modelo y servicio de hidratación",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: creación del modelo HydrationLog, implementación de HydrationService con cálculo automático de objetivos, configuración de tamaño de vaso personalizable, implementación de reset automático diario, configuración de persistencia, y testing de cálculos y reset automático",
+			"reasoning": "Sistema de tracking con cálculos automáticos. Lógica de reset diario y cálculos basados en peso requieren atención pero son relativamente directos."
 		},
 		{
 			"taskId": 22,
-			"taskTitle": "Implementar PanicModal con contenido motivacional",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar panicmodal con contenido motivacional.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar WaterButton para logging rápido",
+			"complexityScore": 3,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en: implementación de FloatingActionButton con diseño específico, configuración de logging de un vaso con un toque, implementación de feedback visual y haptic, configuración de debouncing para toques múltiples, y testing de funcionalidad en ambas plataformas",
+			"reasoning": "Componente UI simple con lógica de debouncing. Implementación directa con atención al feedback del usuario."
 		},
 		{
 			"taskId": 23,
-			"taskTitle": "Crear MeditationScreen con animación 4-4-8",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear meditationscreen con animación 4-4-8.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear indicador visual de progreso de hidratación",
+			"complexityScore": 3,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en: diseño de HydrationProgressWidget con barra/círculo de progreso, implementación de cálculos de ml vs objetivo, configuración de colores progresivos, implementación de animaciones de progreso, y testing de diferentes estados",
+			"reasoning": "Widget de progreso visual estándar. La complejidad está en las animaciones y cálculos de porcentaje pero es implementación conocida."
 		},
 		{
 			"taskId": 24,
-			"taskTitle": "Implementar flujo 'romper ayuno'",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar flujo 'romper ayuno'.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar recordatorios de hidratación",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: implementación de HydrationReminderService, configuración de notificaciones cada 1-2 horas, implementación de pausas durante horas de sueño, personalización basada en objetivo de agua, configuración de supresión al alcanzar objetivo, integración con OneSignal, testing de scheduling, y validación de lógica de supresión",
+			"reasoning": "Sistema de notificaciones con lógica compleja de scheduling y condiciones. La integración con OneSignal y manejo de estados añaden complejidad."
 		},
 		{
 			"taskId": 25,
-			"taskTitle": "Crear modelo HydrationLog y servicio",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelo hydrationlog y servicio.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear servicio de cálculo de métricas",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Dividir en: implementación de cálculos de current streak, desarrollo de cálculo de total hours fasted, implementación de completion rate, creación de longest fast tracking, configuración de UserMetrics model para cache, implementación de triggers automáticos, optimización de consultas Isar, creación de Edge Function en Supabase, y testing con datasets grandes",
+			"reasoning": "Sistema de analytics complejo que requiere optimización de consultas y cálculos eficientes. Edge Functions añaden complejidad de deployment."
 		},
 		{
 			"taskId": 26,
-			"taskTitle": "Implementar WaterButton widget",
+			"taskTitle": "Implementar dashboard de métricas",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar waterbutton widget.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: diseño de MetricsDashboardScreen layout, implementación de widgets para streak y horas totales, integración de FL Chart para gráficos, creación de cards visuales con iconografía, configuración de refresh automático de datos, optimización de performance de gráficos, y testing de componentes",
+			"reasoning": "Dashboard con gráficos requiere integración de FL Chart y manejo de datos. Performance de gráficos y actualización automática añaden complejidad."
 		},
 		{
 			"taskId": 27,
-			"taskTitle": "Crear widget de progreso de hidratación",
+			"taskTitle": "Crear calendario con heatmap de ayunos",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear widget de progreso de hidratación.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: integración de table_calendar package, implementación de sistema de colores por estado, configuración de detalles al tocar días, implementación de navegación por meses, cálculo de estadísticas mensuales, optimización de performance para datasets grandes, y testing de navegación",
+			"reasoning": "Calendar widget con visualización de datos históricos. table_calendar simplifica pero la visualización de datos y performance requieren atención."
 		},
 		{
 			"taskId": 28,
-			"taskTitle": "Implementar providers de hidratación",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar providers de hidratación.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar análisis de patrones de usuario",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Dividir en: implementación de PatternAnalysisService, desarrollo de algoritmos para detectar días exitosos, creación de análisis de horarios óptimos, implementación de generación de insights personalizados, configuración de machine learning básico para patrones, optimización de consultas para análisis, implementación de cache de insights, testing de algoritmos con datos diversos, validación de precisión de recomendaciones, y configuración de updates periódicos",
+			"reasoning": "Sistema de analytics avanzado con machine learning básico. Algoritmos de análisis de patrones y generación de insights requieren diseño algorítmico complejo."
 		},
 		{
 			"taskId": 29,
-			"taskTitle": "Crear MetricsService para cálculos de estadísticas",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear metricsservice para cálculos de estadísticas.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear modelos para contenido educativo",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: definición de ContentItem model con campos específicos, configuración de categorías y tipos de contenido, implementación de sistema de favoritos, configuración de sincronización con Supabase, implementación de cache local para offline, y testing de serialización y favoritos",
+			"reasoning": "Modelos de contenido con categorización y favoritos. Sistema estándar de cache y sincronización con complejidad moderada."
 		},
 		{
 			"taskId": 30,
-			"taskTitle": "Diseñar MetricsDashboardScreen",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on diseñar metricsdashboardscreen.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar ContentService para manejo de biblioteca",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: implementación de métodos de ContentService (fetch, cache, favorites), configuración de estrategia de cache offline, implementación de búsqueda local, configuración de refresh periódico, optimización de storage para videos vs artículos, implementación de manejo de errores, testing de funcionalidad offline, y validación de performance de búsqueda",
+			"reasoning": "Servicio de contenido con cache inteligente y búsqueda. Estrategias diferentes para videos vs artículos y optimización offline añaden complejidad."
 		},
 		{
 			"taskId": 31,
-			"taskTitle": "Implementar calendar heatmap",
+			"taskTitle": "Diseñar LearningHomeScreen",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar calendar heatmap.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: implementación de tabs por categoría, diseño de cards de contenido con thumbnails, implementación de indicadores premium y favoritos, configuración de búsqueda y filtros, implementación de infinite scroll, optimización de performance para listas grandes, y testing de navegación y búsqueda",
+			"reasoning": "Pantalla de contenido con múltiples features (tabs, search, infinite scroll). Performance de listas grandes y UX compleja requieren atención."
 		},
 		{
 			"taskId": 32,
-			"taskTitle": "Crear providers de métricas",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear providers de métricas.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Integrar reproductor de YouTube",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: configuración de youtube_player_flutter package, creación de VideoPlayerScreen, implementación de fallback a browser, configuración de controles de video y fullscreen, manejo de orientación automática, testing en iOS y Android, manejo de errores de reproducción, y optimización de memory usage",
+			"reasoning": "Integración de video player con fallbacks y manejo de orientación. Diferencias entre plataformas y manejo de memoria añaden complejidad técnica."
 		},
 		{
 			"taskId": 33,
-			"taskTitle": "Crear modelo ContentItem para material educativo",
+			"taskTitle": "Crear visor de artículos offline",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelo contentitem para material educativo.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: implementación de ArticleViewerScreen con WebView, configuración de cache de artículos para offline, implementación de controles de fuente y modo noche, creación de scroll progress indicator, implementación de sharing, testing de lectura offline, y optimización de WebView performance",
+			"reasoning": "WebView con funcionalidades avanzadas y cache offline. WebView en Flutter puede ser complejo pero es funcionalidad bien documentada."
 		},
 		{
 			"taskId": 34,
-			"taskTitle": "Implementar ContentService para manejo de contenido",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar contentservice para manejo de contenido.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar modelo de perfil de usuario",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: definición de UserProfile model con campos específicos, implementación de validaciones y computed properties, configuración de sincronización bidireccional Isar-Supabase, implementación de cálculos automáticos, testing de validaciones, y verificación de sincronización",
+			"reasoning": "Modelo de usuario con validaciones y sincronización. Lógica de computed properties y sync bidireccional requieren cuidado pero son patrones conocidos."
 		},
 		{
 			"taskId": 35,
-			"taskTitle": "Diseñar LearningHomeScreen",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on diseñar learninghomescreen.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Crear ProfileScreen para configuración",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: diseño de ProfileScreen con secciones organizadas, implementación de formularios para datos personales, configuración de toggle de tema, implementación de configuración de notificaciones, configuración de logout y delete account, y testing de persistencia de cambios",
+			"reasoning": "Pantalla de configuración estándar con formularios y settings. Funcionalidad conocida pero requiere atención a UX y persistencia."
+		},
+		{
+			"taskId": 36,
+			"taskTitle": "Implementar toggle de tema claro/oscuro",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en: implementación de ThemeModeProvider con opciones, creación de ThemeToggle widget, configuración de persistencia en SharedPreferences, implementación de detección automática del sistema, validación de contraste WCAG 2.1 AA, y testing de persistencia tras restart",
+			"reasoning": "Sistema de temas con persistencia y detección automática. Implementación estándar pero validación de contraste requiere atención a accesibilidad."
 		},
 		{
 			"taskId": 37,
-			"taskTitle": "Crear providers de contenido educativo",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear providers de contenido educativo.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Configurar notificaciones de ayuno",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: creación de FastingNotificationService, configuración de notificaciones para hitos específicos, implementación de deep links para pantallas específicas, personalización de contenido basado en progreso, programación con OneSignal, testing de timing correcto, verificación de deep linking, y testing de delivery en background",
+			"reasoning": "Sistema de notificaciones con timing preciso y deep linking. Coordinación con timer service y OneSignal añade complejidad técnica."
 		},
 		{
 			"taskId": 38,
-			"taskTitle": "Implementar ProfileScreen para configuración de usuario",
+			"taskTitle": "Implementar notificaciones de engagement",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar profilescreen para configuración de usuario.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: implementación de EngagementNotificationService, configuración de detección de inactividad, implementación de mensajes personalizados basados en historial, configuración de rate limiting, implementación de respeto a preferencias de usuario, testing de detección de inactividad, y validación de rate limiting",
+			"reasoning": "Sistema de re-engagement con lógica de detección de patrones. Rate limiting y personalización requieren diseño cuidadoso pero implementación es estándar."
+		},
+		{
+			"taskId": 39,
+			"taskTitle": "Configurar Superwall para paywall",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Dividir en: configuración inicial de Superwall SDK, implementación de SuperwallService, configuración de experiments para A/B testing, implementación de manejo de purchase events, configuración de subscription status monitoring, establecimiento de webhook endpoints, configuración de sincronización con backend, testing de flow de compra completo, y validación de A/B testing funcional",
+			"reasoning": "Integración de SDK de terceros complejo para monetización. A/B testing, webhooks y manejo de purchases requieren configuración cuidadosa y conocimiento específico."
 		},
 		{
 			"taskId": 40,
-			"taskTitle": "Implementar NotificationService y scheduling",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar notificationservice y scheduling.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Implementar gating de funciones premium",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: implementación de isPremiumProvider para monitoreo de suscripción, creación de guards para funciones premium específicas, implementación de upsell prompts, configuración de grace period para suscripciones expiradas, integración con Superwall para upsells, testing de gating correcto, validación de upsell prompts, y testing de grace period functionality",
+			"reasoning": "Sistema de restricción de acceso que se integra con múltiples partes de la app. Requiere coordinación cuidadosa con subscription service y UX de upselling."
 		},
 		{
 			"taskId": 41,
-			"taskTitle": "Integrar Superwall para paywall",
+			"taskTitle": "Crear PaywallScreen con Superwall",
 			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on integrar superwall para paywall.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: integración de Superwall paywall UI, configuración de pricing tiers y features list, implementación de restore purchases, configuración de links a términos y privacy policy, configuración de analytics para conversion tracking, testing de display de paywall, y validación de restore purchases",
+			"reasoning": "UI de paywall con integración de SDK. Funcionalidad de restore y tracking de conversión requieren atención pero Superwall maneja la complejidad principal."
 		},
 		{
 			"taskId": 42,
-			"taskTitle": "Implementar SubscriptionManager",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar subscriptionmanager.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Configurar go_router para navegación",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Dividir en: configuración inicial de GoRouter con rutas principales, implementación de route guards para autenticación, configuración de guards para premium features, implementación de deep linking para notificaciones, configuración de redirect logic para onboarding, testing de navegación entre pantallas, verificación de deep linking, y testing de route guards",
+			"reasoning": "Sistema de navegación declarativo con guards y deep linking. GoRouter es poderoso pero requiere configuración cuidadosa de guards y redirects."
+		},
+		{
+			"taskId": 43,
+			"taskTitle": "Implementar SyncManager para sincronización",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Dividir en: implementación de SyncManager con estrategias de sync, configuración de upload de cambios locales, implementación de download de cambios del servidor, desarrollo de conflict resolution (last-write-wins), configuración de triggers automáticos, implementación de exponential backoff para retry, manejo de offline queue, testing de sync bidireccional, verificación de conflict resolution, y testing de offline queue y retry logic",
+			"reasoning": "Sistema de sincronización bidireccional complejo que requiere manejo de conflictos y estados offline. Algoritmos de sync y retry logic añaden alta complejidad técnica."
 		},
 		{
 			"taskId": 44,
-			"taskTitle": "Implementar suite de testing E2E",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar suite de testing e2e.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Configurar testing y CI/CD",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Dividir en: configuración de Codemagic para workflows iOS/Android, implementación de unit tests (60% coverage), desarrollo de integration tests (30% coverage), creación de E2E tests (10% coverage), configuración de code coverage reports, establecimiento de automated builds con obfuscation, configuración de deployment a TestFlight y Play Console, testing del pipeline completo, y validación de builds automáticos",
+			"reasoning": "Pipeline de CI/CD completo con múltiples tipos de testing y deployment a tiendas. Configuración de múltiples plataformas y obfuscation añaden complejidad significativa."
 		},
 		{
 			"taskId": 45,
-			"taskTitle": "Auditoría de accesibilidad y optimización final",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on auditoría de accesibilidad y optimización final.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"taskTitle": "Optimización de rendimiento y preparación para lanzamiento",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Dividir en: implementación de Sentry para error monitoring, optimización de app launch (<2s), optimización de animaciones para 60fps, configuración de flavors production con obfuscation, creación de assets para tiendas (screenshots, descriptions), desarrollo de privacy policy, realización de testing de accesibilidad WCAG 2.1 AA, configuración de analytics con custom events, performance testing en dispositivos objetivo, y accessibility audit completo",
+			"reasoning": "Tarea de optimización integral que toca múltiples aspectos: performance, accesibilidad, legal, y store preparation. Requiere expertise en optimización de Flutter y cumplimiento de estándares."
 		}
 	]
 }
