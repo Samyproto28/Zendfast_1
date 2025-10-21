@@ -1,0 +1,2297 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Configurar proyecto Flutter con dependencias básicas",
+        "description": "Inicializar proyecto Flutter con todas las dependencias requeridas para el MVP",
+        "details": "Crear nuevo proyecto Flutter, añadir dependencias: riverpod (^2.4.9), isar (^3.1.0), isar_flutter_libs (^3.1.0), supabase_flutter (^2.0.0), flutter_background_service (^5.0.5), lottie (^2.7.0), onesignal_flutter (^5.0.2), superwall_flutter (^1.0.0), youtube_player_flutter (^8.1.2), sentry_flutter (^7.14.0). Configurar build_runner para generación de código Isar.",
+        "testStrategy": "Verificar que 'flutter pub get' se ejecute sin errores y que 'flutter run' lance la app vacía correctamente",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear proyecto Flutter base con configuración inicial",
+            "description": "Inicializar nuevo proyecto Flutter con configuración base y estructura de directorios",
+            "dependencies": [],
+            "details": "Ejecutar 'flutter create zendfast_app' con configuración por defecto, crear estructura de directorios: lib/core, lib/features, lib/shared. Verificar que el proyecto base compile y ejecute correctamente en debug mode.",
+            "status": "pending",
+            "testStrategy": "Verificar que 'flutter run' ejecute la app demo sin errores en emulador o dispositivo"
+          },
+          {
+            "id": 2,
+            "title": "Configurar pubspec.yaml con todas las dependencias requeridas",
+            "description": "Añadir todas las dependencias del MVP al archivo pubspec.yaml con versiones específicas",
+            "dependencies": [
+              1
+            ],
+            "details": "Agregar al pubspec.yaml: riverpod (^2.4.9), isar (^3.1.0), isar_flutter_libs (^3.1.0), supabase_flutter (^2.0.0), flutter_background_service (^5.0.5), lottie (^2.7.0), onesignal_flutter (^5.0.2), superwall_flutter (^1.0.0), youtube_player_flutter (^8.1.2), sentry_flutter (^7.14.0). También añadir dev_dependencies para build_runner e isar_generator.",
+            "status": "pending",
+            "testStrategy": "Ejecutar 'flutter pub get' y verificar que no hay conflictos de versiones"
+          },
+          {
+            "id": 3,
+            "title": "Configurar build_runner para generación de código Isar",
+            "description": "Establecer configuración de build_runner para auto-generación de código de base de datos Isar",
+            "dependencies": [
+              2
+            ],
+            "details": "Añadir build_runner e isar_generator a dev_dependencies. Crear archivo build.yaml si es necesario. Configurar scripts en pubspec.yaml para comandos de generación. Preparar comando 'dart run build_runner build' para generar código Isar.",
+            "status": "pending",
+            "testStrategy": "Ejecutar 'dart run build_runner build' y verificar que genera archivos .g.dart correctamente"
+          },
+          {
+            "id": 4,
+            "title": "Verificar compatibilidad y resolver conflictos de dependencias",
+            "description": "Revisar compatibilidad entre todas las dependencias y resolver posibles conflictos de versiones",
+            "dependencies": [
+              3
+            ],
+            "details": "Ejecutar 'flutter pub deps' para verificar árbol de dependencias. Usar 'flutter pub upgrade' si es necesario. Revisar warnings de compatibilidad y ajustar versiones si hay conflictos. Documentar versiones finales que funcionan juntas.",
+            "status": "pending",
+            "testStrategy": "Verificar que 'flutter pub get' ejecuta sin warnings críticos y 'flutter analyze' pasa sin errores"
+          },
+          {
+            "id": 5,
+            "title": "Configurar estructura básica de directorios del proyecto",
+            "description": "Crear organización de carpetas y archivos base para arquitectura clean del proyecto",
+            "dependencies": [
+              4
+            ],
+            "details": "Crear estructura: lib/core/{constants,utils,services}, lib/features/{auth,fasting,hydration,content}, lib/shared/{widgets,models}, lib/providers. Crear archivos barrel (index.dart) para exports. Añadir archivo main.dart básico con inicialización de providers.",
+            "status": "pending",
+            "testStrategy": "Verificar que imports funcionan correctamente entre carpetas y no hay errores de estructura"
+          },
+          {
+            "id": 6,
+            "title": "Ejecutar tests iniciales y verificación de configuración",
+            "description": "Realizar tests finales de configuración y verificar que el proyecto está listo para desarrollo",
+            "dependencies": [
+              5
+            ],
+            "details": "Ejecutar 'flutter test' para tests por defecto. Verificar 'flutter doctor' no tiene issues críticos. Crear test básico de inicialización de app. Ejecutar 'flutter run' en debug y release mode. Documentar configuración final en README.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios básicos pasan, app compila en debug y release, no hay errores críticos en flutter doctor"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Establecer sistema de diseño y tema",
+        "description": "Crear paleta de colores, tipografía y sistema de diseño zen-minimalista",
+        "details": "Implementar ZendfastColors con teal (#069494) primario, verde (#7fb069) secundario, naranja (#ffb366) para botón pánico. Configurar typography con Inter (headers), Source Sans Pro (body), Nunito Sans (emphasis). Crear ThemeData global con espaciado, elevaciones y tokens de diseño.",
+        "testStrategy": "Tests de snapshot visual para verificar consistencia del tema en múltiples widgets",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Definir paleta de colores y constantes de diseño",
+            "description": "Crear archivo de constantes con todos los colores del sistema de diseño zen-minimalista y tokens básicos",
+            "dependencies": [],
+            "details": "Implementar ZendfastColors class con colores primarios: teal (#069494), verde (#7fb069), naranja (#ffb366) para botón pánico. Incluir colores neutros, estados (success, warning, error), y variaciones de opacidad. Definir constantes para spacing, border radius, y shadows.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar que todos los valores de color están definidos correctamente y coinciden con especificaciones de diseño"
+          },
+          {
+            "id": 2,
+            "title": "Configurar tipografías personalizadas",
+            "description": "Implementar sistema de tipografía con Inter, Source Sans Pro y Nunito Sans",
+            "dependencies": [
+              1
+            ],
+            "details": "Configurar Google Fonts con Inter para headers, Source Sans Pro para body text, y Nunito Sans para emphasis. Crear TextStyles predefinidos (heading1-6, body1-2, caption, overline) con tamaños, weights y line heights apropiados para diseño zen-minimalista.",
+            "status": "pending",
+            "testStrategy": "Tests de snapshot para verificar que las fuentes se cargan correctamente y los estilos de texto son consistentes"
+          },
+          {
+            "id": 3,
+            "title": "Implementar ThemeData global con espaciado y elevaciones",
+            "description": "Crear configuración completa de tema Flutter con todos los tokens de diseño",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Configurar ThemeData usando ZendfastColors y tipografías definidas. Implementar spacing tokens (4, 8, 16, 24, 32, 48dp), elevation levels (0-24), configurar componentes como AppBar, Card, Button, TextField con estilos consistentes. Asegurar modo oscuro compatible.",
+            "status": "pending",
+            "testStrategy": "Tests de integración para verificar que el tema se aplica correctamente a todos los widgets base de Material Design"
+          },
+          {
+            "id": 4,
+            "title": "Crear widgets base del sistema de diseño",
+            "description": "Desarrollar componentes reutilizables básicos siguiendo el sistema de diseño establecido",
+            "dependencies": [
+              3
+            ],
+            "details": "Crear widgets personalizados: ZenButton (primary, secondary, text variants), ZenCard con elevaciones apropiadas, ZenTextField con validación visual, ZenAppBar, ZenBottomNavigation. Todos deben usar tokens de diseño definidos y ser altamente reutilizables.",
+            "status": "pending",
+            "testStrategy": "Tests de widget para cada componente base, verificar que usan correctamente los tokens de diseño y mantienen consistencia visual"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Configurar base de datos Isar con esquemas",
+        "description": "Implementar modelos de datos Isar para FastingSession, UserProfile, HydrationLog, ContentItem",
+        "details": "Crear @collection classes para cada modelo: FastingSession (id, userId, startTime, endTime, durationMinutes, completed, interrupted, planType), UserProfile (id, weightKg, heightCm, dailyHydrationGoal), HydrationLog (id, userId, timestamp, volumeMl), ContentItem (id, title, type, content, isFavorite). Ejecutar build_runner para generar código.",
+        "testStrategy": "Tests unitarios CRUD para cada collection, verificar queries y relationships funcionan correctamente",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear modelo Isar para FastingSession",
+            "description": "Implementar la clase FastingSession con todas las propiedades necesarias usando annotations de Isar",
+            "dependencies": [],
+            "details": "Crear @collection class FastingSession con propiedades: Id id, String userId, DateTime startTime, DateTime? endTime, int durationMinutes, bool completed, bool interrupted, String planType. Configurar @Index para userId y startTime para optimizar queries.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar serialización/deserialización y validación de propiedades"
+          },
+          {
+            "id": 2,
+            "title": "Crear modelos Isar para UserProfile y HydrationLog",
+            "description": "Implementar las clases UserProfile y HydrationLog con sus respectivas propiedades y annotations Isar",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear @collection class UserProfile con: Id id, double weightKg, double heightCm, int dailyHydrationGoal. Crear @collection class HydrationLog con: Id id, String userId, DateTime timestamp, int volumeMl. Añadir @Index en userId para ambas collections.",
+            "status": "pending",
+            "testStrategy": "Tests CRUD para ambos modelos, verificar constraints de datos y performance de queries"
+          },
+          {
+            "id": 3,
+            "title": "Crear modelo Isar para ContentItem",
+            "description": "Implementar la clase ContentItem con propiedades para gestión de contenido",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear @collection class ContentItem con: Id id, String title, String type, String content, bool isFavorite. Configurar @Index en type e isFavorite para filtrado eficiente. Añadir validaciones para campos requeridos.",
+            "status": "pending",
+            "testStrategy": "Tests de validación de contenido y queries por tipo y favoritos"
+          },
+          {
+            "id": 4,
+            "title": "Configurar índices y relaciones entre modelos Isar",
+            "description": "Establecer relaciones apropiadas entre las collections y optimizar índices para queries frecuentes",
+            "dependencies": [
+              3
+            ],
+            "details": "Configurar @Link entre UserProfile y FastingSession/HydrationLog usando userId. Crear índices compuestos para queries complejas como FastingSession por usuario y fecha. Validar integridad referencial.",
+            "status": "pending",
+            "testStrategy": "Tests de relaciones, verificar cascade deletes y performance de queries con joins"
+          },
+          {
+            "id": 5,
+            "title": "Ejecutar build_runner y validar generación de código",
+            "description": "Generar código Isar usando build_runner y validar que todas las collections funcionan correctamente",
+            "dependencies": [
+              4
+            ],
+            "details": "Ejecutar 'flutter packages pub run build_runner build' para generar archivos .g.dart. Verificar que no hay errores de compilación. Crear tests de integración para abrir/cerrar database y operaciones CRUD básicas en todas las collections.",
+            "status": "pending",
+            "testStrategy": "Tests de integración completos para database initialization y operaciones CRUD en todas las collections"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Configurar cliente Supabase y autenticación",
+        "description": "Establecer conexión Supabase con autenticación y RLS",
+        "details": "Inicializar Supabase client con URL y anon key, configurar auth flow con email/password, crear tablas user_profiles, fasting_sessions, hydration_logs, content_items en Supabase con RLS policies. Implementar AuthService para login/register/logout.",
+        "testStrategy": "Tests de integración para flujos de auth, verificar RLS previene acceso no autorizado",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Inicializar cliente Supabase y configuración básica",
+            "description": "Configurar Supabase Flutter SDK con URL del proyecto y anon key, establecer configuración inicial",
+            "dependencies": [],
+            "details": "Instalar supabase_flutter package, crear SupabaseConfig class con URL y anon key del proyecto, inicializar Supabase.initialize() en main.dart, configurar variables de entorno para credenciales, crear singleton SupabaseClient para uso global en la app",
+            "status": "pending",
+            "testStrategy": "Test de conexión exitosa a Supabase, verificar que el cliente se inicializa correctamente y puede hacer ping al servidor"
+          },
+          {
+            "id": 2,
+            "title": "Implementar AuthService con métodos básicos de autenticación",
+            "description": "Crear servicio de autenticación con métodos para registro, login y logout usando email/password",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear AuthService class con métodos signUp(), signIn(), signOut(), getCurrentUser(), onAuthStateChange stream. Implementar manejo de errores específicos de Supabase auth, crear AuthState enum, implementar persistencia automática de sesión",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para cada método de auth, mockear Supabase client, verificar manejo correcto de errores y estados"
+          },
+          {
+            "id": 3,
+            "title": "Crear tablas en Supabase con esquemas básicos",
+            "description": "Definir y crear tablas user_profiles, fasting_sessions, hydration_logs, content_items en Supabase Dashboard",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear tabla user_profiles (id uuid primary key, user_id uuid references auth.users, weight_kg real, height_cm real, daily_hydration_goal integer), fasting_sessions (id uuid, user_id uuid, start_time timestamp, end_time timestamp, duration_minutes integer, completed boolean), hydration_logs (id uuid, user_id uuid, timestamp timestamp, volume_ml integer), content_items (id uuid, title text, type text, content text, is_favorite boolean)",
+            "status": "pending",
+            "testStrategy": "Verificar que las tablas se crean correctamente, test de inserción y consulta básica en cada tabla"
+          },
+          {
+            "id": 4,
+            "title": "Configurar políticas RLS básicas para seguridad",
+            "description": "Implementar Row Level Security policies para proteger datos de usuarios en todas las tablas",
+            "dependencies": [
+              3
+            ],
+            "details": "Habilitar RLS en todas las tablas, crear política 'Users can only access their own data' para user_profiles usando auth.uid() = user_id, aplicar misma política a fasting_sessions, hydration_logs. Para content_items crear política de solo lectura pública y escritura para authenticated users",
+            "status": "pending",
+            "testStrategy": "Test que usuarios no pueden acceder a datos de otros usuarios, verificar que políticas bloquean acceso no autorizado"
+          },
+          {
+            "id": 5,
+            "title": "Implementar métodos CRUD en AuthService para gestión de perfiles",
+            "description": "Añadir métodos para crear, leer, actualizar perfil de usuario usando Supabase client",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Extender AuthService con métodos createUserProfile(), getUserProfile(), updateUserProfile(), deleteUserProfile(). Implementar manejo de errores específicos, validación de datos, mapeo entre Dart objects y JSON de Supabase, cache local del perfil actual",
+            "status": "pending",
+            "testStrategy": "Tests de integración para CRUD operations, verificar que RLS funciona correctamente, test de cache y sincronización"
+          },
+          {
+            "id": 6,
+            "title": "Testing de integración del flujo completo de autenticación",
+            "description": "Crear tests end-to-end para verificar el flujo completo de registro, login, gestión de perfil y logout",
+            "dependencies": [
+              5
+            ],
+            "details": "Crear integration tests que cubran: registro de nuevo usuario, creación automática de perfil, login con credenciales válidas e inválidas, actualización de perfil, logout y limpieza de sesión. Configurar test database separada en Supabase, mockear datos de prueba",
+            "status": "pending",
+            "testStrategy": "Tests end-to-end que simulan flujo real de usuario, verificar que datos persisten correctamente, test de edge cases y manejo de errores"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implementar servicio background para timer persistente",
+        "description": "Configurar flutter_background_service para mantener timer activo cuando app está cerrada",
+        "details": "Crear BackgroundTimerService usando flutter_background_service, implementar comunicación bidireccional app-service, manejar notificaciones de foreground service, asegurar que timer persiste a través de force-quit y reboots del dispositivo.",
+        "testStrategy": "Test de persistencia: iniciar timer, cerrar app forzadamente, reabrir y verificar timer continúa con precisión ±5 segundos",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar flutter_background_service y dependencias",
+            "description": "Instalar y configurar el paquete flutter_background_service con todas las dependencias necesarias para Android e iOS",
+            "dependencies": [],
+            "details": "Agregar flutter_background_service al pubspec.yaml, configurar permisos en AndroidManifest.xml (FOREGROUND_SERVICE, WAKE_LOCK), configurar Info.plist para iOS, setup inicial del servicio con isolate communication",
+            "status": "pending",
+            "testStrategy": "Verificar que el servicio se inicializa correctamente en ambas plataformas sin errores"
+          },
+          {
+            "id": 2,
+            "title": "Implementar comunicación bidireccional app-servicio",
+            "description": "Crear canal de comunicación entre la aplicación principal y el servicio background para sincronizar estados",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar SendPort/ReceivePort para comunicación isolate, crear mensajes tipados para start/stop/update timer, manejar callbacks desde service a main app, implementar heartbeat para verificar service health",
+            "status": "pending",
+            "testStrategy": "Test que mensajes se envían y reciben correctamente, verificar latencia de comunicación < 100ms"
+          },
+          {
+            "id": 3,
+            "title": "Manejar permisos específicos de background por plataforma",
+            "description": "Implementar solicitud y manejo de permisos necesarios para servicios background en Android e iOS",
+            "dependencies": [
+              1
+            ],
+            "details": "Android: solicitar permisos FOREGROUND_SERVICE, battery optimization whitelist, auto-start permission. iOS: configurar background modes, manejar background app refresh settings, implementar silent push notifications",
+            "status": "pending",
+            "testStrategy": "Verificar que permisos se solicitan apropiadamente y service funciona con permisos concedidos"
+          },
+          {
+            "id": 4,
+            "title": "Implementar persistencia de estado del timer",
+            "description": "Crear sistema de persistencia para mantener estado del timer a través de reinicios y force-quit",
+            "dependencies": [
+              2
+            ],
+            "details": "Usar SharedPreferences/UserDefaults para guardar timer state (start_time, duration, is_active), implementar recovery logic al reiniciar app, sync con Isar database, manejar edge cases de tiempo inconsistente",
+            "status": "pending",
+            "testStrategy": "Test que timer state persiste después de force-quit y reboot del dispositivo con precisión ±5 segundos"
+          },
+          {
+            "id": 5,
+            "title": "Configurar notificaciones foreground del servicio",
+            "description": "Implementar notificaciones persistentes que muestren el progreso del timer mientras el servicio está activo",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Crear notification channel para Android, configurar ongoing notification con timer countdown, botones de acción (pause/stop), update notification cada minuto, iOS: usar local notifications con tiempo restante",
+            "status": "pending",
+            "testStrategy": "Verificar que notificaciones se muestran correctamente y se actualizan en tiempo real"
+          },
+          {
+            "id": 6,
+            "title": "Testing de persistencia entre reinicios y scenarios críticos",
+            "description": "Crear suite de tests para verificar funcionamiento del timer en scenarios de interrupción",
+            "dependencies": [
+              4,
+              5
+            ],
+            "details": "Tests para: force-quit app, reboot dispositivo, low memory scenarios, airplane mode, battery saver mode. Verificar accuracy del timer, state recovery, notification persistence",
+            "status": "pending",
+            "testStrategy": "Timer mantiene precisión ±5 segundos en todos los scenarios de interrupción testados"
+          },
+          {
+            "id": 7,
+            "title": "Optimización de consumo de batería y performance",
+            "description": "Optimizar el servicio background para minimizar impacto en batería y performance del dispositivo",
+            "dependencies": [
+              5,
+              6
+            ],
+            "details": "Implementar wake lock inteligente, reducir frecuencia de updates cuando app no está visible, usar WorkManager en Android para tareas diferidas, optimizar notification updates, profiling de CPU y memoria usage",
+            "status": "pending",
+            "testStrategy": "Verificar que battery drain es < 2% por hora, CPU usage < 1% cuando app está en background"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Crear DatabaseService para inicialización Isar",
+        "description": "Servicio centralizado para abrir base de datos Isar y manejar migrations",
+        "details": "Implementar DatabaseService singleton que inicialice Isar, registre schemas, maneje versioning y migrations. Exponer getters para cada collection (sessions, profiles, hydrationLogs, contentItems). Implementar métodos helper para operaciones comunes.",
+        "testStrategy": "Tests unitarios para inicialización, verificar schemas registrados correctamente, test de migration entre versiones",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base del DatabaseService singleton",
+            "description": "Implementar la clase DatabaseService como singleton con métodos básicos de inicialización y configuración de Isar",
+            "dependencies": [],
+            "details": "Crear clase DatabaseService con patrón singleton, implementar constructor privado, método getInstance(), configurar directorio de base de datos, implementar método básico openDatabase() para inicializar Isar con configuración inicial",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar patrón singleton funciona correctamente, test inicialización básica de Isar"
+          },
+          {
+            "id": 2,
+            "title": "Registrar schemas de collections y configurar versioning",
+            "description": "Implementar registro de todos los schemas de Isar y configurar sistema de versioning para migrations",
+            "dependencies": [
+              1
+            ],
+            "details": "Registrar schemas de sessions, profiles, hydrationLogs, contentItems en Isar, configurar version number de base de datos, implementar lógica para detectar cambios de versión y trigger migrations necesarias",
+            "status": "pending",
+            "testStrategy": "Tests para verificar todos los schemas se registran correctamente, test versioning detecta cambios"
+          },
+          {
+            "id": 3,
+            "title": "Implementar getters para collections y métodos helper",
+            "description": "Crear getters públicos para acceder a cada collection y implementar métodos helper para operaciones CRUD comunes",
+            "dependencies": [
+              2
+            ],
+            "details": "Exponer getters públicos para sessions, profiles, hydrationLogs, contentItems collections, implementar métodos helper como create(), update(), delete(), findById(), findAll() para cada collection, manejar errores de database operations",
+            "status": "pending",
+            "testStrategy": "Tests de integración para verificar getters retornan collections correctas, test métodos CRUD funcionan correctamente"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Implementar SyncManager para sincronización bidireccional",
+        "description": "Servicio para sincronizar datos Isar con Supabase",
+        "details": "Crear SyncManager que maneje sync bidireccional entre Isar local y Supabase. Implementar conflict resolution con last-write-wins basado en timestamps, manejar retry con exponential backoff para fallos de red, implementar sync selective por tipo de datos.",
+        "testStrategy": "Tests de sync con simulación de conflictos, verificar retry logic funciona, test offline-first behavior",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base del SyncManager",
+            "description": "Implementar la clase SyncManager con métodos básicos para sincronización bidireccional entre Isar y Supabase",
+            "dependencies": [],
+            "details": "Crear SyncManager con singleton pattern, definir interfaces ISyncable para entidades, implementar métodos sync(), pushToRemote(), pullFromRemote(), establecer conexión con Supabase client y repositorios Isar, configurar logging para debugging",
+            "status": "pending",
+            "testStrategy": "Unit tests para verificar inicialización correcta del SyncManager, test conexiones con Isar y Supabase"
+          },
+          {
+            "id": 2,
+            "title": "Implementar resolución de conflictos con timestamps",
+            "description": "Desarrollar sistema de resolución de conflictos last-write-wins basado en timestamps para datos sincronizados",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar ConflictResolver que compare lastModified timestamps, crear estrategia last-write-wins, añadir campos timestamp a todas las entidades sincronizables, manejar casos edge como timestamps iguales, implementar merge strategies para datos complejos",
+            "status": "pending",
+            "testStrategy": "Tests de conflictos simulados con diferentes timestamps, verificar que last-write siempre gana, test edge cases"
+          },
+          {
+            "id": 3,
+            "title": "Implementar retry logic y sincronización selectiva",
+            "description": "Desarrollar sistema de reintentos con exponential backoff y sincronización selectiva por tipo de datos",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar RetryManager con exponential backoff (delays: 1s, 2s, 4s, 8s, 16s), manejar diferentes tipos de errores de red, crear SyncQueue para batch operations, implementar sync selectivo por entity type (usuarios, sesiones, métricas), añadir configuración de sync intervals",
+            "status": "pending",
+            "testStrategy": "Test retry logic con simulación de fallos de red, verificar exponential backoff funciona correctamente, test sync selectivo"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Crear modelos FastingSession y UserProfile",
+        "description": "Definir estructura de datos para sesiones de ayuno y perfiles de usuario",
+        "details": "Implementar FastingSession Isar model con todos los campos necesarios, añadir índices para queries frecuentes (userId, startTime), implementar UserProfile con calculated field para hydration goal (weightKg * 32). Añadir validation y business rules.",
+        "testStrategy": "Tests unitarios para validation rules, test calculated fields funcionan correctamente, test de índices mejoran performance",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar modelo FastingSession en Isar",
+            "description": "Crear el modelo de datos FastingSession con todos los campos necesarios y configurar índices para optimizar consultas frecuentes.",
+            "dependencies": [],
+            "details": "Definir FastingSession model con campos: id, userId, startTime, endTime, plannedDuration, actualDuration, status, fastingType, notes. Añadir índices compuestos para userId+startTime y userId+status para optimizar queries frecuentes. Configurar embedded objects si es necesario para datos relacionados.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para validación de campos obligatorios, test de creación/actualización de sesiones, verificar índices mejoran performance de queries"
+          },
+          {
+            "id": 2,
+            "title": "Implementar modelo UserProfile con campos calculados",
+            "description": "Crear el modelo UserProfile con todos los campos de perfil de usuario y implementar el campo calculado para objetivo de hidratación.",
+            "dependencies": [
+              1
+            ],
+            "details": "Definir UserProfile model con campos: id, name, email, weightKg, heightCm, age, gender, activityLevel, preferences. Implementar getter calculado hydrationGoalMl que retorne weightKg * 32. Añadir validation rules para rangos válidos de peso, altura y edad.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para validación de campos, test de cálculo correcto de hydrationGoalMl con diferentes pesos, verificar validation rules funcionan"
+          },
+          {
+            "id": 3,
+            "title": "Añadir reglas de validación y business logic",
+            "description": "Implementar todas las reglas de validación y lógica de negocio para ambos modelos, incluyendo constraints y relaciones.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Añadir validation rules: FastingSession no puede tener endTime antes de startTime, duración mínima/máxima válida, userId debe existir. UserProfile: peso entre 30-200kg, altura entre 100-250cm, edad entre 13-120 años. Implementar métodos helper para cálculos de duración, estado de sesión activa, etc.",
+            "status": "pending",
+            "testStrategy": "Tests exhaustivos de validation rules, test edge cases con valores límite, verificar business logic funciona correctamente en diferentes escenarios"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Implementar AuthService con Supabase Auth",
+        "description": "Servicio completo de autenticación con manejo de estados",
+        "details": "Crear AuthService que implemente register/login/logout con Supabase Auth, manejar session persistence, refresh tokens automáticamente, implementar auth state changes listener, manejar errores de auth (email duplicado, contraseña débil, etc.).",
+        "testStrategy": "Tests de integración para todos los flows de auth, verificar session persistence a través de app restarts",
+        "priority": "high",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar métodos básicos de autenticación (login/register)",
+            "description": "Crear los métodos fundamentales de autenticación usando Supabase Auth para registro y login de usuarios",
+            "dependencies": [],
+            "details": "Implementar signUp() y signIn() usando supabase.auth, validar email format, manejar respuestas de Supabase, crear modelos User básicos, implementar validaciones de entrada (email válido, contraseña mínima), configurar error handling básico para casos comunes.",
+            "status": "pending",
+            "testStrategy": "Unit tests para validaciones de entrada, integration tests para signUp/signIn exitosos y fallidos"
+          },
+          {
+            "id": 2,
+            "title": "Implementar persistencia de sesión y estado de autenticación",
+            "description": "Manejar la persistencia automática de sesiones y recuperación del estado de autenticación al iniciar la app",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar session recovery usando supabase.auth.session, crear AuthState stream para notificar cambios, manejar casos donde session expired, implementar auto-refresh de access tokens, configurar storage seguro para tokens usando flutter_secure_storage.",
+            "status": "pending",
+            "testStrategy": "Tests de persistencia a través de app restarts, verificar session recovery automática, test token refresh"
+          },
+          {
+            "id": 3,
+            "title": "Implementar refresh automático de tokens",
+            "description": "Configurar el sistema de renovación automática de tokens de acceso para mantener sesiones activas",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar onAuthStateChange listener, implementar automatic token refresh usando Supabase client, manejar casos de refresh failure, implementar retry logic con exponential backoff, configurar timeouts apropiados, sync token state con UI.",
+            "status": "pending",
+            "testStrategy": "Test refresh automático funciona correctamente, verificar retry logic en caso de fallos, test sync con UI state"
+          },
+          {
+            "id": 4,
+            "title": "Implementar manejo de errores específicos de autenticación",
+            "description": "Crear sistema robusto de manejo de errores para todos los casos de fallo de autenticación",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar error handling para: email ya registrado, contraseña débil, email no verificado, rate limiting, network errors, invalid credentials, crear AuthError enum con casos específicos, implementar user-friendly error messages en español, logging de errores para debugging.",
+            "status": "pending",
+            "testStrategy": "Unit tests para cada tipo de error, verificar mensajes apropiados se muestran, test error logging funciona"
+          },
+          {
+            "id": 5,
+            "title": "Implementar testing completo de flujos de autenticación",
+            "description": "Crear suite comprehensiva de tests para validar todos los flujos de autenticación end-to-end",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Crear integration tests para: complete register flow, login con credentials válidas/inválidas, logout y session cleanup, session persistence y recovery, token refresh scenarios, error handling flows, usar mock Supabase para testing unitario, test real Supabase connection para integration tests.",
+            "status": "pending",
+            "testStrategy": "Cobertura completa de todos los flujos de auth, tests unitarios y de integración, mock y real backend testing"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Crear pantallas de login y registro",
+        "description": "UI para autenticación de usuarios con validación",
+        "details": "Implementar LoginScreen y RegisterScreen con forms validados, usar flutter_form_builder para validation, implementar loading states, error handling visual, navegación entre pantallas, forgot password flow, términos y condiciones checkbox.",
+        "testStrategy": "Tests de UI para validation rules, test navigation flows, test error states se muestran correctamente",
+        "priority": "medium",
+        "dependencies": [
+          9,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear pantalla de inicio de sesión con validación de formularios",
+            "description": "Implementar LoginScreen con formulario validado para email y contraseña, incluyendo estados de carga y manejo de errores visuales",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear LoginScreen widget con flutter_form_builder para validación de email y contraseña. Implementar TextFormField para email con validación de formato, TextFormField para contraseña con visibility toggle. Añadir loading indicator durante autenticación, mostrar error messages con SnackBar o AlertDialog. Incluir botón 'Olvidé mi contraseña' que navega a forgot password flow.",
+            "status": "pending",
+            "testStrategy": "Tests de widget para verificar validación de formularios, test de navegación a forgot password, test de estados de loading y error"
+          },
+          {
+            "id": 2,
+            "title": "Crear pantalla de registro con términos y condiciones",
+            "description": "Implementar RegisterScreen con formulario completo de registro incluyendo validación y checkbox de términos y condiciones",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear RegisterScreen widget con campos para nombre, email, contraseña y confirmar contraseña usando flutter_form_builder. Implementar validación para email único, contraseña fuerte (mínimo 8 caracteres, mayúscula, minúscula, número). Añadir Checkbox para términos y condiciones que debe estar marcado para proceder. Implementar loading states y error handling visual con colores del sistema de diseño.",
+            "status": "pending",
+            "testStrategy": "Tests de validación de formularios, verificar checkbox términos requerido, test de navegación y estados de loading"
+          },
+          {
+            "id": 3,
+            "title": "Implementar navegación y flujo de recuperación de contraseña",
+            "description": "Crear navegación entre pantallas de login/registro y implementar flujo completo de recuperación de contraseña",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implementar navegación con Navigator.push/pop entre LoginScreen y RegisterScreen. Crear ForgotPasswordScreen con campo email y validación. Implementar envío de email de recuperación y pantalla de confirmación. Añadir deep linking para reset password desde email. Configurar rutas en MaterialApp y manejar navigation stack correctamente.",
+            "status": "pending",
+            "testStrategy": "Tests de navegación entre pantallas, test de flujo forgot password completo, verificar deep linking funciona correctamente"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Implementar providers de estado con Riverpod",
+        "description": "Configurar state management para auth usando Riverpod",
+        "details": "Crear authStateProvider para estado de usuario actual, authServiceProvider para instancia de AuthService, implementar FutureProvider para auth initialization, añadir computed providers para isAuthenticated, currentUserId, etc.",
+        "testStrategy": "Tests unitarios para providers, verificar state changes propagate correctamente, test provider dependencies",
+        "priority": "medium",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear providers básicos de autenticación",
+            "description": "Implementar los providers fundamentales para el manejo de estado de autenticación usando Riverpod",
+            "dependencies": [],
+            "details": "Crear authStateProvider que mantenga el estado del usuario actual, authServiceProvider que proporcione la instancia de AuthService, y configurar ProviderScope en el root de la aplicación. Definir User model y AuthState enum para representar los diferentes estados de autenticación.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar que los providers se crean correctamente y mantienen el estado esperado"
+          },
+          {
+            "id": 2,
+            "title": "Implementar computed providers reactivos",
+            "description": "Desarrollar providers derivados que computen valores basados en el estado de autenticación",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar isAuthenticatedProvider que derive del authStateProvider, currentUserIdProvider para obtener el ID del usuario actual, userDisplayNameProvider para el nombre a mostrar, y hasPermissionProvider para verificar permisos específicos.",
+            "status": "pending",
+            "testStrategy": "Tests para verificar que los computed providers se actualizan correctamente cuando cambia el estado base"
+          },
+          {
+            "id": 3,
+            "title": "Configurar dependency injection y inicialización",
+            "description": "Establecer la inyección de dependencias y el flujo de inicialización de la autenticación",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar FutureProvider para auth initialization que verifique token almacenado, configure dependency injection entre providers, manejar estados de loading/error durante inicialización, y asegurar que la app espere a que auth esté inicializado antes de mostrar UI principal.",
+            "status": "pending",
+            "testStrategy": "Tests de integración para verificar que la inicialización funciona correctamente en diferentes escenarios"
+          },
+          {
+            "id": 4,
+            "title": "Testing de estado y dependencias",
+            "description": "Implementar suite completa de tests para validar el comportamiento del state management",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Crear tests unitarios para cada provider, tests de integración para verificar que los cambios de estado se propagan correctamente entre providers dependientes, mock de AuthService para testing, y tests de edge cases como pérdida de conexión y estados de error.",
+            "status": "pending",
+            "testStrategy": "Suite completa de tests unitarios y de integración que cubra todos los providers y sus interacciones"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Diseñar flujo de onboarding de 6 pasos",
+        "description": "Crear secuencia splash → intro → register → quiz → paywall → detox",
+        "details": "Implementar OnboardingCoordinator para manejar navegación entre pasos, crear SplashScreen con logo/animación, IntroScreen con benefits overview, QuizScreen para recopilar datos usuario (peso, altura, experiencia), integrar con register flow.",
+        "testStrategy": "Test E2E completo del flujo onboarding, verificar datos se guardan correctamente en cada paso",
+        "priority": "medium",
+        "dependencies": [
+          10,
+          11
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar OnboardingCoordinator y navegación",
+            "description": "Crear el coordinador principal que maneje la navegación entre los 6 pasos del onboarding (splash → intro → register → quiz → paywall → detox)",
+            "dependencies": [],
+            "details": "Implementar OnboardingCoordinator con state management para controlar el flujo entre pantallas, manejar navegación forward/backward, persistir progreso del usuario, integrar con sistema de routing de la app, definir eventos de transición entre pasos",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para OnboardingCoordinator, verificar navegación correcta entre pasos, test persistencia de estado"
+          },
+          {
+            "id": 2,
+            "title": "Crear SplashScreen y IntroScreen",
+            "description": "Diseñar e implementar las primeras dos pantallas del onboarding: splash con logo/animación e intro con overview de beneficios",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar SplashScreen con logo animado usando Lottie o animaciones nativas, crear IntroScreen con carrusel de beneficios, usar sistema de diseño zen-minimalista establecido, implementar auto-navegación desde splash después de tiempo determinado, agregar skip button en intro",
+            "status": "pending",
+            "testStrategy": "Tests de widget para ambas pantallas, verificar animaciones se ejecutan correctamente, test navegación automática"
+          },
+          {
+            "id": 3,
+            "title": "Implementar QuizScreen y flujo de datos usuario",
+            "description": "Crear pantalla de cuestionario para recopilar datos del usuario (peso, altura, experiencia) y integrar con el flujo de registro",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar QuizScreen con formulario multi-paso para datos usuario, validación de inputs, progress indicator, integración con UserProfile model, guardar datos localmente, conectar con registro flow, diseñar UI intuitiva para selección de datos, manejar errores de validación",
+            "status": "pending",
+            "testStrategy": "Tests de formulario y validación, verificar datos se guardan correctamente en UserProfile, test integración con registro"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Crear QuizScreen para datos de usuario",
+        "description": "Pantalla de cuestionario para recopilar información inicial del usuario",
+        "details": "Implementar formulario multi-step para peso, altura, experiencia con ayuno, objetivos, crear validation para inputs numéricos, implementar progress indicator, guardar respuestas en UserProfile, diseño mobile-friendly con keyboard handling.",
+        "testStrategy": "Tests de validation para inputs, verificar navigation entre steps, test datos se persisten correctamente",
+        "priority": "medium",
+        "dependencies": [
+          12,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Diseñar estructura y navegación del QuizScreen multi-step",
+            "description": "Crear la estructura base del QuizScreen con navegación entre pasos y indicador de progreso",
+            "dependencies": [],
+            "details": "Implementar PageView o similar para navegación entre steps, crear progress indicator que muestre step actual/total, implementar botones Siguiente/Anterior con lógica de navegación, diseñar layout responsive para diferentes tamaños de pantalla, configurar manejo de teclado y focus management",
+            "status": "pending",
+            "testStrategy": "Test navegación entre steps funciona correctamente, verificar progress indicator se actualiza, test responsive design en diferentes dispositivos"
+          },
+          {
+            "id": 2,
+            "title": "Implementar formularios y validación para datos de usuario",
+            "description": "Crear los formularios específicos para recopilar peso, altura, experiencia con ayuno y objetivos con validación",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear formularios para: peso (input numérico con validación rango), altura (input numérico con validación), experiencia con ayuno (opciones múltiples), objetivos del usuario (checkboxes/radio buttons). Implementar validación en tiempo real para inputs numéricos, manejo de errores y mensajes de validación, formateo automático de unidades (kg, cm)",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para todas las validaciones, verificar inputs numéricos solo aceptan valores válidos, test mensajes de error se muestran correctamente"
+          },
+          {
+            "id": 3,
+            "title": "Integrar persistencia de datos con UserProfile",
+            "description": "Conectar el QuizScreen con la base de datos Isar para guardar las respuestas en UserProfile",
+            "dependencies": [
+              2
+            ],
+            "details": "Integrar con el modelo UserProfile de Isar para persistir los datos recopilados, implementar lógica para guardar progreso parcial en caso de salida, crear confirmación final antes de guardar, manejar casos de error en escritura de BD, implementar feedback visual durante guardado",
+            "status": "pending",
+            "testStrategy": "Test datos se persisten correctamente en UserProfile, verificar manejo de errores de BD, test progreso parcial se mantiene al salir y volver"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Implementar pantalla de detox de 48 horas",
+        "description": "Timer especial para protocolo de preparación carnívora",
+        "details": "Crear DetoxScreen con countdown timer separado, mostrar alimentos permitidos (carne, huevos, pescado, caldo de huesos), implementar check-in diario, progress ring visual, opción skip con warning, marcar completion en UserProfile.",
+        "testStrategy": "Test timer accuracy para 48 horas, verificar lista de alimentos se muestra correctamente, test skip functionality",
+        "priority": "low",
+        "dependencies": [
+          12,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear DetoxScreen con countdown timer",
+            "description": "Implementar la pantalla principal de detox con timer específico para 48 horas",
+            "dependencies": [],
+            "details": "Crear DetoxScreen widget con countdown timer configurado para 48 horas exactas, diseño limpio con tiempo restante prominente, usar Timer.periodic para actualizaciones cada segundo, manejar estados pause/resume, persistir tiempo restante en storage local para sobrevivir app restart",
+            "status": "pending",
+            "testStrategy": "Test timer accuracy durante 48 horas, verificar persistencia del tiempo al cerrar/abrir app, test estados pause/resume"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lista de alimentos permitidos y check-in diario",
+            "description": "Mostrar alimentos carnívoros permitidos y sistema de check-in diario para seguimiento",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear sección visual con lista de alimentos permitidos (carne, huevos, pescado, caldo de huesos) con iconos, implementar check-in diario con botón simple, guardar check-ins en storage local con timestamp, mostrar streak de días consecutivos, notificación reminder para check-in diario",
+            "status": "pending",
+            "testStrategy": "Verificar lista de alimentos se muestra correctamente, test check-in diario funciona y se persiste, test streak counter"
+          },
+          {
+            "id": 3,
+            "title": "Implementar progress ring visual y opción skip con warning",
+            "description": "Añadir indicador visual de progreso y funcionalidad para saltar el detox con confirmación",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear progress ring circular que muestre porcentaje completado del detox de 48 horas, animación smooth del progreso, implementar botón skip con dialog de warning explicando importancia del detox, confirmar skip antes de proceder, marcar completion en UserProfile cuando se termine naturalmente o se skip",
+            "status": "pending",
+            "testStrategy": "Test progress ring actualiza correctamente con el tiempo, verificar warning dialog aparece al skip, test completion se marca en UserProfile"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "Crear servicio de timer principal (TimerService)",
+        "description": "Lógica core del timer de ayuno con persistencia background",
+        "details": "Implementar TimerService que maneje start/stop/pause del timer, integrar con BackgroundTimerService, calcular elapsed/remaining time, manejar diferentes tipos de planes (16/8, 18/6, etc.), emit state changes vía streams, persistir estado en Isar.",
+        "testStrategy": "Test precisión timer ±5 segundos en sesiones largas, verificar background persistence funciona correctamente",
+        "priority": "high",
+        "dependencies": [
+          5,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar estructura base del TimerService con gestión de estado",
+            "description": "Crear la clase TimerService principal con propiedades para manejar el estado del timer (isRunning, isPaused, startTime, endTime, timerType) y métodos básicos de start/stop/pause",
+            "dependencies": [],
+            "details": "Implementar TimerService como singleton con propiedades: isRunning (bool), isPaused (bool), startTime (DateTime), endTime (DateTime), timerType (enum), currentPlan (FastingPlan). Crear métodos start(), stop(), pause(), resume() con validaciones básicas. Implementar StreamController para emitir cambios de estado. Definir TimerState model con todos los campos necesarios.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para validar transiciones de estado correctas, verificar que los métodos start/stop/pause funcionan según el flujo esperado"
+          },
+          {
+            "id": 2,
+            "title": "Integrar cálculos de tiempo y diferentes tipos de planes de ayuno",
+            "description": "Implementar lógica para calcular tiempo transcurrido y restante, soportar diferentes tipos de planes (16/8, 18/6, OMAD, etc.) con sus duraciones específicas",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear enum FastingPlanType (sixteenEight, eighteenSix, omad, custom) con duraciones correspondientes. Implementar métodos getElapsedTime(), getRemainingTime(), getProgress() que calculen basándose en startTime y plan seleccionado. Manejar edge cases como timer pausado, cambios de zona horaria. Crear FastingPlan model con duration, name, description.",
+            "status": "pending",
+            "testStrategy": "Tests de precisión para cálculos de tiempo con diferentes planes, verificar accuracy ±5 segundos en sesiones largas, test edge cases"
+          },
+          {
+            "id": 3,
+            "title": "Integrar persistencia con Isar y BackgroundTimerService",
+            "description": "Conectar TimerService con DatabaseService para persistir estado y integrar con BackgroundTimerService para mantener timer funcionando en background",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Integrar con DatabaseService para persistir TimerSession en Isar automáticamente en cada cambio de estado. Crear modelo TimerSession con campos: id, startTime, endTime, planType, status, isPaused, pausedDuration. Integrar con BackgroundTimerService para notificaciones y cálculos en background. Implementar recovery de estado al abrir app después de background/restart.",
+            "status": "pending",
+            "testStrategy": "Test persistencia funciona correctamente, verificar background persistence mantiene accuracy, test recovery de estado después de app restart"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "title": "Implementar modelos de planes de ayuno",
+        "description": "Estructura de datos para diferentes tipos de ayuno intermitente",
+        "details": "Crear FastingPlan model con tipos predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 2d), implementar validation para custom plans, calcular eating/fasting windows, manejar timezone considerations, permitir modificación de horarios de inicio.",
+        "testStrategy": "Tests unitarios para cálculos de windows, test timezone handling, verificar validation rules",
+        "priority": "medium",
+        "dependencies": [
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear modelo FastingPlan con tipos predefinidos",
+            "description": "Definir la estructura de datos del modelo FastingPlan con todos los tipos de ayuno intermitente soportados",
+            "dependencies": [],
+            "details": "Crear clase FastingPlan con tipos predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 2d). Incluir propiedades para nombre, duración de ayuno, duración de alimentación, descripción y configuración por defecto. Implementar enum para tipos de plan y constructor para cada tipo predefinido.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar que cada tipo predefinido se crea correctamente con las duraciones apropiadas"
+          },
+          {
+            "id": 2,
+            "title": "Implementar validación y cálculo de ventanas de tiempo",
+            "description": "Desarrollar la lógica para validar planes personalizados y calcular ventanas de ayuno y alimentación",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear métodos de validación para planes personalizados, implementar cálculo de eating/fasting windows basado en hora de inicio y tipo de plan. Manejar consideraciones de timezone usando TimeZone y DateTime. Incluir validación de rangos válidos y conflictos de horarios.",
+            "status": "pending",
+            "testStrategy": "Tests para validación de planes personalizados, verificar cálculos de ventanas en diferentes timezones, test edge cases de cambio de día"
+          },
+          {
+            "id": 3,
+            "title": "Implementar modificación de horarios y persistencia",
+            "description": "Permitir modificación de horarios de inicio de planes y persistir configuraciones en la base de datos",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear interfaz para modificar horarios de inicio de planes de ayuno, implementar persistencia en Isar database, sync con Supabase para backup. Manejar actualizaciones de planes activos y notificaciones de cambios. Incluir histórico de modificaciones.",
+            "status": "pending",
+            "testStrategy": "Tests de persistencia en Isar y sync con Supabase, verificar que modificaciones de horarios no afecten sesiones activas incorrectamente"
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "title": "Crear pantalla de selección de planes",
+        "description": "UI para elegir tipo de ayuno intermitente",
+        "details": "Implementar PlanSelectionScreen con cards para cada plan, mostrar ventanas de ayuno/comida visuales, explicación de cada plan, opción custom plan, preview de horarios basado en hora actual, botón confirmar que guarda en UserProfile.",
+        "testStrategy": "Test UI responsive en diferentes tamaños de pantalla, verificar preview calculations correctos",
+        "priority": "medium",
+        "dependencies": [
+          16,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componentes de cards para cada plan de ayuno",
+            "description": "Diseñar e implementar las tarjetas visuales que mostrarán cada tipo de plan de ayuno intermitente disponible",
+            "dependencies": [],
+            "details": "Crear componentes reutilizables PlanCard que muestren el nombre del plan (16:8, 18:6, etc.), descripción breve, ventanas visuales de ayuno/comida usando colores diferenciados, y estado de selección. Implementar responsive design para diferentes tamaños de pantalla.",
+            "status": "pending",
+            "testStrategy": "Verificar rendering correcto en diferentes dispositivos, test de selección múltiple y estados visuales"
+          },
+          {
+            "id": 2,
+            "title": "Implementar preview de horarios basado en hora actual",
+            "description": "Desarrollar la funcionalidad que calcula y muestra preview de horarios de ayuno según la hora actual del usuario",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear lógica que tome la hora actual y calcule cuándo comenzarían y terminarían las ventanas de ayuno/comida para cada plan. Mostrar preview visual con timeline que indique 'Comenzarías ayuno a las X', 'Terminarías a las Y'. Incluir opción de ajuste manual de hora de inicio.",
+            "status": "pending",
+            "testStrategy": "Test cálculos de tiempo en diferentes zonas horarias, verificar preview updates en tiempo real"
+          },
+          {
+            "id": 3,
+            "title": "Integrar confirmación y guardado en UserProfile",
+            "description": "Implementar la funcionalidad de confirmación de selección y persistencia del plan elegido en el perfil del usuario",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear botón de confirmación que valide la selección, guarde el plan elegido en UserProfile incluyendo tipo de plan, horarios configurados y preferencias. Implementar navegación de regreso a pantalla principal con el nuevo plan activo. Incluir opción de plan personalizado con configuración manual.",
+            "status": "pending",
+            "testStrategy": "Verificar persistencia correcta de datos, test navegación post-confirmación y validación de plan personalizado"
+          }
+        ]
+      },
+      {
+        "id": 18,
+        "title": "Diseñar FastingHomeScreen principal",
+        "description": "Pantalla principal con timer prominente y controles",
+        "details": "Crear UI con timer circular grande (48px font), botones start/stop, progress ring, mostrar fase actual (fasting/eating), estimado de completion, botón flotante pánico (solo durante ayuno), integrar con TimerService state.",
+        "testStrategy": "Test UI updates en tiempo real con timer, verificar botón pánico aparece solo durante fasting",
+        "priority": "high",
+        "dependencies": [
+          15,
+          17,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar componente CircularTimer con progreso visual",
+            "description": "Crear el componente principal del timer circular con anillo de progreso y texto prominente",
+            "dependencies": [],
+            "details": "Desarrollar CircularTimer component con texto de 48px, anillo de progreso animado, mostrar tiempo restante formateado (HH:MM), calcular porcentaje de progreso basado en duración total vs tiempo transcurrido, usar colors contrastantes para fasting vs eating phases",
+            "status": "pending",
+            "testStrategy": "Verificar timer se actualiza cada segundo, comprobar accuracy del progreso visual, test transiciones suaves entre estados"
+          },
+          {
+            "id": 2,
+            "title": "Crear controles de timer y indicadores de fase",
+            "description": "Implementar botones start/stop/pause y mostrar fase actual del ayuno",
+            "dependencies": [
+              1
+            ],
+            "details": "Añadir botones de control con estados apropiados (disabled cuando no aplique), mostrar claramente si está en fase fasting o eating, incluir estimado de completion time, integrar con TimerService state para reflejar estado actual, manejar transiciones entre fases",
+            "status": "pending",
+            "testStrategy": "Test todos los estados de botones funcionan correctamente, verificar indicadores de fase son claros y precisos"
+          },
+          {
+            "id": 3,
+            "title": "Integrar botón de pánico flotante durante ayuno",
+            "description": "Implementar botón flotante de emergencia que aparece solo durante la fase de ayuno",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear FloatingActionButton que aparece únicamente durante fasting phase, posicionar de manera accesible pero no intrusiva, implementar confirmación antes de break fast, conectar con TimerService para stop timer y cambiar a eating phase, incluir haptic feedback",
+            "status": "pending",
+            "testStrategy": "Verificar botón aparece solo durante fasting, test confirmación funciona, comprobar integración correcta con TimerService"
+          }
+        ]
+      },
+      {
+        "id": 19,
+        "title": "Implementar providers de estado para timer",
+        "description": "State management para timer usando Riverpod",
+        "details": "Crear fastingTimerProvider para estado actual del timer, currentSessionProvider para sesión activa, timerStateProvider para fase (fasting/eating), implementar computed providers para progress percentage, time remaining formatted.",
+        "testStrategy": "Tests unitarios para providers, verificar state changes se propagan correctamente a UI",
+        "priority": "medium",
+        "dependencies": [
+          15
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear fastingTimerProvider para estado del timer",
+            "description": "Implementar provider principal que maneja el estado actual del timer de ayuno incluyendo tiempo transcurrido, tiempo restante y control de inicio/pausa",
+            "dependencies": [],
+            "details": "Crear StateNotifierProvider que maneje TimerState con campos: startTime, duration, isActive, isPaused. Implementar métodos start(), pause(), resume(), stop(). Usar Timer.periodic para actualizar estado cada segundo. Persistir estado en shared_preferences para recuperar después de app restart.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar transiciones de estado correctas, persistencia de datos, y accuracy del tiempo transcurrido"
+          },
+          {
+            "id": 2,
+            "title": "Implementar currentSessionProvider y timerStateProvider",
+            "description": "Crear providers para gestionar la sesión activa de ayuno y el estado de la fase actual (ayuno/alimentación)",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear currentSessionProvider que mantenga FastingSession actual con startTime, targetDuration, sessionType. Implementar timerStateProvider que calcule si usuario está en fase de ayuno o alimentación basado en horarios configurados. Sincronizar ambos providers con fastingTimerProvider.",
+            "status": "pending",
+            "testStrategy": "Tests para verificar sincronización entre providers, transiciones correctas entre fases, y manejo de sesiones activas"
+          },
+          {
+            "id": 3,
+            "title": "Crear computed providers para UI",
+            "description": "Implementar providers computados para porcentaje de progreso y tiempo restante formateado para mostrar en la interfaz",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear progressPercentageProvider que calcule (timeElapsed / totalDuration) * 100. Implementar timeRemainingFormattedProvider que devuelva string formato 'HH:mm:ss' del tiempo restante. Crear isSessionActiveProvider booleano. Usar Provider.family si se necesitan parámetros. Optimizar re-builds con select().",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar cálculos correctos de porcentaje, formato de tiempo correcto, y performance de computed providers"
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "title": "Implementar lógica de completion de sesiones",
+        "description": "Manejar finalización exitosa de sesiones de ayuno",
+        "details": "Crear SessionCompletionService que marque sesiones como completed en Isar, calcule estadísticas (streak, total hours), sync con Supabase, trigger celebración UI (confetti animation), actualizar metrics dashboard.",
+        "testStrategy": "Test sesiones se marcan completed correctamente, verificar sync a Supabase funciona, test celebración se muestra",
+        "priority": "medium",
+        "dependencies": [
+          15,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear SessionCompletionService para marcar sesiones como completadas",
+            "description": "Desarrollar el servicio principal que maneje la lógica de completar sesiones de ayuno en la base de datos local",
+            "dependencies": [],
+            "details": "Implementar SessionCompletionService que actualice el estado de la sesión a 'completed' en Isar, calcule la duración total de la sesión, valide que la sesión cumplió el objetivo mínimo, y prepare los datos para sincronización. Incluir manejo de errores y logging apropiado.",
+            "status": "pending",
+            "testStrategy": "Test unitarios para verificar que sesiones se marcan como completed correctamente, test de validación de duración mínima, test de manejo de errores"
+          },
+          {
+            "id": 2,
+            "title": "Implementar cálculo y sincronización de estadísticas",
+            "description": "Calcular estadísticas de progreso del usuario y sincronizar datos con Supabase",
+            "dependencies": [
+              1
+            ],
+            "details": "Calcular streak actual del usuario, total de horas de ayuno completadas, ratio de sesiones exitosas, y otras métricas relevantes. Sincronizar todos los datos actualizados con Supabase incluyendo la sesión completada y las estadísticas recalculadas. Manejar casos de fallo de sincronización con retry logic.",
+            "status": "pending",
+            "testStrategy": "Test de cálculo correcto de estadísticas, test de sincronización exitosa con Supabase, test de retry logic en caso de fallo de red"
+          },
+          {
+            "id": 3,
+            "title": "Implementar celebración UI y actualización del dashboard",
+            "description": "Mostrar animación de celebración y actualizar el dashboard de métricas del usuario",
+            "dependencies": [
+              2
+            ],
+            "details": "Trigger animación de confetti cuando una sesión se completa exitosamente, mostrar mensaje de felicitación con estadísticas actualizadas, actualizar en tiempo real el metrics dashboard con las nuevas estadísticas, incluir animaciones suaves para los cambios en los números y gráficos.",
+            "status": "pending",
+            "testStrategy": "Test de que la animación de celebración se muestra correctamente, test de actualización en tiempo real del dashboard, test de animaciones suaves en cambios de métricas"
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "title": "Crear botón de pánico flotante",
+        "description": "FloatingActionButton para soporte emocional durante ayuno",
+        "details": "Implementar PanicButton como FAB naranja (#ffb366), tamaño 64×64, elevación 8dp, visible solo durante fasting phase, animación pulse sutil, posición bottom-right, trigger PanicModal al tap, tracking de eventos pánico.",
+        "testStrategy": "Test botón solo visible durante ayuno, verificar animaciones smooth a 60fps, test modal se abre correctamente",
+        "priority": "high",
+        "dependencies": [
+          18,
+          19
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componente PanicButton como FloatingActionButton",
+            "description": "Implementar el widget PanicButton como un FloatingActionButton personalizado con diseño específico",
+            "dependencies": [],
+            "details": "Crear widget PanicButton que extienda StatefulWidget, implementar FAB con color naranja (#ffb366), tamaño 64×64 pixels, elevación 8dp, ícono de emergencia apropiado, posicionamiento en bottom-right de la pantalla",
+            "status": "pending",
+            "testStrategy": "Test unitario para verificar propiedades del botón (color, tamaño, elevación), test de widget para verificar renderizado correcto"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de visibilidad y animación pulse",
+            "description": "Añadir lógica para mostrar el botón solo durante fase de ayuno y implementar animación pulse sutil",
+            "dependencies": [
+              1
+            ],
+            "details": "Integrar con estado de ayuno para mostrar/ocultar botón automáticamente, implementar AnimationController para animación pulse sutil continua, gestionar lifecycle de animaciones para optimizar rendimiento",
+            "status": "pending",
+            "testStrategy": "Test de integración para verificar visibilidad según estado de ayuno, test de animación para verificar smooth rendering a 60fps"
+          },
+          {
+            "id": 3,
+            "title": "Conectar botón con PanicModal y tracking de eventos",
+            "description": "Implementar funcionalidad de tap para abrir PanicModal y añadir tracking de eventos de pánico",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implementar onPressed callback para trigger PanicModal, integrar con sistema de analytics para tracking de eventos pánico, añadir debouncing para evitar taps múltiples accidentales, gestionar estados de loading si es necesario",
+            "status": "pending",
+            "testStrategy": "Test de integración para verificar que tap abre PanicModal correctamente, test de tracking para verificar eventos se registran apropiadamente"
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "title": "Implementar PanicModal con contenido motivacional",
+        "description": "Modal de emergencia con quotes y opciones de soporte",
+        "details": "Crear modal overlay con quote motivacional random, opciones: 'Continuar ayuno', 'Hacer meditación', 'No puedo continuar', biblioteca de 50+ quotes anti-atracón, diseño calming con colores suaves, animación entrada smooth.",
+        "testStrategy": "Test modal se muestra correctamente, verificar quotes se cargan random, test opciones navegan correctamente",
+        "priority": "high",
+        "dependencies": [
+          21
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear biblioteca de quotes motivacionales anti-atracón",
+            "description": "Desarrollar sistema de quotes motivacionales con al menos 50 frases anti-atracón en español",
+            "dependencies": [],
+            "details": "Crear archivo JSON o clase con biblioteca de 50+ quotes motivacionales específicos para momentos de pánico durante ayuno intermitente. Incluir frases como 'Este momento pasará, tu fuerza es mayor que tu hambre', 'Cada minuto que resistes es una victoria', etc. Implementar función para selección aleatoria de quotes.",
+            "status": "pending",
+            "testStrategy": "Verificar que se carguen al menos 50 quotes únicos, test selección aleatoria funciona correctamente, validar contenido motivacional apropiado"
+          },
+          {
+            "id": 2,
+            "title": "Implementar diseño visual del modal con colores calmantes",
+            "description": "Crear interfaz visual del modal con diseño tranquilizador y animaciones suaves",
+            "dependencies": [
+              1
+            ],
+            "details": "Diseñar modal overlay con fondo semi-transparente, usar colores suaves (azules/verdes pastel), tipografía legible, espaciado generoso. Implementar animación de entrada smooth (fade-in con scale), bordes redondeados, sombras sutiles. El modal debe ocupar 80% del ancho de pantalla y centrarse verticalmente.",
+            "status": "pending",
+            "testStrategy": "Test animación entrada es smooth y no jarring, verificar colores son visualmente calmantes, test responsive en diferentes tamaños de pantalla"
+          },
+          {
+            "id": 3,
+            "title": "Implementar lógica de botones de acción del modal",
+            "description": "Desarrollar funcionalidad de los tres botones: Continuar ayuno, Hacer meditación, No puedo continuar",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear botones con acciones específicas: 'Continuar ayuno' cierra modal y mantiene sesión activa, 'Hacer meditación' navega a pantalla de meditación/breathing, 'No puedo continuar' navega al flujo de interrupción de sesión. Incluir analytics tracking para cada opción seleccionada y haptic feedback en iOS.",
+            "status": "pending",
+            "testStrategy": "Test cada botón navega correctamente, verificar analytics se registran apropiadamente, test haptic feedback funciona en iOS, validar modal se cierra correctamente"
+          }
+        ]
+      },
+      {
+        "id": 23,
+        "title": "Crear MeditationScreen con animación 4-4-8",
+        "description": "Pantalla de respiración guiada usando Lottie",
+        "details": "Implementar breathing animation con Lottie, patrón 4-4-8 (inhalar 4s, hold 4s, exhalar 8s), contador de ciclos, botón finish, opciones post-meditación (continuar ayuno / terminar), background music opcional, haptic feedback en transitions.",
+        "testStrategy": "Test performance 60fps en dispositivos mid-range, verificar timing accuracy de breathing pattern",
+        "priority": "medium",
+        "dependencies": [
+          22
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componente base MeditationScreen con navegación",
+            "description": "Implementar la estructura básica de la pantalla de meditación con navegación, layout principal y estado inicial",
+            "dependencies": [],
+            "details": "Crear MeditationScreen.tsx con React Navigation, definir layout básico con SafeAreaView, implementar useEffect para cleanup al salir, configurar estado inicial con useState para timer y ciclos, agregar navegación de vuelta a FastingHome",
+            "status": "pending",
+            "testStrategy": "Verificar navegación funciona correctamente, test render inicial sin errores"
+          },
+          {
+            "id": 2,
+            "title": "Integrar animación Lottie con patrón respiratorio 4-4-8",
+            "description": "Implementar la animación de respiración usando Lottie con timing preciso para inhalar 4s, mantener 4s, exhalar 8s",
+            "dependencies": [
+              1
+            ],
+            "details": "Instalar lottie-react-native, crear o importar breathing animation asset, implementar hook personalizado para controlar timing (4s inhale, 4s hold, 8s exhale), sincronizar animación con timer usando useRef y setInterval, agregar estados visuales para cada fase",
+            "status": "pending",
+            "testStrategy": "Test timing accuracy con cronómetro real, verificar animación fluida 60fps en dispositivos mid-range"
+          },
+          {
+            "id": 3,
+            "title": "Agregar controles y funcionalidades avanzadas",
+            "description": "Implementar contador de ciclos, botón finish, opciones post-meditación, música de fondo y haptic feedback",
+            "dependencies": [
+              2
+            ],
+            "details": "Agregar contador visual de ciclos completados, implementar botón finish con confirmación, crear modal post-meditación con opciones 'continuar ayuno' / 'terminar', integrar react-native-sound para música opcional, usar Haptics.impactAsync en transiciones entre fases, persistir progreso en AsyncStorage",
+            "status": "pending",
+            "testStrategy": "Test todas las opciones post-meditación navegan correctamente, verificar haptic feedback funciona en iOS/Android, test música se pausa/resume adecuadamente"
+          }
+        ]
+      },
+      {
+        "id": 24,
+        "title": "Implementar flujo 'romper ayuno'",
+        "description": "Manejar interrupción voluntaria de sesiones de ayuno",
+        "details": "Crear InterruptSessionService que marque sesión como interrupted, guarde tiempo parcial en Isar, actualice métricas (rate completion), opcional reason tracking, UI de confirmación con warning, sync estado a Supabase.",
+        "testStrategy": "Test sesiones interrupted se guardan correctamente, verificar métricas se actualizan apropiadamente",
+        "priority": "medium",
+        "dependencies": [
+          22,
+          20
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear InterruptSessionService para manejo de interrupciones",
+            "description": "Implementar servicio que maneje la lógica de interrupción de sesiones de ayuno incluyendo marcado como interrupted y guardado de tiempo parcial",
+            "dependencies": [],
+            "details": "Crear InterruptSessionService con métodos para: marcar sesión activa como interrupted, calcular y guardar tiempo parcial transcurrido en Isar, actualizar métricas de completion rate, implementar tracking opcional de razón de interrupción, manejar estados de transición y validaciones necesarias.",
+            "status": "pending",
+            "testStrategy": "Test que sesiones se marcan correctamente como interrupted, verificar cálculo preciso de tiempo parcial, test actualización de métricas de completion rate"
+          },
+          {
+            "id": 2,
+            "title": "Implementar UI de confirmación con warning para romper ayuno",
+            "description": "Crear interfaz de usuario que solicite confirmación antes de interrumpir sesión con advertencias apropiadas",
+            "dependencies": [
+              1
+            ],
+            "details": "Diseñar e implementar dialog de confirmación con: warning sobre interrupción de progreso, botones de confirmar/cancelar, opcional input para razón de interrupción, diseño consistente con app theme, animaciones suaves de entrada/salida, manejo de diferentes tamaños de pantalla.",
+            "status": "pending",
+            "testStrategy": "Test que dialog aparece correctamente, verificar botones funcionan apropiadamente, test responsive design en diferentes dispositivos"
+          },
+          {
+            "id": 3,
+            "title": "Sincronizar estado de sesión interrumpida con Supabase",
+            "description": "Implementar sincronización del estado de sesión interrumpida y métricas actualizadas con el backend",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implementar sync con Supabase para: actualizar registro de sesión con status interrupted, sincronizar tiempo parcial y métricas actualizadas, manejar casos de fallo de conexión con retry logic, implementar offline-first approach con queue de sync, validar integridad de datos en servidor.",
+            "status": "pending",
+            "testStrategy": "Test sincronización exitosa con Supabase, verificar manejo de errores de red, test offline functionality y queue de sync"
+          }
+        ]
+      },
+      {
+        "id": 25,
+        "title": "Crear modelo HydrationLog y servicio",
+        "description": "Sistema de tracking de hidratación diaria",
+        "details": "Implementar HydrationLog Isar model (userId, timestamp, volumeMl), HydrationService para calcular goal (weightKg * 32), log water intake, calcular progress percentage, reset diario automático, configurar glass size.",
+        "testStrategy": "Tests para cálculo goal accuracy, verificar reset diario funciona, test logging múltiple en mismo día",
+        "priority": "medium",
+        "dependencies": [
+          6,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear modelo HydrationLog con Isar",
+            "description": "Implementar el modelo de datos HydrationLog utilizando Isar para el almacenamiento local de registros de hidratación",
+            "dependencies": [
+              6,
+              8
+            ],
+            "details": "Crear clase HydrationLog con anotaciones Isar que incluya campos: userId (int), timestamp (DateTime), volumeMl (int). Configurar índices para búsquedas eficientes por userId y fecha. Añadir métodos de serialización y validación de datos. Generar código Isar con build_runner.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para validación de campos, test de índices para performance, verificar serialización correcta"
+          },
+          {
+            "id": 2,
+            "title": "Implementar HydrationService para cálculos",
+            "description": "Crear servicio que maneje la lógica de negocio para el tracking de hidratación y cálculo de objetivos",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar HydrationService con métodos para: calcular objetivo diario (weightKg * 32ml), registrar ingesta de agua, calcular porcentaje de progreso diario, obtener historial de hidratación. Integrar con UserProfile para obtener peso del usuario.",
+            "status": "pending",
+            "testStrategy": "Tests para verificar cálculo preciso del objetivo, test de logging múltiple en mismo día, verificar cálculo de porcentaje"
+          },
+          {
+            "id": 3,
+            "title": "Implementar reset diario y configuración de vaso",
+            "description": "Añadir funcionalidad de reset automático diario y configuración del tamaño de vaso personalizable",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar reset automático a medianoche del progreso diario, configurar tamaño de vaso predeterminado y personalizable (250ml default), añadir métodos para quick-add basado en tamaño de vaso, manejar persistencia de configuraciones de usuario.",
+            "status": "pending",
+            "testStrategy": "Verificar que reset diario funciona correctamente a medianoche, test configuración de vaso persiste, test quick-add funciona"
+          }
+        ]
+      },
+      {
+        "id": 26,
+        "title": "Implementar WaterButton widget",
+        "description": "Botón flotante para logging rápido de agua",
+        "details": "Crear FAB azul/teal, tamaño 56×56, posición bottom-left, one-tap logging, animación ripple, debouncing para taps rápidos, mostrar volume añadido temporalmente, integrar con HydrationService.",
+        "testStrategy": "Test debouncing funciona correctamente, verificar animaciones smooth, test volume logging accurate",
+        "priority": "medium",
+        "dependencies": [
+          25,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear WaterButton widget base con FAB",
+            "description": "Implementar el widget FloatingActionButton base con diseño visual específico y posicionamiento",
+            "dependencies": [],
+            "details": "Crear StatefulWidget WaterButton que extienda FloatingActionButton con color azul/teal, tamaño 56×56 píxeles, ícono de gota de agua, posicionamiento en bottom-left usando Positioned widget, añadir animación ripple nativa del Material Design",
+            "status": "pending",
+            "testStrategy": "Test widget se renderiza correctamente, verificar tamaño y posición, test animación ripple funciona"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de logging y debouncing",
+            "description": "Añadir funcionalidad de one-tap logging con debouncing para prevenir taps múltiples accidentales",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar onPressed handler con Timer para debouncing (300ms), integrar con HydrationService para logging de volumen por defecto (250ml), añadir feedback háptico, manejar estados loading/disabled durante processing",
+            "status": "pending",
+            "testStrategy": "Test debouncing previene taps múltiples, verificar integración con HydrationService, test feedback háptico"
+          },
+          {
+            "id": 3,
+            "title": "Añadir feedback visual temporal del volumen",
+            "description": "Mostrar temporalmente el volumen añadido con animación y desaparición automática",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear overlay temporal que muestre '+250ml' con AnimationController, posicionar cerca del botón, fade-in/fade-out animation (2 segundos duración), usar Stack widget para overlay, style consistente con design system",
+            "status": "pending",
+            "testStrategy": "Test overlay aparece y desaparece correctamente, verificar timing de animaciones, test posicionamiento responsive"
+          }
+        ]
+      },
+      {
+        "id": 27,
+        "title": "Crear widget de progreso de hidratación",
+        "description": "Indicator visual para progreso diario de agua",
+        "details": "Implementar progress bar o circular indicator, mostrar percentage complete, ml consumidos/goal, color changes (rojo<50%, amarillo 50-80%, verde >80%), animaciones smooth en updates, integration con WaterButton.",
+        "testStrategy": "Test color changes en thresholds correctos, verificar animaciones smooth, test updates en tiempo real",
+        "priority": "low",
+        "dependencies": [
+          26
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componente visual del indicador de progreso",
+            "description": "Implementar el widget visual que muestra el progreso de hidratación con indicador circular o barra de progreso",
+            "dependencies": [],
+            "details": "Crear widget StatefulWidget para el indicador de progreso. Implementar CustomPainter para circular progress indicator o usar LinearProgressIndicator. Definir tamaños, colores base y estructura visual del componente. Crear propiedades para progress value, colors, y animaciones.",
+            "status": "pending",
+            "testStrategy": "Test widget rendering correcto, verificar propiedades visuales básicas"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de colores dinámicos según porcentaje",
+            "description": "Agregar sistema de cambio de colores automático basado en el porcentaje de progreso completado",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar función para calcular color según porcentaje: rojo <50%, amarillo 50-80%, verde >80%. Crear método getProgressColor() que retorne Color según threshold. Integrar smooth color transitions entre estados. Aplicar colores al indicador visual.",
+            "status": "pending",
+            "testStrategy": "Test color changes en thresholds exactos (49%, 50%, 79%, 80%), verificar transiciones smooth"
+          },
+          {
+            "id": 3,
+            "title": "Integrar con datos de hidratación y animaciones",
+            "description": "Conectar widget con providers de hidratación y añadir animaciones smooth para updates",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Integrar con hydrationProvider para obtener ml consumidos y goal diario. Mostrar texto 'X ml / Y ml' y porcentaje. Implementar AnimationController para smooth transitions en cambios de valor. Agregar watch del provider para updates automáticos. Conectar con WaterButton para refresh en tiempo real.",
+            "status": "pending",
+            "testStrategy": "Test updates en tiempo real desde WaterButton, verificar animaciones smooth, test cálculo porcentaje correcto"
+          }
+        ]
+      },
+      {
+        "id": 28,
+        "title": "Implementar providers de hidratación",
+        "description": "State management para tracking de agua",
+        "details": "Crear hydrationProvider para estado diario actual, dailyProgressProvider para percentage, hydrationHistoryProvider para logs históricos, goalProvider computed desde user weight, implementar listeners para updates.",
+        "testStrategy": "Tests unitarios para providers, verificar computed values correctos, test state persistence",
+        "priority": "medium",
+        "dependencies": [
+          25
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear HydrationProvider para estado diario",
+            "description": "Implementar provider para manejar el estado actual de hidratación del día",
+            "dependencies": [],
+            "details": "Crear clase HydrationProvider que mantenga el estado de hidratación diaria actual, incluir métodos para agregar agua, obtener total del día, resetear al cambio de día, y notificar cambios a listeners. Usar ChangeNotifier para state management.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar cálculos correctos de totales diarios y notificaciones de cambios"
+          },
+          {
+            "id": 2,
+            "title": "Implementar DailyProgressProvider para porcentajes",
+            "description": "Crear provider que calcule y mantenga porcentajes de progreso diario de hidratación",
+            "dependencies": [
+              1
+            ],
+            "details": "Desarrollar DailyProgressProvider que calcule porcentaje de progreso basado en meta diaria y consumo actual, incluir métodos para obtener progreso como decimal y porcentaje, manejar edge cases cuando meta es 0, y computed values reactivos.",
+            "status": "pending",
+            "testStrategy": "Verificar cálculos de porcentaje correctos, test edge cases con metas en 0, validar valores computed reactivos"
+          },
+          {
+            "id": 3,
+            "title": "Desarrollar HydrationHistoryProvider y GoalProvider",
+            "description": "Implementar providers para historial de hidratación y cálculo de metas basadas en peso",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear HydrationHistoryProvider para logs históricos con métodos para obtener datos por rangos de fecha, filtros, y estadísticas. Implementar GoalProvider que compute meta diaria desde peso del usuario (35ml/kg), incluir listeners para updates automáticos cuando cambie el peso.",
+            "status": "pending",
+            "testStrategy": "Tests para persistencia de historial, verificar cálculos de meta basados en peso, test listeners para updates automáticos"
+          }
+        ]
+      },
+      {
+        "id": 29,
+        "title": "Crear MetricsService para cálculos de estadísticas",
+        "description": "Servicio para calcular métricas de progreso y análisis",
+        "details": "Implementar cálculos de streak actual, total hours fasted, completion rate, best streak, average session duration, patterns analysis (mejor día semana), queries optimizadas en Isar, cache de cálculos pesados.",
+        "testStrategy": "Tests unitarios para accuracy de cálculos, test performance con large datasets, verificar cache funciona",
+        "priority": "medium",
+        "dependencies": [
+          8,
+          6
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar clase base MetricsService y estructura de datos",
+            "description": "Crear la clase MetricsService como singleton con estructura básica para cálculos de métricas y definir interfaces para los diferentes tipos de estadísticas",
+            "dependencies": [
+              8,
+              6
+            ],
+            "details": "Implementar MetricsService como singleton pattern, definir interfaces para FastingMetrics, ProgressMetrics y PatternMetrics. Crear estructura base con métodos stub para cada tipo de cálculo. Establecer conexión con DatabaseService para acceso a datos de Isar.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar singleton pattern, validar estructura de interfaces y conexión con DatabaseService"
+          },
+          {
+            "id": 2,
+            "title": "Implementar cálculos de métricas básicas de progreso",
+            "description": "Desarrollar los métodos para calcular streak actual, total de horas ayunadas, tasa de finalización y mejor streak histórico",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar calculateCurrentStreak() usando consultas Isar optimizadas, calculateTotalHoursFasted() sumando duraciones de sesiones completadas, calculateCompletionRate() basado en sesiones completadas vs iniciadas, calculateBestStreak() encontrando la secuencia más larga de días consecutivos.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para accuracy de cada cálculo con datasets de prueba, verificar edge cases como días sin datos"
+          },
+          {
+            "id": 3,
+            "title": "Implementar análisis de patrones y sistema de cache",
+            "description": "Desarrollar cálculos de duración promedio de sesiones, análisis de mejores días de la semana y sistema de cache para optimizar rendimiento",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar calculateAverageSessionDuration() con promedio ponderado, analyzeBestWeekDays() identificando patrones de éxito por día de semana, implementar cache in-memory con invalidación automática cuando hay nuevos datos, optimizar queries Isar con índices apropiados.",
+            "status": "pending",
+            "testStrategy": "Tests de performance con large datasets, verificar cache funciona correctamente con invalidación, test accuracy de análisis de patrones"
+          }
+        ]
+      },
+      {
+        "id": 30,
+        "title": "Diseñar MetricsDashboardScreen",
+        "description": "Pantalla principal de métricas y estadísticas",
+        "details": "Crear dashboard con cards para metrics key: current streak, total hours, completion rate, recent sessions, usar charts/graphs para visualización, pull-to-refresh, responsive design, navigation a detailed views.",
+        "testStrategy": "Test UI responsive en diferentes screen sizes, verificar pull-to-refresh funciona, test navigation correcta",
+        "priority": "medium",
+        "dependencies": [
+          29,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base del componente MetricsDashboardScreen",
+            "description": "Implementar el componente principal de la pantalla de métricas con estructura básica de layout y navegación",
+            "dependencies": [],
+            "details": "Crear el componente MetricsDashboardScreen con estructura base incluyendo header con título, container principal para las métricas, y configurar navegación desde la pantalla principal. Implementar layout responsive básico usando flexbox o grid.",
+            "status": "pending",
+            "testStrategy": "Test renderizado correcto del componente, verificar navegación funciona, test layout responsive en diferentes tamaños de pantalla"
+          },
+          {
+            "id": 2,
+            "title": "Implementar cards de métricas principales",
+            "description": "Crear componentes de cards para mostrar las métricas clave del usuario de forma visual y atractiva",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar cards individuales para current streak, total hours, completion rate y recent sessions. Cada card debe tener diseño consistente con iconos, valores numéricos prominentes y descripción. Usar animaciones sutiles para transiciones y estados de carga.",
+            "status": "pending",
+            "testStrategy": "Test que todas las métricas se muestran correctamente, verificar diseño consistente entre cards, test animaciones funcionan suavemente"
+          },
+          {
+            "id": 3,
+            "title": "Integrar gráficos y funcionalidad pull-to-refresh",
+            "description": "Añadir visualizaciones gráficas de datos y funcionalidad de actualización por deslizamiento",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar charts/graphs para visualizar tendencias de métricas usando librería de gráficos (Victory Native o similar). Añadir pull-to-refresh para actualizar datos. Configurar navegación a vistas detalladas desde cada card. Optimizar performance para actualización en tiempo real.",
+            "status": "pending",
+            "testStrategy": "Test gráficos renderizan correctamente con datos reales, verificar pull-to-refresh actualiza información, test navegación a pantallas detalladas funciona"
+          }
+        ]
+      },
+      {
+        "id": 31,
+        "title": "Implementar calendar heatmap",
+        "description": "Vista calendario con color-coding de sesiones",
+        "details": "Crear calendar widget con días color-coded: verde (completed), naranja (interrupted), gris (no session), navegación mensual, tap en día muestra detalles, integrar con FastingSession data, responsive layout.",
+        "testStrategy": "Test color coding correcto según session status, verificar navigation mensual funciona, test tap interactions",
+        "priority": "low",
+        "dependencies": [
+          30,
+          29
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear widget base del calendario mensual",
+            "description": "Implementar la estructura básica del calendario con navegación mensual y diseño responsive",
+            "dependencies": [],
+            "details": "Crear CalendarHeatmapWidget con GridView para mostrar días del mes, agregar botones de navegación prev/next month, implementar responsive layout que se adapte a diferentes tamaños de pantalla, configurar estructura base de datos y estado del widget",
+            "status": "pending",
+            "testStrategy": "Test navegación entre meses funciona correctamente, verificar layout responsive en diferentes dispositivos, test estructura de datos"
+          },
+          {
+            "id": 2,
+            "title": "Implementar sistema de color-coding por estado de sesión",
+            "description": "Desarrollar la lógica de coloración de días basada en el estado de las sesiones de ayuno",
+            "dependencies": [
+              1
+            ],
+            "details": "Integrar con FastingSession data para obtener estado de cada día, implementar color scheme: verde para completed sessions, naranja para interrupted sessions, gris para días sin sesión, crear función que mapee fechas a colores basado en session status",
+            "status": "pending",
+            "testStrategy": "Test color coding correcto según session status, verificar mapeo de fechas a estados, test casos edge con múltiples sesiones por día"
+          },
+          {
+            "id": 3,
+            "title": "Agregar interactividad y detalles de día",
+            "description": "Implementar funcionalidad de tap en días para mostrar detalles de sesiones",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear GestureDetector para tap events en cada día, implementar modal o bottom sheet que muestre detalles de sesiones del día seleccionado, mostrar duración de ayuno, tipo de sesión, estado completion, agregar animaciones de feedback visual para taps",
+            "status": "pending",
+            "testStrategy": "Test tap interactions funcionan correctamente, verificar detalles mostrados son accurados, test animaciones smooth y responsive"
+          }
+        ]
+      },
+      {
+        "id": 32,
+        "title": "Crear providers de métricas",
+        "description": "State management para dashboard de estadísticas",
+        "details": "Implementar metricsProvider para dashboard data, streakProvider para current streak, historyProvider para sessions history, chartDataProvider para visualizations, manejar loading states y errors.",
+        "testStrategy": "Tests unitarios para providers, verificar loading states correctos, test error handling",
+        "priority": "medium",
+        "dependencies": [
+          29
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear metricsProvider para datos del dashboard",
+            "description": "Implementar provider principal que gestiona todas las métricas del dashboard de estadísticas",
+            "dependencies": [],
+            "details": "Crear metricsProvider usando Riverpod que maneje el estado de todas las métricas del dashboard. Incluir métodos para obtener datos de sesiones, streak actual, historial y estadísticas generales. Implementar loading states y error handling apropiados.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios verificando carga correcta de métricas, manejo de estados loading/error, y actualización de datos"
+          },
+          {
+            "id": 2,
+            "title": "Implementar streakProvider y historyProvider",
+            "description": "Crear providers específicos para gestionar streak actual y historial de sesiones",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar streakProvider para manejar la racha actual del usuario con métodos para calcular y actualizar el streak. Crear historyProvider para gestionar el historial de sesiones con filtros y paginación. Ambos providers deben conectarse con el metricsProvider principal.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para cálculo correcto de streak, verificar persistencia de historial, test filtros y paginación"
+          },
+          {
+            "id": 3,
+            "title": "Desarrollar chartDataProvider para visualizaciones",
+            "description": "Crear provider especializado en transformar datos de métricas para gráficos y visualizaciones",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implementar chartDataProvider que tome datos de metricsProvider y los transforme en formato adecuado para charts. Incluir métodos para datos diarios, semanales, mensuales. Manejar diferentes tipos de visualizaciones y estados de carga para gráficos.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para transformación correcta de datos, verificar formatos de chart data, test diferentes períodos de tiempo"
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Crear modelo ContentItem para material educativo",
+        "description": "Estructura de datos para artículos y videos educativos",
+        "details": "Implementar ContentItem Isar model (id, title, type, content, category, thumbnailUrl, videoUrl, isFavorite, readingTime), índices para búsqueda eficiente, support para categorías (science, tips, recipes), validation rules.",
+        "testStrategy": "Tests unitarios para model validation, test índices mejoran query performance, test categorization",
+        "priority": "low",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Definir estructura del modelo ContentItem con Isar",
+            "description": "Crear la clase ContentItem con todas las propiedades requeridas y anotaciones Isar para la base de datos",
+            "dependencies": [],
+            "details": "Implementar la clase ContentItem con propiedades: id (Id), title (String), type (enum ContentType), content (String), category (enum Category), thumbnailUrl (String?), videoUrl (String?), isFavorite (bool), readingTime (int minutos). Añadir anotaciones @collection, @Id(), y configurar tipos de datos apropiados para Isar.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para verificar creación de instancias, serialización/deserialización, y validación de tipos de datos"
+          },
+          {
+            "id": 2,
+            "title": "Implementar índices y queries para búsqueda eficiente",
+            "description": "Configurar índices de base de datos para optimizar búsquedas por categoría, tipo y favoritos",
+            "dependencies": [
+              1
+            ],
+            "details": "Añadir anotaciones @Index() para campos category, type, e isFavorite. Crear índices compuestos para queries comunes como búsqueda por categoría y tipo. Implementar métodos de query eficientes para filtrar contenido por diferentes criterios.",
+            "status": "pending",
+            "testStrategy": "Tests de performance para verificar que las queries con índices son más rápidas que sin índices, test de búsquedas combinadas"
+          },
+          {
+            "id": 3,
+            "title": "Crear enums y validaciones para categorías y tipos",
+            "description": "Definir enums para ContentType y Category, implementar reglas de validación para el modelo",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear enum ContentType (article, video) y enum Category (science, tips, recipes). Implementar validaciones: title no vacío, content mínimo 50 caracteres, readingTime > 0, videoUrl requerido si type es video, thumbnailUrl formato válido. Añadir métodos de validación personalizados.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para cada regla de validación, verificar que objetos inválidos lanzan excepciones apropiadas"
+          }
+        ]
+      },
+      {
+        "id": 34,
+        "title": "Implementar ContentService para manejo de contenido",
+        "description": "Servicio para fetch, cache y favorites de contenido educativo",
+        "details": "Crear ContentService que fetch content desde Supabase, cache localmente en Isar, manejar favorites, search functionality, offline access para cached articles, sync favorites con Supabase, categorization y filtering.",
+        "testStrategy": "Test offline access funciona, verificar search performance, test favorites sync correctamente",
+        "priority": "low",
+        "dependencies": [
+          33,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base ContentService con Supabase",
+            "description": "Implementar la clase ContentService base con conexión a Supabase para fetch de contenido educativo",
+            "dependencies": [],
+            "details": "Crear ContentService class con métodos para fetchAllContent(), fetchContentById(), configurar Supabase client, definir modelos de datos para Content, implementar error handling y logging, configurar tipos TypeScript para responses de Supabase",
+            "status": "pending",
+            "testStrategy": "Unit tests para métodos de fetch, mock Supabase responses, verificar error handling correcto"
+          },
+          {
+            "id": 2,
+            "title": "Implementar cache local con Isar y favorites",
+            "description": "Integrar almacenamiento local usando Isar para cache de contenido y manejo de favoritos",
+            "dependencies": [
+              1
+            ],
+            "details": "Configurar Isar schemas para Content y Favorites, implementar métodos cacheContent(), getCachedContent(), addToFavorites(), removeFromFavorites(), manejar sincronización entre cache local y Supabase, implementar estrategias de cache expiration",
+            "status": "pending",
+            "testStrategy": "Test cache persistence, verificar favorites sync con Supabase, test offline access a cached content"
+          },
+          {
+            "id": 3,
+            "title": "Implementar search, filtering y categorización",
+            "description": "Añadir funcionalidad de búsqueda, filtros por categoría y sistema de categorización de contenido",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar searchContent() con full-text search en título y contenido, crear filterByCategory(), configurar categorías predefinidas, implementar sorting por fecha/relevancia, optimizar búsqueda para contenido cached y remoto, añadir debouncing para search queries",
+            "status": "pending",
+            "testStrategy": "Test search performance con contenido cached y remoto, verificar filtering accuracy, test search debouncing funciona correctamente"
+          }
+        ]
+      },
+      {
+        "id": 35,
+        "title": "Diseñar LearningHomeScreen",
+        "description": "Pantalla principal para contenido educativo",
+        "details": "Crear UI con categories tabs, search bar, content grid/list, thumbnails para videos, reading time para articles, favorites indicator, pull-to-refresh, infinite scroll, offline indicators.",
+        "testStrategy": "Test UI responsive, verificar infinite scroll funciona, test search y filtering, test offline indicators",
+        "priority": "low",
+        "dependencies": [
+          34,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componentes de UI principales para LearningHomeScreen",
+            "description": "Implementar los componentes principales de la interfaz incluyendo tabs de categorías, barra de búsqueda y contenedor principal",
+            "dependencies": [],
+            "details": "Crear SearchBar component con debounced search functionality, CategoryTabs component para navegación entre categorías de contenido, MainContainer component que maneje el layout principal de la pantalla, implementar responsive design y estados de loading",
+            "status": "pending",
+            "testStrategy": "Test componentes renderizan correctamente, verificar responsive design en diferentes tamaños de pantalla, test functionality de búsqueda con debounce"
+          },
+          {
+            "id": 2,
+            "title": "Implementar grid/lista de contenido con thumbnails e indicadores",
+            "description": "Desarrollar la vista de contenido principal con grid/lista que muestre videos y artículos con thumbnails, tiempo de lectura y favoritos",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear ContentGrid component que maneje display de videos y artículos, implementar ContentCard component con thumbnail images, reading time indicator para artículos, favorites indicator con toggle functionality, implementar switch entre vista grid y lista",
+            "status": "pending",
+            "testStrategy": "Test grid/lista display correctamente, verificar thumbnails cargan sin errores, test indicadores de tiempo y favoritos funcionan, test toggle entre vistas"
+          },
+          {
+            "id": 3,
+            "title": "Implementar funcionalidades avanzadas de scroll e indicadores offline",
+            "description": "Agregar pull-to-refresh, infinite scroll e indicadores de contenido offline para completar la experiencia de usuario",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar pull-to-refresh functionality para actualizar contenido, infinite scroll con pagination para cargar más contenido automáticamente, offline indicators que muestren qué contenido está disponible sin conexión, optimizar performance para scroll suave",
+            "status": "pending",
+            "testStrategy": "Test pull-to-refresh actualiza contenido correctamente, verificar infinite scroll funciona sin lag, test indicadores offline muestran estado correcto, test performance de scroll en dispositivos mid-range"
+          }
+        ]
+      },
+      {
+        "id": 36,
+        "title": "Integrar youtube_player_flutter",
+        "description": "Reproducción de videos educativos en la app",
+        "details": "Implementar video player usando youtube_player_flutter, fullscreen mode, controls overlay, progress tracking, autoplay settings, fallback a external browser si player falla, network requirements handling.",
+        "testStrategy": "Test playback en iOS y Android, verificar fullscreen mode funciona, test fallback a browser",
+        "priority": "low",
+        "dependencies": [
+          35
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar reproductor básico de YouTube",
+            "description": "Implementar la configuración inicial del reproductor de YouTube usando youtube_player_flutter",
+            "dependencies": [],
+            "details": "Instalar youtube_player_flutter package, configurar el widget YoutubePlayer básico, implementar la carga de videos desde URLs de YouTube, configurar dimensiones y aspect ratio del reproductor",
+            "status": "pending",
+            "testStrategy": "Verificar que el reproductor carga correctamente videos de YouTube en iOS y Android"
+          },
+          {
+            "id": 2,
+            "title": "Implementar controles y modo pantalla completa",
+            "description": "Desarrollar controles personalizados del reproductor y funcionalidad de pantalla completa",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear overlay de controles personalizados con play/pause, seek, volumen, implementar modo fullscreen con rotación automática, configurar transiciones suaves entre modos normal y pantalla completa",
+            "status": "pending",
+            "testStrategy": "Probar controles funcionan correctamente, verificar transición a fullscreen en ambas plataformas"
+          },
+          {
+            "id": 3,
+            "title": "Añadir seguimiento de progreso y autoplay",
+            "description": "Implementar sistema de tracking de progreso de reproducción y configuración de autoplay",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar listeners para tracking de tiempo de reproducción, guardar progreso en base de datos local, implementar autoplay settings con opciones de usuario, crear indicadores visuales de progreso",
+            "status": "pending",
+            "testStrategy": "Verificar que el progreso se guarda correctamente, probar configuraciones de autoplay funcionan"
+          },
+          {
+            "id": 4,
+            "title": "Configurar fallbacks y manejo de errores de red",
+            "description": "Implementar sistema de fallback a navegador externo y manejo robusto de errores de conectividad",
+            "dependencies": [
+              3
+            ],
+            "details": "Configurar detección de errores de red y fallos del reproductor, implementar fallback automático a navegador externo usando url_launcher, crear UI para mostrar estados de error y opciones de retry, configurar timeouts y manejo offline",
+            "status": "pending",
+            "testStrategy": "Probar fallback a navegador cuando player falla, verificar manejo correcto de errores de red"
+          }
+        ]
+      },
+      {
+        "id": 37,
+        "title": "Crear providers de contenido educativo",
+        "description": "State management para learning content",
+        "details": "Implementar contentProvider para content list, favoritesProvider para user favorites, searchProvider para search state, categoryProvider para filtering, implementar pagination y loading states.",
+        "testStrategy": "Tests unitarios para providers, verificar pagination funciona, test search state management",
+        "priority": "low",
+        "dependencies": [
+          34
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar contentProvider para gestión de lista de contenido",
+            "description": "Crear provider para manejar la lista de contenido educativo con estado de carga y paginación",
+            "dependencies": [],
+            "details": "Implementar StateNotifierProvider para contentProvider que maneje AsyncValue<List<LearningContent>>, implementar métodos loadContent(), loadMore() para paginación, manejar estados de loading, error y success. Incluir filtros básicos y refresh functionality.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para contentProvider, verificar paginación funciona correctamente, test estados de loading y error"
+          },
+          {
+            "id": 2,
+            "title": "Crear favoritesProvider para gestión de favoritos de usuario",
+            "description": "Implementar provider para manejar contenido marcado como favorito por el usuario",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear StateNotifierProvider para favoritesProvider que maneje Set<String> de IDs favoritos, implementar métodos addFavorite(), removeFavorite(), toggleFavorite(), sincronizar con almacenamiento local usando Isar, integrar con contentProvider para mostrar estado de favorito.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para favoritesProvider, verificar persistencia de favoritos, test sincronización con contenido"
+          },
+          {
+            "id": 3,
+            "title": "Implementar searchProvider y categoryProvider para filtrado",
+            "description": "Crear providers para búsqueda y filtrado por categorías del contenido educativo",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar searchProvider como StateProvider<String> para query de búsqueda, categoryProvider como StateProvider<String?> para categoría seleccionada, crear computed provider filteredContentProvider que combine contentProvider, searchProvider y categoryProvider para mostrar contenido filtrado, implementar debounce para búsqueda.",
+            "status": "pending",
+            "testStrategy": "Tests unitarios para search y category providers, verificar filtrado funciona correctamente, test debounce en búsqueda"
+          }
+        ]
+      },
+      {
+        "id": 38,
+        "title": "Implementar ProfileScreen para configuración de usuario",
+        "description": "Pantalla de perfil y configuración de la app",
+        "details": "Crear UI para editar weight/height, notification preferences, theme settings, hydration goal customization, account management (logout), about section, privacy policy links, data export option.",
+        "testStrategy": "Test todas las configuraciones se persisten correctamente, verificar navigation y validation",
+        "priority": "medium",
+        "dependencies": [
+          11,
+          28,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base de ProfileScreen",
+            "description": "Implementar la estructura básica de la pantalla de perfil con navegación y layout principal",
+            "dependencies": [],
+            "details": "Crear ProfileScreen widget con AppBar, ScrollView principal, secciones organizadas (perfil personal, configuraciones, cuenta, acerca de). Implementar navegación desde main navigation. Usar Material Design components y seguir design system de la app.",
+            "status": "pending",
+            "testStrategy": "Verificar que la pantalla se renderiza correctamente y la navegación funciona desde otras pantallas"
+          },
+          {
+            "id": 2,
+            "title": "Implementar sección de configuraciones personales",
+            "description": "Desarrollar la UI y lógica para editar peso, altura, preferencias de notificaciones y tema",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear formularios para editar weight/height con validación, switches para notification preferences, selector de theme (light/dark/system), integrar con SharedPreferences para persistir configuraciones, añadir validación de inputs numéricos.",
+            "status": "pending",
+            "testStrategy": "Test que todas las configuraciones se persisten correctamente al guardar y se cargan al abrir la pantalla"
+          },
+          {
+            "id": 3,
+            "title": "Implementar gestión de cuenta y opciones avanzadas",
+            "description": "Añadir funcionalidades de logout, customización de meta de hidratación, enlaces legales y exportación de datos",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar botón de logout con confirmación, slider/input para hydration goal customization, enlaces a privacy policy y terms, botón de data export con progress indicator, about section con versión de app, integrar con AuthService para logout.",
+            "status": "pending",
+            "testStrategy": "Verificar que logout funciona correctamente, hydration goal se actualiza en toda la app, y data export genera archivo válido"
+          }
+        ]
+      },
+      {
+        "id": 39,
+        "title": "Configurar OneSignal para push notifications",
+        "description": "Setup servicio de notificaciones push",
+        "details": "Integrar OneSignal SDK, configurar iOS y Android, setup notification channels, request permissions, manejar notification clicks con deep linking, configurar user segmentation, test delivery.",
+        "testStrategy": "Test notifications llegan en iOS y Android, verificar deep links funcionan, test permission flow",
+        "priority": "medium",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Integrar OneSignal SDK en Flutter",
+            "description": "Instalar y configurar el SDK de OneSignal para Flutter con las dependencias necesarias",
+            "dependencies": [],
+            "details": "Agregar onesignal_flutter al pubspec.yaml, ejecutar flutter pub get, configurar plugin en main.dart con initialize(), configurar app_id desde OneSignal dashboard, setup basic configuration para recibir notifications",
+            "status": "pending",
+            "testStrategy": "Verificar que el SDK se inicializa correctamente sin errores en debug console"
+          },
+          {
+            "id": 2,
+            "title": "Configurar permisos de notificaciones por plataforma",
+            "description": "Establecer permisos específicos para iOS y Android para permitir notificaciones push",
+            "dependencies": [
+              1
+            ],
+            "details": "iOS: configurar notification capabilities en Runner.xcworkspace, agregar Push Notifications y Background Modes. Android: configurar permissions en android/app/src/main/AndroidManifest.xml, agregar WAKE_LOCK y VIBRATE permissions. Implementar request permissions flow en app startup",
+            "status": "pending",
+            "testStrategy": "Test que permissions dialog aparece en primera instalación, verificar permisos granted en configuración del dispositivo"
+          },
+          {
+            "id": 3,
+            "title": "Implementar manejo de deep linking en notifications",
+            "description": "Configurar deep links para navigación cuando usuario toca notificaciones push",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar notification click handler con OneSignal.shared.setNotificationOpenedHandler(), implementar routing basado en data payload de notification, configurar custom schemes para deep links, manejar navigation to specific screens (fasting timer, hydration tracker, etc)",
+            "status": "pending",
+            "testStrategy": "Test que clicking notification navega a screen correcto, verificar deep links funcionan desde background y foreground"
+          },
+          {
+            "id": 4,
+            "title": "Configurar segmentación de usuarios y targeting",
+            "description": "Establecer user segments y tags para targeting personalizado de notificaciones",
+            "dependencies": [
+              3
+            ],
+            "details": "Implementar user tagging con OneSignal.shared.sendTags() basado en user profile (fasting_level, hydration_goals, notification_preferences), crear segments en OneSignal dashboard (beginner_fasters, advanced_users, hydration_focused), configurar automated messaging triggers",
+            "status": "pending",
+            "testStrategy": "Verificar que user tags se envían correctamente, test que diferentes user segments reciben notifications apropiadas"
+          },
+          {
+            "id": 5,
+            "title": "Implementar testing end-to-end de delivery de notificaciones",
+            "description": "Crear tests completos para verificar entrega y funcionamiento de notificaciones push",
+            "dependencies": [
+              4
+            ],
+            "details": "Setup test environment con OneSignal test app, implementar integration tests para notification delivery, test notification reception en iOS simulator y Android emulator, verificar payload data handling, test notification scheduling y timing, crear test matrix para diferentes device states (foreground/background/killed)",
+            "status": "pending",
+            "testStrategy": "Test suite completo que verifica delivery en ambas plataformas, timing accuracy, y deep link navigation desde notifications"
+          }
+        ]
+      },
+      {
+        "id": 40,
+        "title": "Implementar NotificationService y scheduling",
+        "description": "Servicio para trigger notificaciones contextuales",
+        "details": "Crear NotificationService que trigger notifications para fast start/end, milestones (4h, 8h, 12h, 16h), hydration reminders, engagement notifications, respect user preferences y quiet hours, integrar con timer state.",
+        "testStrategy": "Test notifications se envían en timing correcto, verificar preferences se respetan, test quiet hours",
+        "priority": "medium",
+        "dependencies": [
+          39,
+          15,
+          25
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear NotificationService base con configuración",
+            "description": "Implementar la clase NotificationService principal con configuración inicial y métodos base para manejar diferentes tipos de notificaciones",
+            "dependencies": [],
+            "details": "Crear NotificationService como singleton con métodos para initialize(), scheduleNotification(), cancelNotification(), configurar OneSignal o local notifications, definir tipos de notificaciones (FAST_START, FAST_END, MILESTONE, HYDRATION, ENGAGEMENT), implementar sistema de preferences para user settings",
+            "status": "pending",
+            "testStrategy": "Test inicialización del servicio, verificar configuración de notifications funciona, test tipos de notificaciones se definen correctamente"
+          },
+          {
+            "id": 2,
+            "title": "Implementar scheduling para milestones y timer events",
+            "description": "Desarrollar sistema de scheduling para notificaciones de milestones de ayuno y eventos del timer",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar SchedulingManager que calcule timings para milestones (4h, 8h, 12h, 16h), integrar con timer state para fast start/end notifications, manejar timezone changes, implementar background task scheduling, cancelar notifications cuando sesión termina prematuramente",
+            "status": "pending",
+            "testStrategy": "Test milestones se schedulean correctamente según timer, verificar notifications se cancelan apropiadamente, test timezone handling"
+          },
+          {
+            "id": 3,
+            "title": "Integrar quiet hours y user preferences",
+            "description": "Implementar sistema de quiet hours y respeto a preferencias del usuario para el envío de notificaciones",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear PreferencesManager para quiet hours (start/end time), notification types enabled/disabled, frequency settings, integrar con NotificationService para check preferences antes de enviar, implementar Do Not Disturb detection, manejar hydration reminders frequency, engagement notifications timing",
+            "status": "pending",
+            "testStrategy": "Test quiet hours se respetan correctamente, verificar user preferences bloquean notifications apropiadamente, test DND integration funciona"
+          }
+        ]
+      },
+      {
+        "id": 41,
+        "title": "Integrar Superwall para paywall",
+        "description": "Setup monetización con paywall y A/B testing",
+        "details": "Integrar Superwall SDK, configurar paywall presentation después de onboarding, setup A/B testing de designs, configurar subscription tiers, handle purchase flows, restoration de purchases, analytics tracking.",
+        "testStrategy": "Test paywall se muestra en momentos correctos, verificar purchase flows funcionan, test restoration",
+        "priority": "medium",
+        "dependencies": [
+          12
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Integrar Superwall SDK en el proyecto Flutter",
+            "description": "Añadir y configurar el SDK de Superwall en la aplicación Flutter para habilitar la funcionalidad de paywall",
+            "dependencies": [],
+            "details": "Instalar superwall_flutter dependency, configurar API keys en iOS y Android, inicializar SDK en main.dart, configurar permisos necesarios en Info.plist y AndroidManifest.xml, setup básico de Superwall instance",
+            "status": "pending",
+            "testStrategy": "Verificar que el SDK se inicializa correctamente sin errores y que la configuración básica está funcionando"
+          },
+          {
+            "id": 2,
+            "title": "Configurar presentación de paywall después del onboarding",
+            "description": "Implementar la lógica para mostrar el paywall en el momento adecuado después de completar el proceso de onboarding",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear trigger logic para mostrar paywall post-onboarding, configurar paywall presentation timing, implementar user eligibility checks, setup paywall delegate methods, manejar dismissal callbacks",
+            "status": "pending",
+            "testStrategy": "Test que el paywall aparece en el momento correcto después del onboarding y que los triggers funcionan adecuadamente"
+          },
+          {
+            "id": 3,
+            "title": "Configurar subscription tiers y purchase flows",
+            "description": "Implementar los diferentes niveles de suscripción y manejar todo el flujo de compra incluyendo restauración de compras",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar subscription products en App Store Connect y Google Play Console, implementar purchase handling, setup restoration de purchases, configurar analytics tracking para purchases, manejar error states y success states",
+            "status": "pending",
+            "testStrategy": "Test purchase flows completos, verificar restoration funciona correctamente, test analytics tracking de eventos de compra"
+          }
+        ]
+      },
+      {
+        "id": 42,
+        "title": "Implementar SubscriptionManager",
+        "description": "Manejo de subscripciones y premium features",
+        "details": "Crear SubscriptionManager para handle subscription lifecycle, premium feature gating, sync subscription status con Supabase, manejar grace periods, renewal failures, family sharing, receipt validation.",
+        "testStrategy": "Test feature gating funciona correctamente, verificar sync de subscription status, test edge cases",
+        "priority": "medium",
+        "dependencies": [
+          41,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar SubscriptionManager clase base",
+            "description": "Crear la clase principal SubscriptionManager con estructura básica y métodos fundamentales para manejo de subscripciones",
+            "dependencies": [],
+            "details": "Crear archivo subscription_manager.dart con clase SubscriptionManager, definir enums para SubscriptionStatus (active, expired, grace_period, cancelled), SubscriptionType (basic, premium, family), implementar singleton pattern, crear métodos básicos: getCurrentSubscription(), isFeatureEnabled(), updateSubscriptionStatus(). Incluir logging y error handling básico.",
+            "status": "pending",
+            "testStrategy": "Unit tests para métodos básicos de SubscriptionManager, verificar singleton pattern funciona correctamente, test enum values"
+          },
+          {
+            "id": 2,
+            "title": "Implementar sincronización con Supabase",
+            "description": "Desarrollar la lógica de sincronización del estado de subscripción con la base de datos Supabase",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear SubscriptionSyncService para comunicación con Supabase, implementar métodos syncSubscriptionFromServer(), pushSubscriptionToServer(), manejar conflictos de sincronización, implementar retry logic con exponential backoff, crear tabla subscriptions en Supabase si no existe, manejar offline/online states, implementar webhook endpoints para updates desde payment providers.",
+            "status": "pending",
+            "testStrategy": "Integration tests con Supabase mock, test sync bidireccional, verificar retry logic funciona, test offline/online scenarios"
+          },
+          {
+            "id": 3,
+            "title": "Implementar premium feature gating y validación",
+            "description": "Desarrollar sistema de control de acceso a funcionalidades premium y validación de receipts",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear PremiumFeatureGate widget wrapper, implementar FeatureAccessController con métodos checkFeatureAccess(), implementar receipt validation para iOS/Android usando in_app_purchase package, manejar grace periods (7 días default), implementar family sharing validation, crear renewal failure handling con notificaciones push, integrar con OneSignal para comunicación de estados críticos, crear UI de paywall cuando feature no disponible.",
+            "status": "pending",
+            "testStrategy": "Test feature gating bloquea correctamente features premium, verificar receipt validation funciona en iOS/Android, test grace periods y family sharing scenarios"
+          }
+        ]
+      },
+      {
+        "id": 43,
+        "title": "Configurar Sentry para error monitoring",
+        "description": "Setup monitoring de crashes y errores en producción",
+        "details": "Integrar Sentry Flutter SDK, configurar crash reporting, user feedback, performance monitoring, custom breadcrumbs, filtros para PII, release tracking, source maps para stack traces legibles.",
+        "testStrategy": "Test crashes se reportan correctamente, verificar PII filtering funciona, test performance metrics",
+        "priority": "low",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Integrar Sentry Flutter SDK básico",
+            "description": "Instalar y configurar la integración básica del SDK de Sentry para Flutter con captura automática de errores",
+            "dependencies": [],
+            "details": "Agregar sentry_flutter al pubspec.yaml, inicializar Sentry en main.dart con DSN del proyecto, configurar SentryFlutterOptions básicas para captura automática de errores no manejados y crashes nativos. Verificar que los errores se envían correctamente a Sentry.",
+            "status": "pending",
+            "testStrategy": "Forzar un error de prueba y verificar que aparece en el dashboard de Sentry con información de contexto correcta"
+          },
+          {
+            "id": 2,
+            "title": "Configurar filtros PII y breadcrumbs personalizados",
+            "description": "Implementar filtrado de información personal sensible y configurar breadcrumbs para mejor debugging",
+            "dependencies": [
+              1
+            ],
+            "details": "Configurar beforeSend callback para filtrar datos sensibles como emails, números de teléfono y tokens. Implementar breadcrumbs personalizados para acciones críticas como login, inicio/fin de ayuno, logging de hidratación. Configurar user context sin exponer PII.",
+            "status": "pending",
+            "testStrategy": "Verificar que eventos con PII se filtran correctamente y que breadcrumbs aparecen en contexto de errores"
+          },
+          {
+            "id": 3,
+            "title": "Configurar performance monitoring y source maps",
+            "description": "Habilitar monitoreo de rendimiento y configurar source maps para stack traces legibles en producción",
+            "dependencies": [
+              2
+            ],
+            "details": "Habilitar performance monitoring con tracesSampleRate apropiado, configurar upload de source maps para builds de release usando sentry-cli, implementar custom transactions para operaciones críticas como sync de datos y carga de contenido. Configurar release tracking con git commits.",
+            "status": "pending",
+            "testStrategy": "Verificar que métricas de performance aparecen en Sentry y que stack traces muestran código fuente original en errores de producción"
+          }
+        ]
+      },
+      {
+        "id": 44,
+        "title": "Implementar suite de testing E2E",
+        "description": "Tests de integración para flujos críticos completos",
+        "details": "Crear integration tests usando integration_test package para: complete onboarding flow, start/complete fasting session, panic button flow, hydration logging, metrics dashboard, auth flows, usar device simulators y real devices.",
+        "testStrategy": "All critical user journeys cubiertos, tests pasan en iOS y Android, CI/CD integration",
+        "priority": "medium",
+        "dependencies": [
+          40,
+          42
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar framework de testing E2E con integration_test",
+            "description": "Establecer la configuración base del framework de testing E2E utilizando el package integration_test de Flutter",
+            "dependencies": [],
+            "details": "Agregar integration_test dependency al pubspec.yaml, crear estructura de directorios test_driver/ e integration_test/, configurar driver principal, setup de simuladores y dispositivos reales para testing, configurar ambiente de testing con variables de entorno necesarias",
+            "status": "pending",
+            "testStrategy": "Verificar que el framework se inicializa correctamente en iOS y Android, test básico funciona en simuladores y dispositivos reales"
+          },
+          {
+            "id": 2,
+            "title": "Implementar tests E2E para flujos críticos de usuario",
+            "description": "Crear tests de integración completos para los flujos principales de la aplicación incluyendo onboarding, ayuno, hidratación y autenticación",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar integration tests para: complete onboarding flow (registro, permisos, setup inicial), start/complete fasting session flow, panic button functionality, hydration logging workflow, metrics dashboard navigation, authentication flows (login/logout/registro). Usar page objects pattern para maintainability",
+            "status": "pending",
+            "testStrategy": "Cada flujo crítico cubierto con test E2E, verificar data persistence entre pantallas, test edge cases y error handling"
+          },
+          {
+            "id": 3,
+            "title": "Integrar tests E2E con CI/CD y múltiples dispositivos",
+            "description": "Configurar ejecución automatizada de tests E2E en pipeline de CI/CD con soporte para múltiples dispositivos y plataformas",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar GitHub Actions o similar para ejecutar tests E2E automáticamente, setup matrix testing para múltiples versiones de iOS/Android, configurar reporting de resultados, implementar parallel test execution, setup de screenshots y videos en caso de fallos, configurar testing en dispositivos reales vía cloud services",
+            "status": "pending",
+            "testStrategy": "Tests ejecutan exitosamente en CI/CD pipeline, resultados consistentes entre dispositivos, reporting claro de fallos con artifacts útiles"
+          }
+        ]
+      },
+      {
+        "id": 45,
+        "title": "Auditoría de accesibilidad y optimización final",
+        "description": "WCAG 2.1 AA compliance y pulimiento para launch",
+        "details": "Audit completo de accesibilidad con Accessibility Scanner, semantic labels para screen readers, touch targets 44×44 mínimo, contrast ratio 4.5:1, performance optimization (launch <2s, 60fps animations), memory leak detection, preparación stores.",
+        "testStrategy": "Accessibility scanner pasa sin errores, tests manuales con TalkBack/VoiceOver, performance profiling",
+        "priority": "high",
+        "dependencies": [
+          44
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Realizar auditoría completa de accesibilidad WCAG 2.1 AA",
+            "description": "Ejecutar auditoría exhaustiva de accesibilidad utilizando herramientas automatizadas y pruebas manuales para garantizar cumplimiento WCAG 2.1 AA",
+            "dependencies": [],
+            "details": "Utilizar Accessibility Scanner para detectar problemas automáticamente, verificar semantic labels para todos los elementos interactivos, asegurar touch targets mínimo 44×44 px, validar contrast ratio 4.5:1 en todos los textos, implementar navegación por teclado completa, añadir soporte para screen readers (TalkBack/VoiceOver), verificar jerarquía de headings correcta",
+            "status": "pending",
+            "testStrategy": "Ejecutar Accessibility Scanner sin errores, pruebas manuales con TalkBack y VoiceOver, verificar navegación solo con teclado, validar contrast ratios con herramientas automatizadas"
+          },
+          {
+            "id": 2,
+            "title": "Optimizar rendimiento para cumplir métricas de launch",
+            "description": "Implementar optimizaciones de rendimiento para lograr tiempo de launch menor a 2 segundos y animaciones a 60fps constantes",
+            "dependencies": [
+              1
+            ],
+            "details": "Optimizar splash screen y tiempo de inicio de aplicación, implementar lazy loading para contenido pesado, optimizar imágenes y assets, configurar precaching estratégico, optimizar build size, eliminar dependencias innecesarias, implementar code splitting, configurar tree shaking efectivo, optimizar animaciones Lottie para 60fps",
+            "status": "pending",
+            "testStrategy": "Performance profiling con Flutter DevTools, medir tiempo de launch en dispositivos reales, verificar frame rate constante de 60fps, benchmarks de memoria y CPU"
+          },
+          {
+            "id": 3,
+            "title": "Detectar y eliminar memory leaks y preparar para stores",
+            "description": "Realizar detección completa de memory leaks, optimizar gestión de memoria y preparar aplicación para distribución en stores",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Ejecutar memory leak detection con herramientas de profiling, revisar disposal correcto de controllers y streams, optimizar gestión de Riverpod providers, verificar liberación de recursos nativos, preparar assets y metadata para Google Play Store y App Store, configurar signing certificates, optimizar tamaño de APK/IPA, preparar screenshots y descripciones de stores",
+            "status": "pending",
+            "testStrategy": "Memory profiling durante sesiones extendidas, tests de stress para detectar leaks, verificar que APK/IPA se genera correctamente, validar metadata de stores"
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-10-21T13:12:52.241Z",
+      "updated": "2025-10-21T13:12:52.241Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

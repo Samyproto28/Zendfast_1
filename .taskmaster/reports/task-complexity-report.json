@@ -1,0 +1,373 @@
+{
+	"meta": {
+		"generatedAt": "2025-10-21T17:49:14.219Z",
+		"tasksAnalyzed": 45,
+		"totalTasks": 45,
+		"analysisCount": 45,
+		"thresholdScore": 5,
+		"projectName": "Zendfast",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Configurar proyecto Flutter con dependencias básicas",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en subtareas: crear proyecto Flutter base, configurar pubspec.yaml con dependencias específicas, configurar build_runner para Isar, verificar compatibilidad de dependencias, configurar estructura básica de directorios, y ejecutar tests iniciales de configuración.",
+			"reasoning": "Aunque es configuración inicial, requiere manejo cuidadoso de versiones de dependencias y configuración de build_runner. Las múltiples dependencias (10+) pueden tener conflictos de versiones."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Establecer sistema de diseño y tema",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Crear subtareas para: definir paleta de colores y constantes, configurar tipografías personalizadas, implementar ThemeData global con espaciado y elevaciones, y crear widgets base del sistema de diseño.",
+			"reasoning": "Sistema de diseño requiere planificación cuidadosa de tokens, tipografías personalizadas y estructura escalable. Impacta toda la UI futura."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Configurar base de datos Isar con esquemas",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en: crear modelos Isar para FastingSession, crear modelos para UserProfile y HydrationLog, crear modelo ContentItem, configurar índices y relaciones, y ejecutar build_runner con validación.",
+			"reasoning": "Isar requiere comprensión de annotations específicas, manejo de build_runner, y diseño cuidadoso de esquemas. Los 4 modelos con relaciones añaden complejidad."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Configurar cliente Supabase y autenticación",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Crear subtareas: inicializar cliente Supabase, configurar autenticación básica, crear tablas en Supabase con RLS, implementar AuthService base, configurar políticas de seguridad RLS, y testing de integración.",
+			"reasoning": "Supabase con RLS es complejo, requiere configuración tanto en cliente como servidor. Las políticas RLS son críticas para seguridad y pueden ser complicadas."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Implementar servicio background para timer persistente",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Dividir en: configurar flutter_background_service, implementar comunicación bidireccional, manejar permisos de background, implementar persistencia de estado, configurar notificaciones foreground, testing de persistencia entre reinicios, y optimización de batería.",
+			"reasoning": "Servicios background son complejos en Flutter, especialmente la persistencia a través de force-quit. Requiere manejo de permisos específicos por plataforma y optimización de batería."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implementar AuthService con Supabase Auth",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Crear subtareas: implementar login/register básico, manejar persistencia de sesión, implementar refresh automático de tokens, añadir manejo de errores específicos, y testing de flows de autenticación.",
+			"reasoning": "AuthService requiere manejo robusto de estados, refresh tokens, y diversos casos de error. La integración con Supabase Auth añade complejidad específica."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implementar providers de estado con Riverpod",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en: crear providers básicos de auth, implementar computed providers, configurar dependency injection, y testing de estado y dependencias.",
+			"reasoning": "Riverpod requiere comprensión de reactive programming y manejo correcto de dependencias. Los computed providers añaden complejidad."
+		},
+		{
+			"taskId": 36,
+			"taskTitle": "Integrar youtube_player_flutter",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Crear subtareas: configurar player básico, implementar controls y fullscreen, añadir progress tracking y autoplay, y configurar fallbacks y manejo de errores de red.",
+			"reasoning": "youtube_player_flutter puede tener issues específicos por plataforma. Fullscreen mode y fallbacks requieren testing cuidadoso en ambas plataformas."
+		},
+		{
+			"taskId": 39,
+			"taskTitle": "Configurar OneSignal para push notifications",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en: integrar SDK OneSignal, configurar permisos por plataforma, implementar deep linking, configurar segmentación de usuarios, y testing de delivery end-to-end.",
+			"reasoning": "Push notifications requieren configuración específica por plataforma (iOS/Android), manejo de permisos, y deep linking que puede ser complejo de debuggear."
+		},
+		{
+			"taskId": 43,
+			"taskTitle": "Configurar Sentry para error monitoring",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Crear subtareas: integrar Sentry SDK básico, configurar filtros PII y breadcrumbs, y configurar performance monitoring con source maps.",
+			"reasoning": "Sentry es relativamente directo de configurar, pero requiere configuración cuidadosa de filtros PII y performance monitoring para ser efectivo."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Crear DatabaseService para inicialización Isar",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear databaseservice para inicialización isar.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Implementar SyncManager para sincronización bidireccional",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar syncmanager para sincronización bidireccional.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Crear modelos FastingSession y UserProfile",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear modelos fastingsession y userprofile.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Crear pantallas de login y registro",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear pantallas de login y registro.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Diseñar flujo de onboarding de 6 pasos",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on diseñar flujo de onboarding de 6 pasos.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Crear QuizScreen para datos de usuario",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear quizscreen para datos de usuario.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Implementar pantalla de detox de 48 horas",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar pantalla de detox de 48 horas.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Crear servicio de timer principal (TimerService)",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear servicio de timer principal (timerservice).",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "Implementar modelos de planes de ayuno",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar modelos de planes de ayuno.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Crear pantalla de selección de planes",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear pantalla de selección de planes.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Diseñar FastingHomeScreen principal",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on diseñar fastinghomescreen principal.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Implementar providers de estado para timer",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar providers de estado para timer.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Implementar lógica de completion de sesiones",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar lógica de completion de sesiones.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "Crear botón de pánico flotante",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear botón de pánico flotante.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "Implementar PanicModal con contenido motivacional",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar panicmodal con contenido motivacional.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 23,
+			"taskTitle": "Crear MeditationScreen con animación 4-4-8",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear meditationscreen con animación 4-4-8.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 24,
+			"taskTitle": "Implementar flujo 'romper ayuno'",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar flujo 'romper ayuno'.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 25,
+			"taskTitle": "Crear modelo HydrationLog y servicio",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear modelo hydrationlog y servicio.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 26,
+			"taskTitle": "Implementar WaterButton widget",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar waterbutton widget.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 27,
+			"taskTitle": "Crear widget de progreso de hidratación",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear widget de progreso de hidratación.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 28,
+			"taskTitle": "Implementar providers de hidratación",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar providers de hidratación.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 29,
+			"taskTitle": "Crear MetricsService para cálculos de estadísticas",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear metricsservice para cálculos de estadísticas.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 30,
+			"taskTitle": "Diseñar MetricsDashboardScreen",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on diseñar metricsdashboardscreen.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 31,
+			"taskTitle": "Implementar calendar heatmap",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar calendar heatmap.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 32,
+			"taskTitle": "Crear providers de métricas",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear providers de métricas.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 33,
+			"taskTitle": "Crear modelo ContentItem para material educativo",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear modelo contentitem para material educativo.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 34,
+			"taskTitle": "Implementar ContentService para manejo de contenido",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar contentservice para manejo de contenido.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 35,
+			"taskTitle": "Diseñar LearningHomeScreen",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on diseñar learninghomescreen.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 37,
+			"taskTitle": "Crear providers de contenido educativo",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on crear providers de contenido educativo.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 38,
+			"taskTitle": "Implementar ProfileScreen para configuración de usuario",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar profilescreen para configuración de usuario.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 40,
+			"taskTitle": "Implementar NotificationService y scheduling",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar notificationservice y scheduling.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 41,
+			"taskTitle": "Integrar Superwall para paywall",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on integrar superwall para paywall.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 42,
+			"taskTitle": "Implementar SubscriptionManager",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar subscriptionmanager.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 44,
+			"taskTitle": "Implementar suite de testing E2E",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implementar suite de testing e2e.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 45,
+			"taskTitle": "Auditoría de accesibilidad y optimización final",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on auditoría de accesibilidad y optimización final.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		}
+	]
+}

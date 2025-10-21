@@ -34,6 +34,44 @@ Users attempting intermittent fasting lack integrated tools for:
 - **50%** 48-hour detox completion (first-time users)
 - **30%** D7 retention
 - **15%** premium conversion rate
+
+
+
+#### UI/UX Considerations
+
+**Design Principles:**
+- **Calm & Focused:** Zen-inspired minimalist design, breathing room, soft colors
+- **Immediate Clarity:** User should know their fasting status within 1 second of opening app
+- **Accessible:** WCAG 2.1 AA compliance (4.5:1 contrast, 44×44 touch targets, semantic labels)
+- **Offline-First:** UI should never feel "broken" without internet
+
+**Color Palette:**
+- Primary: Teal (#069494) - Balance, calm
+- Secondary: Green (#7fb069) - Growth, health
+- Accent: Orange (#ffb366) - Energy, warmth (Panic Button)
+- Success: Green (#7fb069)
+- Error: Soft Red (#E57373)
+
+**Typography:**
+- Headers: Inter (UI clarity)
+- Body: Source Sans Pro (readability)
+- Emphasis: Nunito Sans (emotional warmth)
+
+**Key UI Elements:**
+- **Timer Display:** Large, centered, 48px font, bold, color changes based on state
+- **Panic Button:** FloatingActionButton, 64×64, orange accent, high elevation (8dp), always visible during fast
+- **Hydration Button:** FloatingActionButton, 56×56, blue/teal, bottom-left corner
+- **Progress Indicators:** Circular ring around timer OR linear bar below timer
+- **Navigation:** Bottom tab bar (Home, Learning, Profile)
+
+**Micro-interactions:**
+- Ripple effect on button taps
+- Success confetti animation when fast completes
+- Gentle pulse animation on Panic Button (subtle, not distracting)
+- Smooth transitions between screens (250ms, easeInOut)
+- Haptic feedback on critical actions (start/stop timer, panic button)
+
+---
 </overview>
 
 ---

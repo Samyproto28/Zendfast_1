@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=rwsoddkrhdzdbthzszby"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_a66981730398885272b4017222687f28f8c5346c"
+      }
+    },
+    "onesignal": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "/mnt/c/Users/samue/OneDrive/Desktop/Zendfast-1/onesignal-mcp/onesignal_server.py"
+      ],
+      "env": {
+        "ONESIGNAL_APP_ID": "40e6b7f3-f221-4e13-8961-31d872603dca",
+        "ONESIGNAL_API_KEY": "os_v2_app_idtlp47sefhbhclbghmheyb5zlzg35ojomtep3nfuhmf537xvxzyylao4odrdsnqhqww22fwf6pkkomlqg4pjwh36xofab7wcupji5i",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+

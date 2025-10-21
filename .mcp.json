@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "task-master-ai": {
+      "command": "npx",
+      "args": ["-y", "task-master-ai"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
+        "XAI_API_KEY": "${XAI_API_KEY}",
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+        "MISTRAL_API_KEY": "${MISTRAL_API_KEY}",
+        "AZURE_OPENAI_API_KEY": "${AZURE_OPENAI_API_KEY}",
+        "OLLAMA_API_KEY": "${OLLAMA_API_KEY}"
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=rwsoddkrhdzdbthzszby"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_a66981730398885272b4017222687f28f8c5346c"
+      }
+    },
+    "onesignal": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-onesignal"],
+      "env": {
+        "ONESIGNAL_APP_ID": "40e6b7f3-f221-4e13-8961-31d872603dca",
+        "ONESIGNAL_API_KEY": "os_v2_app_idtlp47sefhbhclbghmheyb5zll7jj2icagefv4z4oivd6ch3hcmqgjwix5bgnwzvlvenrsbocz5yojrkacrq52jd24ka6xbpygetba"
+      }
+    }
+  }
+}
+

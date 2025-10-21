@@ -1,0 +1,2399 @@
+<rpg-method>
+# Zendfast MVP - RPG-Structured PRD
+
+This PRD follows the Repository Planning Graph (RPG) methodology for dependency-aware task breakdown with Task Master.
+I urgently need to cover backend and frontend in the tasks
+**Core Principles:**
+- Dual-Semantics: Separate WHAT (functional capabilities) from HOW (code structure)
+- Explicit Dependencies: Clear topological ordering
+- Progressive Refinement: Build foundation first, iterate upward
+</rpg-method>
+
+---
+
+<overview>
+## Problem Statement
+
+Users attempting intermittent fasting lack integrated tools for:
+- Real-time timer tracking with background persistence
+- Emotional support during critical hunger moments (panic/cravings)
+- Hydration management and educational content in one place
+
+**Pain Point:** Existing fasting apps provide timers but no emotional resilience support when users want to quit mid-fast.
+
+## Target Users
+
+1. **Beginner Fasters** - First-time users needing guidance and detox protocol
+2. **Experienced Fasters** - Seeking metrics, streaks, and advanced tracking
+3. **Health-Conscious Users** - Interested in learning content and science behind fasting
+
+## Success Metrics
+
+- **70%** fasting session completion rate
+- **40%** panic button usage during active fasts
+- **50%** 48-hour detox completion (first-time users)
+- **30%** D7 retention
+- **15%** premium conversion rate
+
+
+
+#### UI/UX Considerations
+
+**Design Principles:**
+- **Calm & Focused:** Zen-inspired minimalist design, breathing room, soft colors
+- **Immediate Clarity:** User should know their fasting status within 1 second of opening app
+- **Accessible:** WCAG 2.1 AA compliance (4.5:1 contrast, 44×44 touch targets, semantic labels)
+- **Offline-First:** UI should never feel "broken" without internet
+
+**Color Palette:**
+- Primary: Teal (#069494) - Balance, calm
+- Secondary: Green (#7fb069) - Growth, health
+- Accent: Orange (#ffb366) - Energy, warmth (Panic Button)
+- Success: Green (#7fb069)
+- Error: Soft Red (#E57373)
+
+**Typography:**
+- Headers: Inter (UI clarity)
+- Body: Source Sans Pro (readability)
+- Emphasis: Nunito Sans (emotional warmth)
+
+**Key UI Elements:**
+- **Timer Display:** Large, centered, 48px font, bold, color changes based on state
+- **Panic Button:** FloatingActionButton, 64×64, orange accent, high elevation (8dp), always visible during fast
+- **Hydration Button:** FloatingActionButton, 56×56, blue/teal, bottom-left corner
+- **Progress Indicators:** Circular ring around timer OR linear bar below timer
+- **Navigation:** Bottom tab bar (Home, Learning, Profile)
+
+**Micro-interactions:**
+- Ripple effect on button taps
+- Success confetti animation when fast completes
+- Gentle pulse animation on Panic Button (subtle, not distracting)
+- Smooth transitions between screens (250ms, easeInOut)
+- Haptic feedback on critical actions (start/stop timer, panic button)
+
+---
+</overview>
+
+---
+
+<functional-decomposition>
+## Capability Tree
+
+### Capability: Fasting Management
+**Purpose:** Core timer, plans, and session lifecycle management
+
+#### Feature: Plan Selection
+- **Description**: User selects from predefined or custom fasting plans
+- **Inputs**: User preference, experience level
+- **Outputs**: Selected plan configuration (fasting/eating windows)
+- **Behavior**: Store plan, configure timer, enable background service
+
+#### Feature: Timer Engine
+- **Description**: Real-time countdown with background persistence
+- **Inputs**: Plan configuration, current time, user state
+- **Outputs**: Elapsed/remaining time, phase state (fasting/eating)
+- **Behavior**: Run in background service, persist across app kills, emit notifications
+
+#### Feature: Session Management
+- **Description**: Start, pause, complete, or interrupt fasting sessions
+- **Inputs**: User action (start/stop/interrupt), timer state
+- **Outputs**: Updated session record, metrics update
+- **Behavior**: Save to Isar, sync to Supabase, update streak/metrics
+
+---
+
+### Capability: Emotional Support (Differentiator)
+**Purpose:** Help users resist cravings and complete fasting sessions
+
+#### Feature: Panic Button
+- **Description**: Emergency overlay with motivational content during active fast
+- **Inputs**: User tap (only during fasting phase), current fast progress
+- **Outputs**: Modal with motivation, meditation option, or interrupt option
+- **Behavior**: Show motivational quote, breathing exercise option, track panic events
+
+#### Feature: Meditation Engine (4-4-8 Breathing)
+- **Description**: Guided breathing animation to calm cravings
+- **Inputs**: User starts meditation from panic modal
+- **Outputs**: Visual breathing animation, cycle counter
+- **Behavior**: Play Lottie animation, track completion, offer "continue fast" or "can't continue" options
+
+#### Feature: Motivational Content
+- **Description**: Dynamic quotes and anti-binge tips
+- **Inputs**: Panic button trigger, user progress
+- **Outputs**: Contextual message
+- **Behavior**: Random selection from curated library
+
+---
+
+### Capability: Hydration Tracking
+**Purpose:** Prevent dehydration during fasting
+
+#### Feature: Water Goal Calculation
+- **Description**: Auto-calculate daily water goal from user weight
+- **Inputs**: User weight (kg)
+- **Outputs**: Daily water goal (ml), glass size (ml)
+- **Behavior**: Formula = weight_kg × 32 ml, configurable glass size
+
+#### Feature: Water Logging
+- **Description**: Quick-tap to log water intake
+- **Inputs**: User tap, glass size
+- **Outputs**: Updated hydration progress (%)
+- **Behavior**: Increment daily total, update Isar, show visual progress
+
+#### Feature: Hydration Reminders
+- **Description**: Push notifications for water intake
+- **Inputs**: User schedule, hydration goal
+- **Outputs**: OneSignal push notification
+- **Behavior**: Fire reminders at intervals, pause during eating windows (optional)
+
+---
+
+### Capability: Push Notifications
+**Purpose:** Engagement, reminders, and milestone celebrations via OneSignal
+
+#### Feature: Fasting Notifications
+- **Description**: Notifications for fast start, milestones, and completion
+- **Inputs**: Timer state, session milestones, user preferences
+- **Outputs**: OneSignal push notification with custom payload
+- **Behavior**: Trigger at fast start, key milestones (4h, 8h, 12h, 16h), and completion; deep link to app
+
+#### Feature: Hydration Reminders
+- **Description**: Scheduled water intake reminders
+- **Inputs**: User hydration schedule (hourly/custom), current hydration progress
+- **Outputs**: Push notification with water emoji and progress
+- **Behavior**: Fire at intervals, suppress if goal reached, pause during sleep hours
+
+#### Feature: Engagement Notifications
+- **Description**: Re-engagement and streak maintenance prompts
+- **Inputs**: User last active timestamp, streak status
+- **Outputs**: Motivational push notification
+- **Behavior**: Send if inactive >24h, remind about streak risks, personalized based on history
+
+#### Feature: Notification Preferences
+- **Description**: User control over notification types and timing
+- **Inputs**: User preference toggles (per notification type), quiet hours
+- **Outputs**: Updated notification settings in user profile
+- **Behavior**: Store in Isar and Supabase, apply filters before sending
+
+---
+
+### Capability: Metrics & Analytics
+**Purpose:** Track progress, streaks, and patterns
+
+#### Feature: Dashboard Visualization
+- **Description**: Show current streak, total hours fasted, completion rate
+- **Inputs**: Session history, current date
+- **Outputs**: Widgets (streak, total hours, calendar heatmap)
+- **Behavior**: Query Isar, calculate stats, render charts
+
+#### Feature: History & Calendar
+- **Description**: Visual calendar with completed/interrupted fasts
+- **Inputs**: User fasting sessions (from Isar)
+- **Outputs**: Calendar UI with color-coded days
+- **Behavior**: Green = completed, orange = interrupted, gray = no session
+
+#### Feature: Pattern Analysis
+- **Description**: Identify best fasting days/times for user
+- **Inputs**: Historical session data
+- **Outputs**: Insights (e.g., "You complete 80% of fasts starting Monday mornings")
+- **Behavior**: Run basic analytics on session start times and completion rates
+
+---
+
+### Capability: Learning Content
+**Purpose:** Educate users on fasting science and best practices
+
+#### Feature: Content Library
+- **Description**: Curated articles, videos, studies
+- **Inputs**: User browsing, search query
+- **Outputs**: List of content items (title, category, thumbnail)
+- **Behavior**: Fetch from Supabase, cache locally, support offline viewing for articles
+
+#### Feature: Video Integration
+- **Description**: Embedded YouTube videos on fasting topics
+- **Inputs**: Video URL, user selection
+- **Outputs**: Embedded player or external link
+- **Behavior**: Use youtube_player_flutter, requires internet
+
+#### Feature: Favorites
+- **Description**: Save favorite articles/videos for later
+- **Inputs**: User tap "favorite" icon
+- **Outputs**: Updated favorites list
+- **Behavior**: Store in Isar, sync to Supabase
+
+---
+
+### Capability: User Management & Onboarding
+**Purpose:** Authentication, profile setup, and first-time experience
+
+#### Feature: Authentication
+- **Description**: Email/password login via Supabase Auth
+- **Inputs**: Email, password
+- **Outputs**: Authenticated session token
+- **Behavior**: Supabase Auth, store session, enable RLS
+
+#### Feature: Onboarding Flow
+- **Description**: Welcome screens, questionnaire, detox recommendation
+- **Inputs**: User answers (weight, height, first-time status)
+- **Outputs**: User profile record
+- **Behavior**: 6-step flow (splash → intro → register → quiz → paywall → detox question)
+
+#### Feature: 48-Hour Detox Plan
+- **Description**: Optional carnivore-style metabolic preparation protocol for first-time fasters to reduce initial hunger/cravings
+- **Inputs**: User accepts detox recommendation after onboarding questionnaire, current timestamp
+- **Outputs**: 48-hour countdown timer, allowed foods list (meat, eggs, fish, bone broth, salt, water), daily checklist
+- **Behavior**:
+  - Runs separate background timer (parallel to main timer service)
+  - Shows visual progress (circular progress ring)
+  - Displays allowed foods list with portions/examples
+  - Daily check-in prompts (morning/evening) to log adherence
+  - On completion: Unlocks fasting plan selection with congratulations screen
+  - Skippable with warning ("Recommended for best results, but you can skip")
+  - Tracks completion status in user profile for analytics
+
+#### Feature: Profile Management
+- **Description**: Update weight, height, hydration settings
+- **Inputs**: User edits
+- **Outputs**: Updated user_profiles record
+- **Behavior**: Update Isar and Supabase, recalculate hydration goal
+
+---
+
+### Capability: Monetization & Subscriptions
+**Purpose:** Revenue generation through premium features and Superwall paywall
+
+#### Feature: Paywall Presentation
+- **Description**: Strategic paywall display during onboarding and feature access
+- **Inputs**: User journey stage (post-quiz/feature-gate), Superwall experiment ID
+- **Outputs**: Paywall UI with pricing tiers, benefits list
+- **Behavior**: Show after onboarding quiz or when accessing premium features; A/B test presentation styles via Superwall
+
+#### Feature: Premium Feature Gating
+- **Description**: Restrict advanced features to premium subscribers
+- **Inputs**: User subscription status, feature access request
+- **Outputs**: Feature access grant/deny, upsell prompt if denied
+- **Behavior**: Premium features include: custom fasting plans, detailed analytics, meditation library, ad-free experience
+
+#### Feature: Subscription Management
+- **Description**: Handle subscription lifecycle via Superwall + App Store/Play Store
+- **Inputs**: Purchase events, subscription status changes, restore requests
+- **Outputs**: Updated user subscription status, receipt validation
+- **Behavior**: Sync subscription status to Supabase user_profiles, handle grace periods, manage renewals/cancellations
+
+#### Feature: Paywall Analytics
+- **Description**: Track paywall performance and conversion metrics
+- **Inputs**: Paywall impressions, dismissals, conversions
+- **Outputs**: Conversion funnel data sent to Superwall dashboard
+- **Behavior**: Log events (paywall_shown, plan_selected, purchase_completed, purchase_failed) for optimization
+</functional-decomposition>
+
+---
+
+<structural-decomposition>
+## Repository Structure
+
+```
+lib/
+├── core/                         # Foundation layer
+│   ├── theme/                    # Design system (ZendfastColors, typography)
+│   ├── services/                 # Background service, notifications
+│   ├── database/                 # Isar schemas and sync manager
+│   └── utils/                    # Helpers, constants
+├── features/
+│   ├── auth/                     # Authentication capability
+│   │   ├── providers/            # Riverpod auth state
+│   │   ├── screens/              # Login, register
+│   │   └── services/             # Supabase auth service
+│   ├── onboarding/               # Onboarding capability
+│   │   ├── screens/              # Splash, intro, quiz, detox
+│   │   └── providers/            # Onboarding state
+│   ├── fasting/                  # Fasting management capability
+│   │   ├── models/               # FastingPlan, FastingSession (Isar)
+│   │   ├── providers/            # Timer state, plan selection
+│   │   ├── services/             # Timer engine, background service
+│   │   └── screens/              # Home (timer UI), plan selection
+│   ├── panic/                    # Emotional support capability
+│   │   ├── screens/              # Panic modal, meditation screen
+│   │   ├── providers/            # Panic state
+│   │   └── widgets/              # Breathing animation (Lottie)
+│   ├── hydration/                # Hydration capability
+│   │   ├── models/               # HydrationLog (Isar)
+│   │   ├── providers/            # Hydration state
+│   │   └── widgets/              # Water button, progress bar
+│   ├── metrics/                  # Analytics capability
+│   │   ├── providers/            # Metrics calculation
+│   │   └── screens/              # Dashboard, calendar, history
+│   ├── learning/                 # Learning content capability
+│   │   ├── models/               # ContentItem (Isar)
+│   │   ├── providers/            # Content state
+│   │   └── screens/              # Content list, article/video viewer
+│   ├── profile/                  # Profile management capability
+│   │   ├── models/               # UserProfile (Isar)
+│   │   ├── providers/            # Profile state
+│   │   └── screens/              # Settings, profile edit
+│   ├── notifications/            # Push notifications capability
+│   │   ├── models/               # NotificationPreferences (Isar)
+│   │   ├── services/             # OneSignal service, notification manager
+│   │   └── providers/            # Notification state
+│   └── monetization/             # Monetization capability
+│       ├── services/             # Superwall service, subscription manager
+│       ├── providers/            # Subscription state, paywall state
+│       └── screens/              # Paywall UI (Superwall handles most)
+├── shared/
+│   └── widgets/                  # Reusable UI components
+└── main.dart                     # App entry point
+```
+
+## Module Definitions
+
+### Module: core/database
+- **Maps to capability**: Foundation (all capabilities depend on this)
+- **Responsibility**: Isar database setup, schemas, Supabase sync
+- **Exports**:
+  - `DatabaseService` - Initialize Isar, register schemas
+  - `SyncManager` - Bidirectional sync with Supabase
+  - Isar collection getters (sessions, profiles, hydration logs)
+
+### Module: features/fasting
+- **Maps to capability**: Fasting Management
+- **Responsibility**: Timer logic, session lifecycle, plan selection
+- **Exports**:
+  - `TimerService` - Background timer engine
+  - `fastingTimerProvider` - Current timer state (Riverpod)
+  - `FastingHomeScreen` - Main timer UI
+
+### Module: features/panic
+- **Maps to capability**: Emotional Support
+- **Responsibility**: Panic button, meditation, motivational content
+- **Exports**:
+  - `PanicModal` - Emergency overlay widget
+  - `MeditationScreen` - 4-4-8 breathing animation
+  - `panicStateProvider` - Panic event tracking
+
+### Module: features/hydration
+- **Maps to capability**: Hydration Tracking
+- **Responsibility**: Water logging, goal calculation, reminders
+- **Exports**:
+  - `HydrationService` - Goal calculation, log management
+  - `WaterButton` - Quick-log widget
+  - `hydrationProvider` - Daily progress state
+
+### Module: features/metrics
+- **Maps to capability**: Metrics & Analytics
+- **Responsibility**: Dashboard, history, pattern analysis
+- **Exports**:
+  - `MetricsService` - Calculate stats from Isar sessions
+  - `MetricsDashboardScreen` - Main metrics UI
+  - `metricsProvider` - Computed metrics state
+
+### Module: features/learning
+- **Maps to capability**: Learning Content
+- **Responsibility**: Content library, favorites, video playback
+- **Exports**:
+  - `ContentService` - Fetch and cache content
+  - `LearningHomeScreen` - Content browsing UI
+  - `contentProvider` - Content state and favorites
+
+### Module: features/auth
+- **Maps to capability**: User Management (Authentication)
+- **Responsibility**: Supabase Auth, session management
+- **Exports**:
+  - `AuthService` - Login, register, logout
+  - `authStateProvider` - Current user session
+  - `LoginScreen`, `RegisterScreen`
+
+### Module: features/onboarding
+- **Maps to capability**: User Management (Onboarding)
+- **Responsibility**: First-time user flow, detox recommendation
+- **Exports**:
+  - `OnboardingCoordinator` - 6-step flow orchestration
+  - `DetoxScreen` - 48-hour detox timer
+  - `onboardingProvider` - Onboarding state
+
+### Module: features/notifications
+- **Maps to capability**: Push Notifications
+- **Responsibility**: OneSignal integration, notification scheduling, user preferences
+- **Exports**:
+  - `NotificationService` - OneSignal wrapper, notification triggers
+  - `NotificationScheduler` - Schedule fasting/hydration/engagement notifications
+  - `notificationPreferencesProvider` - User notification settings
+
+### Module: features/monetization
+- **Maps to capability**: Monetization & Subscriptions
+- **Responsibility**: Superwall paywall, subscription lifecycle, premium feature gating
+- **Exports**:
+  - `SuperwallService` - Paywall presentation, A/B testing
+  - `SubscriptionManager` - Subscription status, purchase handling
+  - `subscriptionStateProvider` - Current subscription state
+  - `isPremiumProvider` - Boolean provider for feature gating
+</structural-decomposition>
+
+---
+
+<dependency-graph>
+## Dependency Chain
+
+### Foundation Layer (Phase 0)
+**No dependencies - built first**
+
+- **core/theme**: Design system (colors, typography, spacing)
+- **core/database**: Isar setup, schemas, sync manager
+- **core/services/background_service**: Flutter background service wrapper
+- **core/services/notification_service**: OneSignal initialization
+
+### Data Layer (Phase 1)
+- **features/auth**: Depends on [core/database]
+- **features/onboarding**: Depends on [features/auth]
+
+### Core Fasting (Phase 2)
+- **features/fasting/models**: Depends on [core/database]
+- **features/fasting/services**: Depends on [core/services/background_service, features/fasting/models]
+- **features/fasting/screens**: Depends on [features/fasting/services, core/theme]
+
+### Emotional Support (Phase 3)
+- **features/panic**: Depends on [features/fasting/services, core/theme]
+  - Must read timer state to enable panic button only during fasting
+
+### Hydration & Metrics (Phase 4)
+- **features/hydration**: Depends on [core/database, core/services/notification_service, features/auth]
+- **features/metrics**: Depends on [features/fasting/models, core/database]
+
+### Content & Profile (Phase 5)
+- **features/learning**: Depends on [core/database, features/auth]
+- **features/profile**: Depends on [features/auth, features/hydration, features/metrics]
+
+### Notifications & Monetization (Phase 6)
+- **features/notifications**: Depends on [core/services/notification_service, features/fasting/services, features/hydration, features/auth]
+  - Needs timer state for fasting notifications, hydration state for water reminders
+- **features/monetization**: Depends on [features/auth, features/onboarding]
+  - Paywall shown after onboarding, requires auth for subscription sync
+
+### Launch (Phase 7)
+- **Testing, polish, deployment**: Depends on all above
+</dependency-graph>
+
+---
+
+<implementation-roadmap>
+## Development Phases
+
+### Phase 0: Foundation (Week 1)
+**Goal**: Establish core infrastructure
+
+**Entry Criteria**: Flutter project initialized, dependencies installed
+
+**Tasks**:
+- [ ] Setup Isar v3.1.0 with schemas (FastingSession, UserProfile, HydrationLog, ContentItem)
+  - Acceptance: Isar collections queryable, build_runner completes
+  - Test: Unit tests for CRUD operations
+- [ ] Create design system (ZendfastColors, typography, spacing constants)
+  - Acceptance: Theme applied globally via ThemeData
+  - Test: Visual snapshot tests
+- [ ] Configure Supabase client (auth, database, RLS)
+  - Acceptance: Supabase client initialized, auth flow works
+  - Test: Integration test for auth
+- [ ] Setup background service wrapper
+  - Acceptance: Background service runs on app kill
+  - Test: Timer persists across force-quit
+
+**Exit Criteria**: Other features can import foundation without errors
+
+**Delivers**: Runnable app with empty screens, working database and theme
+
+---
+
+### Phase 1: Authentication & Onboarding (Week 2)
+**Goal**: User registration and first-time experience
+
+**Entry Criteria**: Phase 0 complete
+
+**Tasks**:
+- [ ] Implement Supabase Auth (email/password) (depends on: Supabase setup)
+  - Acceptance: Users can register, login, logout
+  - Test: Integration tests for auth flows
+- [ ] Build onboarding flow (splash → intro → quiz → paywall) (depends on: Auth)
+  - Acceptance: New users complete 6-step flow
+  - Test: E2E test for full onboarding
+- [ ] Add 48-hour detox screen (depends on: Onboarding flow)
+  - Acceptance: First-time users can opt into detox timer
+  - Test: Detox timer counts down correctly
+
+**Exit Criteria**: Users can sign up, complete onboarding, and reach main app
+
+**Delivers**: Working registration and user profiles stored in Supabase
+
+---
+
+### Phase 2: Core Fasting Timer (Weeks 3-4)
+**Goal**: MVP-critical fasting timer with background persistence
+
+**Entry Criteria**: Phase 1 complete, users authenticated
+
+**Tasks**:
+- [ ] Create Isar FastingSession model (depends on: Isar setup)
+- [ ] Build TimerService with background persistence (depends on: Background service, FastingSession model)
+  - Acceptance: Timer runs in background, survives app kill
+  - Test: Timer accuracy within ±5 seconds after 16-hour fast
+- [ ] Design plan selection UI (12/12, 14/10, 16/8, 18/6, 24h, 2d) (depends on: Design system)
+- [ ] Build FastingHomeScreen with timer UI (depends on: TimerService, Plan selection)
+  - Acceptance: Users see countdown, can start/stop timer
+  - Test: E2E test for starting and completing a fast
+- [ ] Implement session completion and metrics update (depends on: TimerService)
+  - Acceptance: Completed sessions saved to Isar
+  - Test: Verify sessions persist and sync to Supabase
+
+**Exit Criteria**: Users can select plan, start timer, complete fast, see session saved
+
+**Delivers**: Functional fasting timer (MVP core value)
+
+---
+
+### Phase 3: Panic Button & Meditation (Week 5)
+**Goal**: Emotional support differentiator
+
+**Entry Criteria**: Phase 2 complete, timer working
+
+**Tasks**:
+- [ ] Build PanicModal UI (depends on: Timer state)
+  - Acceptance: Modal appears only during active fast
+  - Test: Panic button hidden during eating window
+- [ ] Add motivational quotes library (depends on: PanicModal)
+- [ ] Implement 4-4-8 breathing animation (Lottie) (depends on: PanicModal)
+  - Acceptance: Animation plays smoothly, cycles tracked
+  - Test: Performance test (60fps on mid-range devices)
+- [ ] Handle "I broke my fast" flow (depends on: Timer service)
+  - Acceptance: Interrupted sessions marked in Isar, metrics updated
+  - Test: Verify interrupted sessions sync correctly
+
+**Exit Criteria**: Users can access panic button, meditate, or mark fast as interrupted
+
+**Delivers**: Emotional support feature (key differentiator)
+
+---
+
+### Phase 4: Hydration & Metrics Dashboard (Week 6)
+**Goal**: Complete MVP feature set
+
+**Entry Criteria**: Phase 3 complete
+
+**Tasks**:
+- [ ] Build HydrationService (goal calculation, logging) (depends on: UserProfile, Isar)
+  - Acceptance: Water goal auto-calculated from weight
+  - Test: Goal formula accuracy (weight_kg × 32)
+- [ ] Create WaterButton widget (depends on: HydrationService)
+  - Acceptance: One tap logs water, updates progress
+  - Test: Rapid taps handle correctly (debouncing)
+- [ ] Build MetricsDashboardScreen (depends on: FastingSession data)
+  - Acceptance: Shows streak, total hours, completion rate
+  - Test: Verify metrics calculation accuracy
+- [ ] Add calendar heatmap (depends on: Metrics calculations)
+  - Acceptance: Visual calendar with color-coded days
+  - Test: Verify colors match session status
+
+**Exit Criteria**: Users can log water and view metrics dashboard
+
+**Delivers**: Complete MVP (timer + panic + hydration + metrics)
+
+---
+
+### Phase 5: Learning Content & Profile (Week 7)
+**Goal**: Content library and profile management
+
+**Entry Criteria**: Phase 4 complete
+
+**Tasks**:
+- [ ] Create ContentItem Isar model and Supabase table (depends on: Database setup)
+- [ ] Build ContentService (fetch, cache, favorites) (depends on: ContentItem model)
+- [ ] Design LearningHomeScreen UI (depends on: ContentService)
+  - Acceptance: Users browse articles, videos, studies
+  - Test: Offline access for cached articles
+- [ ] Integrate youtube_player_flutter (depends on: LearningHomeScreen)
+  - Acceptance: Videos play in-app or open externally
+  - Test: Video playback on iOS and Android
+- [ ] Build ProfileScreen (settings, weight update) (depends on: UserProfile)
+  - Acceptance: Users update weight, theme, notification preferences
+  - Test: Changes persist and sync
+
+**Exit Criteria**: Users can browse learning content and edit profile
+
+**Delivers**: Educational content and profile customization
+
+---
+
+### Phase 6: Monetization & Notifications (Week 8)
+**Goal**: Revenue and engagement features
+
+**Entry Criteria**: Phase 5 complete
+
+**Tasks**:
+- [ ] Integrate Superwall paywall (depends on: Onboarding complete)
+  - Acceptance: Paywall shows after onboarding, A/B testing works
+  - Test: Verify premium unlock flows
+- [ ] Setup OneSignal push notifications (depends on: Notification service)
+  - Acceptance: Users receive reminders for water, fast start/end
+  - Test: Notifications arrive on iOS and Android
+- [ ] Configure notification triggers (depends on: Timer state, Hydration schedule)
+  - Acceptance: Notifications fire at correct times
+  - Test: Verify delivery in background
+
+**Exit Criteria**: Paywall functional, notifications working
+
+**Delivers**: Revenue stream and user retention tools
+
+---
+
+### Phase 7: Testing, Polish & Launch (Week 9-10)
+**Goal**: Production-ready app
+
+**Entry Criteria**: All features complete
+
+**Tasks**:
+- [ ] Accessibility audit (WCAG 2.1 AA) (depends on: All UI)
+  - Acceptance: All screens pass accessibility scanner
+  - Test: Manual testing with TalkBack/VoiceOver
+- [ ] Performance optimization (depends on: All features)
+  - Acceptance: App launches <2s, animations 60fps
+  - Test: Performance profiling on low-end devices
+- [ ] E2E testing suite (depends on: All features)
+  - Acceptance: Critical paths covered
+  - Test: Automated E2E tests pass
+- [ ] Setup Sentry error monitoring (depends on: All features)
+  - Acceptance: Crashes reported to Sentry
+  - Test: Trigger test error, verify report
+- [ ] Beta testing with 20 users (depends on: All above)
+  - Acceptance: Feedback collected, critical bugs fixed
+- [ ] App Store submission (depends on: Beta testing complete)
+  - Acceptance: Apps published to iOS App Store and Google Play
+
+**Exit Criteria**: App live in stores
+
+**Delivers**: Production-ready Zendfast MVP
+</implementation-roadmap>
+
+---
+
+<test-strategy>
+## Test Pyramid
+
+```
+        /\
+       /E2E\       ← 10% (Full user flows, slow)
+      /------\
+     /Integration\ ← 30% (Feature interactions)
+    /------------\
+   /  Unit Tests  \ ← 60% (Fast, isolated)
+  /----------------\
+```
+
+## Coverage Requirements
+
+- **Line coverage**: 80% minimum
+- **Critical paths**: 100% (timer, panic button, auth)
+
+## Critical Test Scenarios
+
+### Timer Service
+**Happy path**: Start timer → wait 30s → verify countdown accurate
+**Edge cases**: App killed mid-fast → reopen → timer continues
+**Error cases**: Device reboot → timer resumes from correct time
+**Integration**: Timer syncs session to Supabase after completion
+
+### Panic Button
+**Happy path**: During fast → tap panic → modal appears
+**Edge cases**: Rapid taps → modal shown once
+**Error cases**: Offline → motivational content loads from cache
+**Integration**: "I broke my fast" → session marked interrupted in metrics
+
+### Hydration
+**Happy path**: Tap water button → progress updates
+**Edge cases**: Goal reached → congratulations message
+**Error cases**: Offline → log stored locally, synced later
+
+### Sync Manager
+**Happy path**: Create session → syncs to Supabase
+**Edge cases**: Conflict (edit on two devices) → latest timestamp wins
+**Error cases**: Network failure → retry with exponential backoff
+
+## Test Generation Guidelines
+
+- Use `integration_test` package for E2E
+- Mock Supabase calls in unit tests (use Mocktail)
+- Test timer accuracy with Stopwatch comparison
+- Verify accessibility with Accessibility Scanner
+- Test Lottie animations on physical devices (performance)
+</test-strategy>
+
+---
+
+<architecture>
+## System Components
+
+**Flutter App (Frontend)**
+- Riverpod for state management
+- Isar v3.1.0 for local database
+- flutter_background_service for timer persistence
+- Lottie for animations
+
+**Supabase (Backend)**
+- PostgreSQL database (user_profiles, fasting_sessions, hydration_logs, content_items)
+- Row Level Security (RLS) for user data isolation
+- Edge Functions for metrics calculation, push notifications, sync
+- Supabase Auth for authentication
+
+**Third-Party Services**
+- OneSignal: Push notifications
+- Superwall: Paywall and subscription management
+- Sentry: Error monitoring
+- YouTube API: Video embedding
+
+## Data Models
+
+**FastingSession (Isar)**
+```dart
+@collection
+class FastingSession {
+  Id id = Isar.autoIncrement;
+  String userId;
+  DateTime startTime;
+  DateTime? endTime;
+  int durationMinutes;
+  bool completed;
+  bool interrupted;
+  String? planType; // "16/8", "18/6", etc.
+}
+```
+
+**UserProfile (Supabase)**
+```sql
+CREATE TABLE user_profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id),
+  weight_kg DECIMAL(5,2),
+  height_cm INT,
+  daily_hydration_goal INT GENERATED ALWAYS AS (ROUND(weight_kg * 32)::INT) STORED,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## Technology Stack
+
+**Decision: Flutter**
+- **Rationale**: Cross-platform (iOS/Android), single codebase, fast development
+- **Trade-offs**: Larger app size vs native
+- **Alternatives**: React Native (rejected: performance concerns)
+
+**Decision: Isar v3.1.0**
+- **Rationale**: Fast local database, zero-config sync support, better than Hive/Drift
+- **Trade-offs**: Newer library vs SQLite stability
+- **Alternatives**: Drift (rejected: more boilerplate)
+
+**Decision: Riverpod**
+- **Rationale**: Type-safe state management, better than Provider
+- **Trade-offs**: Learning curve vs simplicity
+- **Alternatives**: Bloc (rejected: too verbose)
+</architecture>
+
+---
+
+<risks>
+## Technical Risks
+
+**Risk**: Timer inaccuracy in background (iOS restrictions)
+- **Impact**: High - Core feature failure
+- **Likelihood**: Medium
+- **Mitigation**: Use flutter_background_service, test extensively on iOS
+- **Fallback**: Use scheduled notifications as backup timer
+
+**Risk**: Lottie animation performance on low-end devices
+- **Impact**: Medium - Meditation UX degraded
+- **Likelihood**: Medium
+- **Mitigation**: Optimize animation JSON, test on low-end devices
+- **Fallback**: Use static images if performance <30fps
+
+**Risk**: Sync conflicts (simultaneous edits on multiple devices)
+- **Impact**: Medium - Data loss
+- **Likelihood**: Low
+- **Mitigation**: Last-write-wins with timestamps
+- **Fallback**: Manual conflict resolution UI
+
+**Risk**: Push notification delivery failure
+- **Impact**: Medium - Reduced engagement
+- **Likelihood**: Medium
+- **Mitigation**: Use OneSignal (reliable service), handle failures gracefully
+- **Fallback**: In-app notification fallback
+
+**Risk**: Supabase Edge Function cold starts
+- **Impact**: Low - Slower sync
+- **Likelihood**: High
+- **Mitigation**: Keep functions warm with scheduled pings
+- **Fallback**: Client-side calculations as backup
+
+## Scope Risks
+
+**Risk**: Feature creep (social features, meal planning)
+- **Impact**: High - MVP delay
+- **Mitigation**: Strict scope control, defer non-MVP features
+- **Fallback**: Launch with core features only
+
+**Risk**: Medical/legal liability (detox plan, health advice)
+- **Impact**: High - Legal issues
+- **Mitigation**: Add disclaimers, consult with lawyer, avoid medical claims
+- **Fallback**: Remove detox plan if legal risk too high
+</risks>
+
+---
+
+<appendix>
+## Glossary
+
+- **Fasting Window**: Period of no calorie intake
+- **Eating Window**: Period where eating is allowed
+- **Panic Button**: Emergency support feature during cravings
+- **4-4-8 Breathing**: Inhale 4s, hold 4s, exhale 8s
+- **Detox Plan**: 48-hour carnivore-style prep before first fast
+- **RLS**: Row Level Security (Supabase database security)
+
+## Open Questions
+
+- Should we allow custom notification sounds?
+- Do we need offline support for YouTube videos (download)?
+- Should we integrate with Apple Health/Google Fit?
+
+## References
+
+- RPG Methodology: https://arxiv.org/abs/2404.00682
+- Intermittent Fasting Research: NIH studies on metabolic benefits
+- Flutter Background Service: https://pub.dev/packages/flutter_background_service
+- Isar Documentation: https://isar.dev
+</appendix>
+
+---
+
+<backend-infrastructure>
+## Backend Infrastructure Requirements
+
+### Supabase Edge Functions
+
+#### Edge Function: calculate-user-metrics
+**Purpose:** Calculate user statistics (streak, total hours, completion rate) server-side for consistency
+**Trigger:** Called after each fasting session completion
+**Inputs:** user_id, fasting_sessions from database
+**Outputs:** Updated user_metrics table (streak, total_hours_fasted, completion_rate, longest_fast)
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { user_id } = await req.json()
+  const supabase = createClient(...)
+
+  // Calculate streak: consecutive days with completed fasts
+  const sessions = await supabase
+    .from('fasting_sessions')
+    .select('*')
+    .eq('user_id', user_id)
+    .eq('completed', true)
+    .order('end_time', { ascending: false })
+
+  let streak = 0
+  let currentDate = new Date()
+  for (const session of sessions.data) {
+    const sessionDate = new Date(session.end_time)
+    const dayDiff = Math.floor((currentDate - sessionDate) / (1000 * 60 * 60 * 24))
+    if (dayDiff <= 1) {
+      streak++
+      currentDate = sessionDate
+    } else {
+      break
+    }
+  }
+
+  // Calculate total hours and completion rate
+  const totalHours = sessions.data.reduce((sum, s) => sum + s.duration_minutes / 60, 0)
+  const allSessions = await supabase.from('fasting_sessions').select('id').eq('user_id', user_id)
+  const completionRate = sessions.data.length / allSessions.data.length
+
+  // Update user_metrics
+  await supabase
+    .from('user_metrics')
+    .upsert({ user_id, streak, total_hours_fasted: totalHours, completion_rate: completionRate })
+
+  return new Response(JSON.stringify({ streak, totalHours, completionRate }), { status: 200 })
+})
+```
+
+#### Edge Function: schedule-notifications
+**Purpose:** Schedule OneSignal push notifications for fasting milestones and hydration
+**Trigger:** Called when user starts fast or updates notification preferences
+**Inputs:** user_id, notification_type (fast_start, milestone, hydration), schedule_time
+**Outputs:** OneSignal scheduled notification ID
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { user_id, notification_type, schedule_time, message } = await req.json()
+
+  // Get user's OneSignal player ID from database
+  const supabase = createClient(...)
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('onesignal_player_id')
+    .eq('id', user_id)
+    .single()
+
+  // Schedule notification via OneSignal API
+  const onesignalResponse = await fetch('https://onesignal.com/api/v1/notifications', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${Deno.env.get('ONESIGNAL_API_KEY')}`
+    },
+    body: JSON.stringify({
+      app_id: Deno.env.get('ONESIGNAL_APP_ID'),
+      include_player_ids: [profile.onesignal_player_id],
+      contents: { en: message },
+      send_after: schedule_time,
+      data: { notification_type }
+    })
+  })
+
+  const result = await onesignalResponse.json()
+  return new Response(JSON.stringify({ notification_id: result.id }), { status: 200 })
+})
+```
+
+#### Edge Function: sync-user-data
+**Purpose:** Handle bidirectional sync between Isar and Supabase with conflict resolution
+**Trigger:** Called on app foreground, WiFi connect, or manual sync request
+**Inputs:** user_id, local_changes (array of modified records), last_sync_timestamp
+**Outputs:** server_changes (array of records modified server-side), sync_timestamp
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { user_id, local_changes, last_sync_timestamp } = await req.json()
+  const supabase = createClient(...)
+
+  // Apply local changes to server (upsert)
+  for (const change of local_changes) {
+    await supabase.from(change.table).upsert({
+      ...change.data,
+      user_id,
+      updated_at: change.client_timestamp
+    })
+  }
+
+  // Fetch server changes since last sync
+  const tables = ['fasting_sessions', 'hydration_logs', 'user_profiles']
+  const server_changes = []
+
+  for (const table of tables) {
+    const { data } = await supabase
+      .from(table)
+      .select('*')
+      .eq('user_id', user_id)
+      .gt('updated_at', last_sync_timestamp)
+
+    server_changes.push(...data.map(d => ({ table, data: d })))
+  }
+
+  return new Response(JSON.stringify({
+    server_changes,
+    sync_timestamp: new Date().toISOString()
+  }), { status: 200 })
+})
+```
+
+#### Edge Function: handle-superwall-webhook
+**Purpose:** Process Superwall subscription events (purchase, renewal, cancellation)
+**Trigger:** Webhook from Superwall on subscription status change
+**Inputs:** event_type, user_id, subscription_id, product_id, status
+**Outputs:** Updated user subscription status in database
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { event_type, user_id, subscription_id, product_id, status } = await req.json()
+  const supabase = createClient(...)
+
+  // Verify webhook signature (security)
+  const signature = req.headers.get('x-superwall-signature')
+  // ... verify signature logic
+
+  // Update user subscription status
+  await supabase
+    .from('user_profiles')
+    .update({
+      subscription_status: status,
+      subscription_product_id: product_id,
+      subscription_updated_at: new Date().toISOString()
+    })
+    .eq('id', user_id)
+
+  // Log event for analytics
+  await supabase.from('analytics_events').insert({
+    user_id,
+    event_name: `subscription_${event_type}`,
+    event_data: { subscription_id, product_id, status }
+  })
+
+  return new Response(JSON.stringify({ success: true }), { status: 200 })
+})
+```
+
+#### Edge Function: backup-data
+**Purpose:** Generate user data export for GDPR compliance and user data portability
+**Trigger:** User requests data export from settings
+**Inputs:** user_id
+**Outputs:** JSON file with all user data (sessions, logs, profile)
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { user_id } = await req.json()
+  const supabase = createClient(...)
+
+  // Fetch all user data
+  const profile = await supabase.from('user_profiles').select('*').eq('id', user_id).single()
+  const sessions = await supabase.from('fasting_sessions').select('*').eq('user_id', user_id)
+  const hydration = await supabase.from('hydration_logs').select('*').eq('user_id', user_id)
+  const metrics = await supabase.from('user_metrics').select('*').eq('user_id', user_id).single()
+
+  const exportData = {
+    profile: profile.data,
+    fasting_sessions: sessions.data,
+    hydration_logs: hydration.data,
+    metrics: metrics.data,
+    export_timestamp: new Date().toISOString()
+  }
+
+  return new Response(JSON.stringify(exportData, null, 2), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  })
+})
+```
+
+#### Edge Function: sentry-error-report
+**Purpose:** Forward client errors to Sentry for monitoring
+**Trigger:** Called when app catches unhandled exceptions
+**Inputs:** error_message, stack_trace, user_id, device_info
+**Outputs:** Sentry event ID
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+
+serve(async (req) => {
+  const { error_message, stack_trace, user_id, device_info } = await req.json()
+
+  // Forward to Sentry API
+  const sentryResponse = await fetch(`https://sentry.io/api/${Deno.env.get('SENTRY_PROJECT_ID')}/store/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Sentry-Auth': `Sentry sentry_key=${Deno.env.get('SENTRY_DSN')}`
+    },
+    body: JSON.stringify({
+      message: error_message,
+      exception: { values: [{ type: 'Error', value: error_message, stacktrace: stack_trace }] },
+      user: { id: user_id },
+      contexts: { device: device_info },
+      timestamp: new Date().toISOString()
+    })
+  })
+
+  const result = await sentryResponse.json()
+  return new Response(JSON.stringify({ sentry_event_id: result.id }), { status: 200 })
+})
+```
+
+#### Edge Function: track-analytics-event
+**Purpose:** Log custom analytics events to Supabase for product insights
+**Trigger:** Called on critical user actions (fast completed, panic button used, premium conversion)
+**Inputs:** user_id, event_name, event_data
+**Outputs:** Event ID
+**Implementation:**
+```typescript
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
+import { createClient } from '@supabase/supabase-js'
+
+serve(async (req) => {
+  const { user_id, event_name, event_data } = await req.json()
+  const supabase = createClient(...)
+
+  const { data, error } = await supabase
+    .from('analytics_events')
+    .insert({
+      user_id,
+      event_name,
+      event_data,
+      timestamp: new Date().toISOString()
+    })
+    .select()
+    .single()
+
+  return new Response(JSON.stringify({ event_id: data.id }), { status: 200 })
+})
+```
+
+---
+
+### Database Schemas and Seed Data
+
+#### Table: fasting_plans (Predefined Plans)
+**Purpose:** Store predefined fasting plans (12/12, 14/10, 16/8, 18/6, 24h, 2d)
+**Schema:**
+```sql
+CREATE TABLE fasting_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  plan_name TEXT NOT NULL UNIQUE, -- "12/12", "16/8", etc.
+  fasting_hours INT NOT NULL,
+  eating_hours INT NOT NULL,
+  description TEXT,
+  difficulty_level TEXT CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')),
+  recommended_for TEXT -- "Fat loss", "Autophagy", "Insulin sensitivity"
+);
+
+-- RLS Policy (public read, no write)
+ALTER TABLE fasting_plans ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read access" ON fasting_plans FOR SELECT USING (true);
+```
+
+**Seed Data:**
+```sql
+INSERT INTO fasting_plans (plan_name, fasting_hours, eating_hours, description, difficulty_level, recommended_for) VALUES
+('12/12', 12, 12, 'Beginner-friendly: Fast 12 hours, eat 12 hours', 'beginner', 'Circadian rhythm alignment'),
+('14/10', 14, 10, 'Gentle step up: Fast 14 hours, eat 10 hours', 'beginner', 'Mild fat burning'),
+('16/8', 16, 8, 'Most popular: Fast 16 hours, eat 8 hours', 'intermediate', 'Fat loss and autophagy'),
+('18/6', 18, 6, 'Advanced: Fast 18 hours, eat 6 hours', 'advanced', 'Deep ketosis'),
+('24h', 24, 0, 'OMAD (One Meal A Day): 24-hour fast', 'advanced', 'Maximum autophagy'),
+('48h', 48, 0, 'Extended fast: 48-hour water fast', 'advanced', 'Cellular repair');
+```
+
+#### Table: learning_content (Curated Educational Content)
+**Purpose:** Store articles, videos, and studies for learning section
+**Schema:**
+```sql
+CREATE TABLE learning_content (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  content_type TEXT CHECK (content_type IN ('article', 'video', 'study')),
+  category TEXT CHECK (category IN ('basics', 'science', 'tips', 'success_stories')),
+  content_url TEXT, -- YouTube URL or article link
+  thumbnail_url TEXT,
+  description TEXT,
+  duration_minutes INT, -- For videos
+  is_premium BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- RLS Policy (public read)
+ALTER TABLE learning_content ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read access" ON learning_content FOR SELECT USING (true);
+```
+
+**Seed Data (Sample):**
+```sql
+INSERT INTO learning_content (title, content_type, category, content_url, description, is_premium) VALUES
+('What is Intermittent Fasting? - Beginner Guide', 'article', 'basics', 'https://example.com/article1', 'Introduction to IF and its benefits', FALSE),
+('Autophagy Explained: The Science of Cellular Repair', 'video', 'science', 'https://youtube.com/watch?v=xxxxx', 'Deep dive into autophagy mechanisms', FALSE),
+('How to Break Your Fast Safely', 'article', 'tips', 'https://example.com/article2', 'Best foods to eat after fasting', FALSE),
+('16/8 Fasting: My 30-Day Transformation', 'video', 'success_stories', 'https://youtube.com/watch?v=yyyyy', 'Real user success story', TRUE);
+```
+
+#### Table: analytics_events (Product Analytics)
+**Purpose:** Track user events for product insights and funnel analysis
+**Schema:**
+```sql
+CREATE TABLE analytics_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  event_name TEXT NOT NULL, -- "fast_completed", "panic_button_used", "premium_conversion"
+  event_data JSONB, -- Flexible event properties
+  timestamp TIMESTAMP DEFAULT NOW()
+);
+
+-- RLS Policy (users can only read their own events)
+ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read own events" ON analytics_events FOR SELECT USING (auth.uid() = user_id);
+
+-- Index for fast queries
+CREATE INDEX idx_analytics_user_time ON analytics_events(user_id, timestamp DESC);
+```
+
+#### Table: user_metrics (Calculated User Statistics)
+**Purpose:** Store pre-calculated metrics to avoid heavy queries
+**Schema:**
+```sql
+CREATE TABLE user_metrics (
+  user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  streak INT DEFAULT 0, -- Consecutive days with completed fasts
+  total_hours_fasted DECIMAL(10,2) DEFAULT 0,
+  completion_rate DECIMAL(5,4) DEFAULT 0, -- Percentage of completed vs interrupted fasts
+  longest_fast_hours INT DEFAULT 0,
+  last_fast_completed_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- RLS Policy (users can only access their own metrics)
+ALTER TABLE user_metrics ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read own metrics" ON user_metrics FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can update own metrics" ON user_metrics FOR UPDATE USING (auth.uid() = user_id);
+```
+
+#### Table: motivational_phrases (Panic Button Content)
+**Purpose:** Store curated motivational quotes for panic button modal
+**Schema:**
+```sql
+CREATE TABLE motivational_phrases (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  phrase_text TEXT NOT NULL,
+  phrase_category TEXT CHECK (phrase_category IN ('motivation', 'anti_binge', 'calm')),
+  language TEXT DEFAULT 'es', -- Support for multilingual content
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- RLS Policy (public read)
+ALTER TABLE motivational_phrases ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read access" ON motivational_phrases FOR SELECT USING (true);
+```
+
+**Seed Data (Spanish Motivational Quotes):**
+```sql
+INSERT INTO motivational_phrases (phrase_text, phrase_category, language) VALUES
+('Tu cuerpo está aprendiendo a quemar grasa. Cada minuto cuenta. 💪', 'motivation', 'es'),
+('Ya has llegado hasta aquí. No rompas tu progreso ahora. 🔥', 'motivation', 'es'),
+('Tus células se están regenerando. Esto es autocuidado real. ✨', 'motivation', 'es'),
+('Comer ahora = placer de 5 minutos. Seguir ayunando = logro duradero. 🏆', 'anti_binge', 'es'),
+('Si comes, querrás comer más. Romper el ayuno dispara más antojos. 🔄', 'anti_binge', 'es'),
+('Respira. Este antojo pasará en 10-15 minutos. 🌬️', 'calm', 'es'),
+('Toma agua. A veces la sed se disfraza de hambre. 💧', 'calm', 'es'),
+('Tu mente quiere comer, no tu cuerpo. Dale unos minutos. 🧘', 'calm', 'es');
+```
+
+---
+
+### Database Functions and Triggers
+
+#### Function: auto_update_metrics_on_session_complete
+**Purpose:** Automatically trigger metrics recalculation when fasting session completes
+**Implementation:**
+```sql
+CREATE OR REPLACE FUNCTION trigger_calculate_metrics()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Call Edge Function to recalculate metrics
+  PERFORM net.http_post(
+    url := 'https://your-project.supabase.co/functions/v1/calculate-user-metrics',
+    headers := '{"Content-Type": "application/json"}'::jsonb,
+    body := json_build_object('user_id', NEW.user_id)::text
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER on_session_complete
+AFTER UPDATE OF completed ON fasting_sessions
+FOR EACH ROW
+WHEN (NEW.completed = TRUE)
+EXECUTE FUNCTION trigger_calculate_metrics();
+```
+
+#### Function: cleanup_old_analytics_events
+**Purpose:** Automatically delete analytics events older than 90 days (data retention policy)
+**Implementation:**
+```sql
+CREATE OR REPLACE FUNCTION cleanup_old_events()
+RETURNS void AS $$
+BEGIN
+  DELETE FROM analytics_events
+  WHERE timestamp < NOW() - INTERVAL '90 days';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Schedule cleanup (requires pg_cron extension)
+SELECT cron.schedule('cleanup-analytics', '0 2 * * *', 'SELECT cleanup_old_events()');
+```
+</backend-infrastructure>
+
+---
+
+<deployment-infrastructure>
+## Deployment and CI/CD Requirements
+
+### Flutter Flavors Configuration
+
+#### Development Flavor
+**Purpose:** Separate development environment with test data and debug tools
+**Configuration:**
+```yaml
+# android/app/build.gradle
+android {
+  flavorDimensions "environment"
+  productFlavors {
+    development {
+      dimension "environment"
+      applicationIdSuffix ".dev"
+      versionNameSuffix "-dev"
+      resValue "string", "app_name", "Zendfast Dev"
+    }
+    production {
+      dimension "environment"
+      resValue "string", "app_name", "Zendfast"
+    }
+  }
+}
+```
+
+```dart
+// lib/core/config/environment.dart
+enum Environment { development, production }
+
+class AppConfig {
+  static Environment get environment {
+    const env = String.fromEnvironment('ENV', defaultValue: 'development');
+    return env == 'production' ? Environment.production : Environment.development;
+  }
+
+  static String get supabaseUrl {
+    return environment == Environment.production
+      ? 'https://prod-project.supabase.co'
+      : 'https://dev-project.supabase.co';
+  }
+
+  static String get supabaseAnonKey {
+    return environment == Environment.production
+      ? const String.fromEnvironment('SUPABASE_ANON_KEY_PROD')
+      : const String.fromEnvironment('SUPABASE_ANON_KEY_DEV');
+  }
+}
+```
+
+**Run commands:**
+```bash
+# Development build
+flutter run --flavor development --dart-define=ENV=development
+
+# Production build (with obfuscation)
+flutter build apk --flavor production --release --obfuscate --split-debug-info=build/symbols --dart-define=ENV=production
+flutter build ios --flavor production --release --obfuscate --split-debug-info=build/symbols --dart-define=ENV=production
+```
+
+---
+
+### Code Obfuscation (MANDATORY for Production)
+
+**Purpose:** Protect source code from reverse engineering in production builds
+**Implementation:**
+```bash
+# Build command with obfuscation enabled
+flutter build apk --release --obfuscate --split-debug-info=build/app/outputs/symbols
+
+# Upload symbols to Sentry for crash deobfuscation
+sentry-cli upload-dif --org your-org --project zendfast build/app/outputs/symbols
+```
+
+**Configuration in build files:**
+```yaml
+# android/app/build.gradle
+buildTypes {
+  release {
+    minifyEnabled true
+    shrinkResources true
+    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+  }
+}
+```
+
+**Critical:** Store symbol files (`build/symbols`) for Sentry crash deobfuscation. Without symbols, production crashes will be unreadable.
+
+---
+
+### Codemagic CI/CD Pipeline
+
+**Purpose:** Automate testing, building, and deployment to App Store and Play Store
+**Configuration (codemagic.yaml):**
+```yaml
+workflows:
+  ios-production:
+    name: iOS Production Build
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: 14.2
+      cocoapods: default
+      vars:
+        SUPABASE_ANON_KEY_PROD: $SUPABASE_ANON_KEY_PROD
+        APP_STORE_CONNECT_KEY_ID: $APP_STORE_CONNECT_KEY_ID
+    scripts:
+      - name: Install dependencies
+        script: flutter pub get
+      - name: Run tests
+        script: flutter test
+      - name: Build iOS
+        script: |
+          flutter build ios --release \
+            --flavor production \
+            --obfuscate \
+            --split-debug-info=build/symbols \
+            --dart-define=ENV=production \
+            --export-options-plist=/path/to/ExportOptions.plist
+      - name: Upload symbols to Sentry
+        script: |
+          sentry-cli upload-dif --org zendfast --project zendfast-ios build/symbols
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/symbols/**/*
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+
+  android-production:
+    name: Android Production Build
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+      java: 11
+      vars:
+        SUPABASE_ANON_KEY_PROD: $SUPABASE_ANON_KEY_PROD
+        ANDROID_KEYSTORE: $ANDROID_KEYSTORE
+    scripts:
+      - name: Install dependencies
+        script: flutter pub get
+      - name: Run tests
+        script: flutter test
+      - name: Build Android
+        script: |
+          flutter build apk --release \
+            --flavor production \
+            --obfuscate \
+            --split-debug-info=build/symbols \
+            --dart-define=ENV=production
+      - name: Upload symbols to Sentry
+        script: |
+          sentry-cli upload-dif --org zendfast --project zendfast-android build/symbols
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/symbols/**/*
+    publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT
+        track: internal # or 'production' for immediate release
+```
+
+**Triggers:**
+- Push to `main` branch → Production build
+- Pull request → Run tests only
+- Manual trigger → Beta builds
+
+---
+
+### iOS Platform Configuration
+
+**Purpose:** Configure iOS-specific settings (permissions, background modes, deep linking)
+**Implementation:**
+
+**Info.plist additions:**
+```xml
+<key>UIBackgroundModes</key>
+<array>
+  <string>fetch</string>
+  <string>remote-notification</string>
+  <string>processing</string>
+</array>
+
+<key>NSUserTrackingUsageDescription</key>
+<string>We use tracking to improve your experience and show relevant content.</string>
+
+<key>NSHealthUpdateUsageDescription</key>
+<string>Zendfast can sync your fasting data with Apple Health (optional).</string>
+
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>zendfast</string>
+    </array>
+  </dict>
+</array>
+```
+
+**Entitlements (ios/Runner/Runner.entitlements):**
+```xml
+<key>com.apple.developer.associated-domains</key>
+<array>
+  <string>applinks:zendfast.app</string>
+</array>
+```
+
+---
+
+### Android Platform Configuration
+
+**Purpose:** Configure Android-specific settings (permissions, deep linking, background services)
+**Implementation:**
+
+**AndroidManifest.xml additions:**
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+<application>
+  <!-- Deep linking -->
+  <intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data
+      android:scheme="https"
+      android:host="zendfast.app" />
+  </intent-filter>
+
+  <!-- Background service for timer -->
+  <service
+    android:name="com.example.zendfast.TimerBackgroundService"
+    android:exported="false"
+    android:foregroundServiceType="dataSync" />
+</application>
+```
+</deployment-infrastructure>
+
+---
+
+<content-preparation>
+## Content Curation and Asset Requirements
+
+### Motivational Phrases Library
+**Purpose:** Provide diverse motivational content for panic button modal
+**Requirements:**
+- 10-15 unique Spanish motivational quotes covering 3 categories:
+  - **Motivation:** Encourage continuing the fast
+  - **Anti-binge:** Warn about post-fast eating triggers
+  - **Calm:** Breathing and hydration reminders
+
+**Example Content (already seeded in backend-infrastructure section):**
+- "Tu cuerpo está aprendiendo a quemar grasa. Cada minuto cuenta. 💪"
+- "Si comes, querrás comer más. Romper el ayuno dispara más antojos. 🔄"
+- "Respira. Este antojo pasará en 10-15 minutos. 🌬️"
+
+**Delivery:** Pre-populated in Supabase `motivational_phrases` table during backend setup
+
+---
+
+### Learning Content Curation
+**Purpose:** Provide educational resources for learning section
+**Requirements:**
+- 20-30 curated items across 4 categories:
+  - **Basics:** Beginner guides to IF
+  - **Science:** Autophagy, insulin sensitivity research
+  - **Tips:** How to break fasts, hydration strategies
+  - **Success Stories:** User testimonials (videos/articles)
+
+**Content Types:**
+- **Articles:** Original or curated blog posts (stored as URLs)
+- **Videos:** YouTube links to fasting education channels
+- **Studies:** Links to NIH/PubMed research papers
+
+**Quality Standards:**
+- All content reviewed for medical accuracy
+- Videos must be <15 minutes for engagement
+- Articles must be mobile-friendly
+
+**Delivery:** Pre-populated in Supabase `learning_content` table
+
+**Sample YouTube Channels:**
+- Dr. Jason Fung (fasting science)
+- Thomas DeLauer (fasting tips)
+- Autophagy explained channels
+
+---
+
+### Lottie Animation Assets
+**Purpose:** Provide smooth breathing animation for meditation feature
+**Requirements:**
+- **Breathing Animation (4-4-8 pattern):**
+  - Visual representation: expanding/contracting circle or lungs
+  - Timing: 4s inhale → 4s hold → 8s exhale
+  - Loop: Infinite until user stops
+  - File format: Lottie JSON
+  - File size: <100KB for performance
+  - Style: Minimalist, zen-inspired, teal/green colors
+
+**Acceptance Criteria:**
+- Animation runs at 60fps on mid-range Android devices
+- Clear visual cues for inhale/hold/exhale phases
+- Smooth transitions between phases
+
+**Sources:**
+- LottieFiles marketplace (search: "breathing meditation")
+- Custom animation via After Effects (if budget allows)
+- Free alternatives: https://lottiefiles.com/animations/breathing
+
+**Delivery:** Store in `assets/animations/breathing.json` and load via Lottie package
+</content-preparation>
+
+---
+
+<navigation-routing>
+## Navigation and Routing Configuration
+
+### go_router Setup
+**Purpose:** Declarative routing with deep linking support for push notifications
+**Implementation:**
+
+```dart
+// lib/core/routing/app_router.dart
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final appRouterProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authStateProvider);
+
+  return GoRouter(
+    initialLocation: authState.isAuthenticated ? '/home' : '/onboarding',
+    debugLogDiagnostics: true,
+    routes: [
+      // Onboarding & Auth
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+
+      // Main App (Authenticated)
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => const FastingHomeScreen(),
+      ),
+      GoRoute(
+        path: '/panic',
+        builder: (context, state) => const PanicModal(),
+      ),
+      GoRoute(
+        path: '/meditation',
+        builder: (context, state) => const MeditationScreen(),
+      ),
+      GoRoute(
+        path: '/metrics',
+        builder: (context, state) => const MetricsDashboardScreen(),
+      ),
+      GoRoute(
+        path: '/learning',
+        builder: (context, state) => const LearningHomeScreen(),
+        routes: [
+          GoRoute(
+            path: 'article/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return ArticleViewerScreen(contentId: id);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+
+      // Paywall
+      GoRoute(
+        path: '/paywall',
+        builder: (context, state) => const PaywallScreen(),
+      ),
+    ],
+
+    // Deep linking handler
+    redirect: (context, state) {
+      final isAuthenticated = authState.isAuthenticated;
+      final isOnboarding = state.matchedLocation.startsWith('/onboarding');
+
+      // Redirect unauthenticated users to onboarding
+      if (!isAuthenticated && !isOnboarding) {
+        return '/onboarding';
+      }
+
+      // Redirect authenticated users away from onboarding
+      if (isAuthenticated && isOnboarding) {
+        return '/home';
+      }
+
+      return null; // No redirect needed
+    },
+  );
+});
+```
+
+---
+
+### Deep Linking for Push Notifications
+**Purpose:** Open specific screens when user taps push notifications
+**Implementation:**
+
+**OneSignal notification handler:**
+```dart
+// lib/features/notifications/services/notification_service.dart
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:go_router/go_router.dart';
+
+class NotificationService {
+  void initialize(GoRouter router) {
+    OneSignal.Notifications.addClickListener((event) {
+      final data = event.notification.additionalData;
+
+      // Route based on notification type
+      switch (data?['notification_type']) {
+        case 'fast_milestone':
+          router.go('/home');
+          break;
+        case 'hydration_reminder':
+          router.go('/home'); // Open home with water button visible
+          break;
+        case 'learning_content':
+          final contentId = data?['content_id'];
+          router.go('/learning/article/$contentId');
+          break;
+        default:
+          router.go('/home');
+      }
+    });
+  }
+}
+```
+
+**Universal Links (iOS) and App Links (Android):**
+- Configure `apple-app-site-association` file for iOS
+- Configure `assetlinks.json` for Android
+- Host both files on `https://zendfast.app/.well-known/`
+
+**Example:**
+```json
+// apple-app-site-association
+{
+  "applinks": {
+    "apps": [],
+    "details": [{
+      "appID": "TEAM_ID.com.zendfast.app",
+      "paths": ["/open/*", "/fast/*", "/learning/*"]
+    }]
+  }
+}
+```
+
+---
+
+### Route Guards
+**Purpose:** Protect premium routes and enforce authentication
+**Implementation:**
+
+```dart
+// lib/core/routing/route_guards.dart
+extension RouteGuards on GoRouter {
+  void guardPremiumRoute(BuildContext context, bool isPremium) {
+    if (!isPremium) {
+      context.go('/paywall');
+    }
+  }
+}
+
+// Usage in route builder:
+GoRoute(
+  path: '/advanced-metrics',
+  builder: (context, state) {
+    final isPremium = ref.read(isPremiumProvider);
+    router.guardPremiumRoute(context, isPremium);
+    return const AdvancedMetricsScreen();
+  },
+),
+```
+</navigation-routing>
+
+---
+
+<advanced-testing>
+## Advanced Testing Requirements
+
+### Performance Testing
+**Purpose:** Ensure app meets performance benchmarks on target devices
+**Requirements:**
+
+**Timer Accuracy Test:**
+```dart
+// test/integration/timer_accuracy_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:zendfast/features/fasting/services/timer_service.dart';
+
+void main() {
+  testWidgets('Timer accuracy within ±5 seconds over 16 hours', (tester) async {
+    final timerService = TimerService();
+    final stopwatch = Stopwatch();
+
+    // Start timer
+    stopwatch.start();
+    await timerService.startFast(durationMinutes: 16 * 60);
+
+    // Fast-forward time (simulated)
+    await tester.pumpAndSettle(const Duration(hours: 16));
+
+    // Verify accuracy
+    final elapsed = stopwatch.elapsed;
+    final timerElapsed = timerService.elapsedDuration;
+    final diff = (elapsed - timerElapsed).abs();
+
+    expect(diff.inSeconds, lessThan(5), reason: 'Timer drift must be <5s');
+  });
+}
+```
+
+**Battery Consumption Test:**
+- Monitor battery drain during 16-hour background fast
+- Acceptance: <5% battery drain over 16 hours with screen off
+- Test on: Pixel 6, iPhone 13
+
+**App Launch Time:**
+- Acceptance: Cold start <2 seconds on mid-range devices
+- Test on: Pixel 6, iPhone 13
+- Tool: Flutter DevTools Timeline
+
+---
+
+### Accessibility Testing (WCAG 2.1 AA Compliance)
+**Purpose:** Ensure app is usable by users with disabilities
+**Requirements:**
+
+**Color Contrast:**
+- All text must meet 4.5:1 contrast ratio
+- Tool: Accessibility Scanner (Android), Accessibility Inspector (iOS)
+
+**Touch Targets:**
+- Minimum 44×44 dp for all interactive elements
+- Test: Manual inspection of all buttons
+
+**Semantic Labels:**
+- All widgets must have meaningful Semantics labels for screen readers
+```dart
+// Example:
+Semantics(
+  label: 'Start fasting timer',
+  button: true,
+  child: ElevatedButton(
+    onPressed: _startFast,
+    child: const Text('Start Fast'),
+  ),
+)
+```
+
+**Screen Reader Testing:**
+- Test with TalkBack (Android) and VoiceOver (iOS)
+- Verify all critical flows are navigable via screen reader
+
+---
+
+### Network Simulation Testing
+**Purpose:** Verify offline-first architecture works correctly
+**Requirements:**
+
+**Offline Mode Test:**
+```dart
+// test/integration/offline_mode_test.dart
+testWidgets('App functions offline for core features', (tester) async {
+  // Disable network
+  await tester.binding.setSurfaceSize(const Size(1080, 1920));
+  await tester.pumpWidget(const MyApp());
+
+  // Simulate offline
+  // (Use mock network interceptor to block all requests)
+
+  // Verify timer works
+  await tester.tap(find.text('Start Fast'));
+  await tester.pumpAndSettle();
+  expect(find.text('Fasting'), findsOneWidget);
+
+  // Verify panic button works
+  await tester.tap(find.byType(PanicButton));
+  await tester.pumpAndSettle();
+  expect(find.text('motivational phrase'), findsOneWidget);
+
+  // Verify hydration logging works
+  await tester.tap(find.byType(WaterButton));
+  await tester.pumpAndSettle();
+  expect(find.text('Water logged'), findsOneWidget);
+});
+```
+
+**Sync Recovery Test:**
+- Simulate network failure during sync
+- Verify data queued locally and retried on reconnect
+- Acceptance: No data loss, exponential backoff retry
+
+---
+
+### Real Device Testing Matrix
+**Purpose:** Ensure compatibility across diverse devices
+**Requirements:**
+
+**Minimum Test Devices:**
+- **iOS:** iPhone SE (2020), iPhone 13, iPhone 15 Pro
+- **Android:** Pixel 6 (Android 12), Samsung Galaxy S21 (Android 13), OnePlus 9 (Android 11)
+
+**Test Scenarios:**
+- App kill during active fast → timer resumes correctly
+- Low battery (<10%) → background service continues
+- Notification permissions denied → graceful fallback
+- Multiple device sync → conflict resolution works
+</advanced-testing>
+
+---
+
+<store-preparation>
+## App Store and Play Store Preparation
+
+### App Store Assets (iOS)
+**Purpose:** Prepare all required assets for App Store submission
+**Requirements:**
+
+**App Store Screenshots (Required Sizes):**
+- 6.5" iPhone (1284×2778): 3-5 screenshots
+- 5.5" iPhone (1242×2208): 3-5 screenshots
+- 12.9" iPad Pro (2048×2732): 3-5 screenshots (optional)
+
+**Screenshot Content:**
+1. Timer screen showing active fast
+2. Panic button modal with motivational quote
+3. Metrics dashboard with streak
+4. Learning content library
+5. Profile/settings screen
+
+**App Preview Video (Optional but Recommended):**
+- 15-30 seconds showcasing core features
+- Format: H.264, 1080p
+- Show: Starting a fast → panic button → completing fast → metrics update
+
+**App Icon:**
+- 1024×1024 PNG (no alpha channel)
+- Design: Zen-inspired, teal/green palette, minimalist
+
+**App Store Description:**
+```
+Transform your fasting journey with Zendfast - the only app with emotional support during cravings.
+
+✨ KEY FEATURES:
+• Panic Button: Guided meditation when cravings hit
+• Smart Timer: Background tracking that never fails
+• Hydration Tracker: Auto-calculated water goals
+• Learning Library: Science-backed fasting education
+• Metrics Dashboard: Track streaks and progress
+
+🎯 PERFECT FOR:
+• Beginners: 48-hour detox protocol for easy start
+• Experienced fasters: Advanced analytics and custom plans
+• Health enthusiasts: Educational content on autophagy
+
+🔬 BACKED BY SCIENCE:
+Learn about intermittent fasting benefits: fat loss, cellular repair, insulin sensitivity.
+
+💎 PREMIUM FEATURES:
+• Custom fasting plans
+• Advanced analytics
+• Ad-free experience
+
+Start your fasting journey today. Download Zendfast now!
+```
+
+**Keywords (max 100 characters):**
+"intermittent fasting, IF tracker, autophagy, meditation, fasting timer"
+
+---
+
+### Play Store Assets (Android)
+**Purpose:** Prepare all required assets for Google Play submission
+**Requirements:**
+
+**Play Store Screenshots (Required Sizes):**
+- Phone (1080×1920): 2-8 screenshots
+- 7" Tablet (1920×1200): 2-8 screenshots (optional)
+- 10" Tablet (2560×1600): 2-8 screenshots (optional)
+
+**Feature Graphic:**
+- 1024×500 PNG
+- Design: Showcase app name + key visual (timer + meditation)
+
+**Promotional Video (YouTube URL):**
+- Same as App Store preview video
+- Upload to YouTube and link in Play Console
+
+**Short Description (max 80 characters):**
+"Fasting tracker with panic button for cravings & guided meditation"
+
+**Full Description (max 4000 characters):**
+```
+🌟 ZENDFAST - INTERMITTENT FASTING WITH EMOTIONAL SUPPORT
+
+Transform your fasting journey with the only app that helps you overcome cravings in real-time.
+
+🆘 PANIC BUTTON (GAME-CHANGER)
+Feeling hungry? Tap the Panic Button for:
+✓ Motivational quotes to stay strong
+✓ 4-4-8 guided breathing meditation
+✓ Anti-binge tips to prevent overeating
+
+⏱️ SMART FASTING TIMER
+• Background tracking (works even when app is closed)
+• 6 predefined plans: 12/12, 14/10, 16/8, 18/6, 24h, 48h
+• Custom plans for advanced users
+
+💧 HYDRATION TRACKER
+• Auto-calculated water goals based on your weight
+• One-tap logging
+• Smart reminders
+
+📊 PROGRESS METRICS
+• Current streak (consecutive fasting days)
+• Total hours fasted
+• Completion rate
+• Visual calendar heatmap
+
+📚 LEARNING LIBRARY
+• Science-backed articles on autophagy
+• Video tutorials on fasting best practices
+• Success stories from real users
+
+🥩 48-HOUR DETOX PLAN (FOR BEGINNERS)
+Optional carnivore-style prep to reduce sugar cravings before your first fast.
+
+💎 PREMIUM FEATURES
+• Unlimited custom fasting plans
+• Detailed analytics and insights
+• Ad-free experience
+• Priority support
+
+🔬 BACKED BY SCIENCE
+Intermittent fasting benefits:
+• Fat loss and metabolic health
+• Cellular repair (autophagy)
+• Improved insulin sensitivity
+• Mental clarity
+
+🌍 MADE FOR YOU
+• Offline-first (works without internet)
+• Minimalist, zen-inspired design
+• Available in Spanish (more languages coming soon)
+
+Start your transformation today. Download Zendfast now!
+
+---
+
+DISCLAIMER: Zendfast is a wellness tool, not medical advice. Consult your doctor before starting any fasting regimen, especially if you have medical conditions.
+```
+
+---
+
+### Legal Documentation
+**Purpose:** Provide required privacy policy and terms of service
+**Requirements:**
+
+**Privacy Policy (GDPR/CCPA Compliant):**
+Must cover:
+- What data is collected (email, weight, fasting sessions, device info)
+- How data is used (app functionality, analytics, push notifications)
+- Third-party services (Supabase, OneSignal, Superwall, Sentry)
+- User rights (data export, deletion, opt-out)
+- Data retention (90 days for analytics, indefinite for profiles)
+
+**Terms of Service:**
+Must cover:
+- Medical disclaimer (app is not medical advice)
+- Subscription terms (pricing, auto-renewal, cancellation)
+- User responsibilities (accurate health info, consult doctor)
+- Liability limitations
+
+**Hosting:**
+- Host both documents on `https://zendfast.app/privacy` and `https://zendfast.app/terms`
+- Link in app settings and onboarding flow
+- Update version timestamp on each revision
+
+**Acceptance Flow:**
+- Users must accept ToS and Privacy Policy during onboarding
+- Checkbox with "I agree to the Terms of Service and Privacy Policy"
+- Store acceptance timestamp in `user_profiles` table
+</store-preparation>
+
+---
+
+<data-migrations>
+## Data Migration and Versioning Strategy
+
+### Isar Database Migrations
+**Purpose:** Handle schema changes in local Isar database without data loss
+**Requirements:**
+
+**Migration Strategy:**
+```dart
+// lib/core/database/database_service.dart
+import 'package:isar/isar.dart';
+
+class DatabaseService {
+  static const int currentSchemaVersion = 2;
+
+  Future<Isar> initializeDatabase() async {
+    final dir = await getApplicationDocumentsDirectory();
+
+    final isar = await Isar.open(
+      [FastingSessionSchema, UserProfileSchema, HydrationLogSchema],
+      directory: dir.path,
+      inspector: true,
+      name: 'zendfast_db',
+    );
+
+    // Check if migration needed
+    final prefs = await SharedPreferences.getInstance();
+    final installedVersion = prefs.getInt('db_schema_version') ?? 1;
+
+    if (installedVersion < currentSchemaVersion) {
+      await _runMigrations(isar, installedVersion, currentSchemaVersion);
+      await prefs.setInt('db_schema_version', currentSchemaVersion);
+    }
+
+    return isar;
+  }
+
+  Future<void> _runMigrations(Isar isar, int from, int to) async {
+    for (int version = from + 1; version <= to; version++) {
+      print('Running migration to version $version');
+
+      switch (version) {
+        case 2:
+          // Example: Add 'planType' field to existing sessions
+          await _migrateToV2(isar);
+          break;
+        // Add future migrations here
+      }
+    }
+  }
+
+  Future<void> _migrateToV2(Isar isar) async {
+    // Read all sessions, add default planType, write back
+    await isar.writeTxn(() async {
+      final sessions = await isar.fastingSessions.where().findAll();
+      for (final session in sessions) {
+        session.planType ??= '16/8'; // Default value
+      }
+      await isar.fastingSessions.putAll(sessions);
+    });
+  }
+}
+```
+
+**Testing Migrations:**
+- Create test database with old schema
+- Run migration
+- Verify all data intact and new fields populated
+- Automate with unit tests
+
+---
+
+### Supabase Database Migrations
+**Purpose:** Version control and track schema changes in PostgreSQL
+**Requirements:**
+
+**Migration Files (SQL):**
+```sql
+-- supabase/migrations/20250101000000_initial_schema.sql
+CREATE TABLE user_profiles (...);
+CREATE TABLE fasting_sessions (...);
+-- RLS policies, indexes, etc.
+
+-- supabase/migrations/20250115000000_add_metrics_table.sql
+CREATE TABLE user_metrics (...);
+CREATE TRIGGER on_session_complete ...;
+```
+
+**Version Control:**
+- Store all migrations in `supabase/migrations/` directory
+- Timestamp format: `YYYYMMDDHHMMSS_description.sql`
+- Apply migrations via Supabase CLI:
+  ```bash
+  supabase db push
+  ```
+
+**Rollback Strategy:**
+- Create corresponding rollback files: `YYYYMMDDHHMMSS_description_rollback.sql`
+- Test rollbacks in development environment
+- Never delete old migrations (append-only log)
+
+---
+
+### Data Export and Import
+**Purpose:** Support user data portability (GDPR requirement) and backup/restore
+**Implementation:**
+
+**Export User Data:**
+```dart
+// lib/features/profile/services/data_export_service.dart
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class DataExportService {
+  Future<Map<String, dynamic>> exportUserData(String userId) async {
+    // Call Supabase Edge Function
+    final response = await Supabase.instance.client.functions.invoke(
+      'backup-data',
+      body: {'user_id': userId},
+    );
+
+    final exportData = response.data as Map<String, dynamic>;
+
+    // Save to file
+    final file = File('${await getDownloadsDirectory()}/zendfast_export.json');
+    await file.writeAsString(jsonEncode(exportData));
+
+    return exportData;
+  }
+}
+```
+
+**Import User Data (for account transfer):**
+```dart
+Future<void> importUserData(String filePath) async {
+  final file = File(filePath);
+  final jsonString = await file.readAsString();
+  final data = jsonDecode(jsonString) as Map<String, dynamic>;
+
+  // Write to Isar
+  final isar = await DatabaseService.instance.isar;
+  await isar.writeTxn(() async {
+    await isar.fastingSessions.importJson(data['fasting_sessions']);
+    await isar.hydrationLogs.importJson(data['hydration_logs']);
+  });
+
+  // Sync to Supabase
+  await SyncManager.instance.fullSync();
+}
+```
+</data-migrations>
+
+---
+
+<ui-enhancements>
+## UI Enhancement Requirements
+
+### Dark/Light Theme Toggle
+**Purpose:** Provide user choice for theme preference with system sync
+**Implementation:**
+
+**Theme Provider:**
+```dart
+// lib/core/theme/theme_provider.dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+enum ThemeMode { light, dark, system }
+
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+  return ThemeModeNotifier();
+});
+
+class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  ThemeModeNotifier() : super(ThemeMode.system) {
+    _loadThemePreference();
+  }
+
+  Future<void> _loadThemePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeName = prefs.getString('theme_mode') ?? 'system';
+    state = ThemeMode.values.firstWhere((e) => e.name == themeName);
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    state = mode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme_mode', mode.name);
+  }
+}
+```
+
+**Theme Application:**
+```dart
+// lib/main.dart
+class MyApp extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
+    return MaterialApp.router(
+      theme: ZendfastTheme.lightTheme,
+      darkTheme: ZendfastTheme.darkTheme,
+      themeMode: themeMode == ThemeMode.system
+        ? ThemeMode.system
+        : (themeMode == ThemeMode.dark ? ThemeMode.dark : ThemeMode.light),
+      routerConfig: ref.watch(appRouterProvider),
+    );
+  }
+}
+```
+
+**Theme Toggle UI:**
+```dart
+// lib/features/profile/widgets/theme_toggle.dart
+class ThemeToggle extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeModeProvider);
+
+    return SegmentedButton<ThemeMode>(
+      segments: const [
+        ButtonSegment(value: ThemeMode.light, label: Text('Light'), icon: Icon(Icons.wb_sunny)),
+        ButtonSegment(value: ThemeMode.dark, label: Text('Dark'), icon: Icon(Icons.nightlight)),
+        ButtonSegment(value: ThemeMode.system, label: Text('System'), icon: Icon(Icons.settings)),
+      ],
+      selected: {currentTheme},
+      onSelectionChanged: (Set<ThemeMode> selected) {
+        ref.read(themeModeProvider.notifier).setThemeMode(selected.first);
+      },
+    );
+  }
+}
+```
+
+**Dark Theme Colors:**
+```dart
+// lib/core/theme/zendfast_theme.dart
+static ThemeData get darkTheme {
+  return ThemeData.dark().copyWith(
+    colorScheme: const ColorScheme.dark(
+      primary: ZendfastColors.teal,
+      secondary: ZendfastColors.green,
+      surface: Color(0xFF1E1E1E),
+      background: Color(0xFF121212),
+      error: Color(0xFFCF6679),
+    ),
+    scaffoldBackgroundColor: const Color(0xFF121212),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1E1E1E),
+      elevation: 0,
+    ),
+  );
+}
+```
+
+**Acceptance Criteria:**
+- Theme toggle persists across app restarts
+- System theme detection works on iOS and Android
+- All screens readable in both light and dark modes
+- Color contrast meets WCAG 2.1 AA in both themes
+</ui-enhancements>
