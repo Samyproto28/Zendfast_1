@@ -1,0 +1,31 @@
+# Task ID: 34
+# Title: Implementar deep linking para notificaciones
+# Status: pending
+# Dependencies: 33
+# Priority: low
+# Description: Configurar navigation directa a pantallas específicas cuando usuario tapa notificaciones push
+# Details:
+Configurar go_router con routes para deep links. Implementar NotificationHandler que parse notification data y route appropriately: fast_milestone -> /home, hydration_reminder -> /home (focus water button), learning_content -> /learning/article/:id. Configurar Universal Links (iOS) y App Links (Android) con domain verification. Host apple-app-site-association y assetlinks.json en https://zendfast.app/.well-known/.
+
+# Test Strategy:
+Probar deep links funcionan desde notifications, verificar Universal/App Links setup, validar routing correcto
+
+# Subtasks:
+## 1. Configurar go_router con rutas para deep links [pending]
+### Dependencies: None
+### Description: Configurar el sistema de routing de go_router para manejar enlaces profundos y navegación directa desde notificaciones push
+### Details:
+Extender la configuración actual de go_router para incluir rutas específicas para deep links: /home para fast_milestone, /home con parámetro focus para hydration_reminder, y /learning/article/:id para learning_content. Modificar el router principal para detectar y parsear parámetros de deep linking. Implementar fallbacks para rutas inválidas que redirijan al home. Configurar route guards si es necesario para verificar autenticación antes de navegar.
+
+## 2. Implementar NotificationHandler para parsing de datos [pending]
+### Dependencies: 34.1
+### Description: Desarrollar la lógica para interceptar y procesar notificaciones push, extrayendo datos relevantes para routing
+### Details:
+Crear NotificationHandler service que intercepte notificaciones cuando la app se abre desde notification tap. Parsear el payload de la notificación para extraer tipo (fast_milestone, hydration_reminder, learning_content) y datos adicionales como article_id. Implementar mapping entre tipos de notificación y rutas correspondientes. Manejar casos edge como datos malformados o tipos desconocidos. Integrar con el router configurado en subtask anterior para ejecutar navegación apropiada.
+
+## 3. Configurar Universal Links y App Links con verificación de dominio [pending]
+### Dependencies: 34.2
+### Description: Implementar Universal Links para iOS y App Links para Android con verificación de dominio en zendfast.app
+### Details:
+Configurar Universal Links en iOS agregando associated domains en capabilities y creando apple-app-site-association file. Para Android, configurar App Links en AndroidManifest.xml con intent filters y crear assetlinks.json. Hostear ambos archivos en https://zendfast.app/.well-known/ directory. Implementar domain verification process para ambas plataformas. Configurar URL schemes que coincidan con las rutas definidas en go_router. Testear que links externos abren la app correctamente.
+

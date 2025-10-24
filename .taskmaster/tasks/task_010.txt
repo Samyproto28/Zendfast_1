@@ -1,0 +1,31 @@
+# Task ID: 10
+# Title: Desarrollar pantalla principal FastingHomeScreen
+# Status: pending
+# Dependencies: 8, 9, 1
+# Priority: high
+# Description: Crear UI principal mostrando timer grande, progreso del ayuno, botones de control y estado actual
+# Details:
+Crear FastingHomeScreen con timer central (48sp, bold, color dinámico según estado). Mostrar progress ring circular o linear bar. Implementar botones Start/Stop/Pause con estados visuales claros. Mostrar información contextual: tiempo transcurrido/restante, fase actual (ayuno/comida), próximo hito. Usar Riverpod fastingTimerProvider para estado reactivo. Agregar animaciones suaves (250ms transitions).
+
+# Test Strategy:
+Probar UI actualiza en tiempo real, verificar botones responden correctamente, validar animaciones fluidas 60fps
+
+# Subtasks:
+## 1. Implementar componente de timer central con diseño visual dinámico [pending]
+### Dependencies: None
+### Description: Crear el componente principal del timer que mostrará el tiempo transcurrido/restante con tipografía grande y colores que cambien según el estado del ayuno
+### Details:
+Implementar widget de timer central con texto de 48sp en fuente bold. Aplicar colores dinámicos según estado: verde para ayuno activo, azul para ventana de comida, gris para pausado. Mostrar formato hh:mm:ss. Integrar con fastingTimerProvider de Riverpod para actualizaciones reactivas en tiempo real. Usar AnimatedDefaultTextStyle para transiciones suaves de color.
+
+## 2. Desarrollar indicador de progreso circular y botones de control [pending]
+### Dependencies: 10.1
+### Description: Crear el anillo de progreso circular alrededor del timer y implementar los botones de Start/Stop/Pause con estados visuales claros
+### Details:
+Implementar CircularProgressIndicator customizado que muestre progreso del ayuno actual. Crear botones de control con estados visuales distintos: Start (verde), Pause (amarillo), Stop (rojo). Usar IconButton con Material 3 design y elevated button style. Agregar haptic feedback en button presses. Implementar lógica para mostrar/ocultar botones según estado actual.
+
+## 3. Integrar información contextual y animaciones de transición [pending]
+### Dependencies: 10.1, 10.2
+### Description: Añadir información contextual sobre la fase actual del ayuno, próximos hitos y implementar animaciones suaves para todas las transiciones
+### Details:
+Mostrar información contextual: fase actual (ayuno/ventana de comida), tiempo transcurrido vs restante, próximo hito temporal. Crear widgets informativos con Typography.bodyMedium. Implementar AnimatedSwitcher y AnimatedContainer para transiciones de 250ms. Agregar subtle micro-interactions y state changes animations. Usar Curves.easeInOut para transiciones naturales.
+

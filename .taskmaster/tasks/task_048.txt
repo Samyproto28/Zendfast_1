@@ -1,0 +1,49 @@
+# Task ID: 48
+# Title: Configurar esquemas de base de datos Supabase con RLS
+# Status: pending
+# Dependencies: 3
+# Priority: high
+# Description: Crear tablas, policies, triggers y seed data para backend completo con seguridad row-level
+# Details:
+Crear tablas: user_profiles, fasting_sessions, hydration_logs, learning_content, motivational_phrases, analytics_events, user_metrics. Configurar RLS policies: users access solo own data, public read para content tables. Crear triggers: auto-update metrics on session complete, cleanup old analytics. Seed data: fasting plans, learning content, motivational phrases español. Setup database migrations con versioning.
+
+# Test Strategy:
+Verificar RLS policies bloquean unauthorized access, probar triggers funcionan, validar seed data correcta
+
+# Subtasks:
+## 1. Diseñar esquemas de base de datos principales [pending]
+### Dependencies: None
+### Description: Crear esquemas SQL para todas las tablas principales del sistema con tipos de datos, constrainsts y relaciones apropiadas
+### Details:
+Crear esquemas SQL para user_profiles (id, user_id, weight_kg, height_cm, daily_hydration_goal, created_at, updated_at), fasting_sessions (id, user_id, start_time, end_time, duration_minutes, plan_type, completed, interrupted, created_at), hydration_logs (id, user_id, amount_ml, timestamp, created_at), learning_content (id, title, content_type, category, content_url, is_premium, order_index, created_at), motivational_phrases (id, phrase_text, category, language, created_at), analytics_events (id, user_id, event_name, event_data, timestamp, created_at), user_metrics (id, user_id, total_fasts, total_duration_hours, streak_days, last_fast_date, created_at, updated_at). Incluir primary keys, foreign keys, indexes y constraints de validación.
+
+## 2. Configurar políticas de seguridad RLS [pending]
+### Dependencies: 48.1
+### Description: Implementar Row Level Security policies para controlar acceso a datos por usuario y contenido público
+### Details:
+Habilitar RLS en todas las tablas. Crear políticas para user_profiles, fasting_sessions, hydration_logs, user_metrics: usuarios solo pueden acceder a sus propios datos usando auth.uid() = user_id. Para learning_content y motivational_phrases: acceso público de lectura para contenido no premium, acceso premium solo para usuarios autenticados con plan activo. Para analytics_events: solo insert permitido para propietarios. Configurar políticas de admin para operaciones de mantenimiento.
+
+## 3. Crear triggers automáticos para métricas [pending]
+### Dependencies: 48.1
+### Description: Implementar triggers de base de datos para actualizar automáticamente métricas de usuario y limpieza de datos
+### Details:
+Crear trigger update_user_metrics_on_fast_complete que se ejecute después de UPDATE en fasting_sessions cuando completed=true: incrementar total_fasts, sumar duration a total_duration_hours, actualizar streak_days y last_fast_date en user_metrics. Crear trigger cleanup_old_analytics que se ejecute diariamente para eliminar analytics_events más antiguos de 90 días. Crear trigger update_timestamps que actualice updated_at en user_profiles y user_metrics automáticamente.
+
+## 4. Configurar sistema de migraciones [pending]
+### Dependencies: None
+### Description: Establecer estructura de migraciones versionadas para manejo de cambios de esquema en producción
+### Details:
+Crear directorio supabase/migrations/ con archivos numerados secuencialmente (001_initial_schema.sql, 002_add_rls_policies.sql, etc.). Configurar Supabase CLI para manejar migraciones automáticamente. Crear scripts para aplicar migraciones: up.sql para aplicar cambios, down.sql para rollback. Implementar migration_history table para tracking de versiones aplicadas. Documentar proceso de deployment de migraciones en README.
+
+## 5. Poblar base de datos con datos iniciales [pending]
+### Dependencies: 48.1, 48.2
+### Description: Insertar datos semilla para planes de ayuno, contenido educativo y frases motivacionales en español
+### Details:
+Crear seed data para learning_content: artículos sobre beneficios del ayuno intermitente, guías de hidratación, técnicas de mindfulness (mínimo 20 artículos). Poblar motivational_phrases con 100+ frases motivacionales en español categorizadas por momento (inicio, durante, finalización ayuno). Crear fasting plans predefinidos: 16:8, 18:6, 20:4, 24h con descripciones y recomendaciones. Insertar contenido premium marcado apropiadamente. Usar archivos CSV/JSON para facilitar mantenimiento.
+
+## 6. Testing exhaustivo de seguridad y funcionalidad [pending]
+### Dependencies: 48.2, 48.3, 48.5
+### Description: Realizar pruebas completas de políticas RLS, triggers y integridad de datos
+### Details:
+Crear suite de tests para validar RLS policies: intentar acceso no autorizado entre usuarios, verificar escalación de privilegios no es posible, probar bypass de seguridad. Testear triggers con datos reales: completar múltiples ayunos y verificar métricas, probar edge cases como interrupciones. Realizar load testing con 1000+ registros simultáneos. Usar herramientas como pgTAP para tests automatizados de base de datos. Documentar todos los casos de prueba y resultados.
+

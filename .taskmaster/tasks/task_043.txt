@@ -1,0 +1,31 @@
+# Task ID: 43
+# Title: Preparar assets para App Store (iOS)
+# Status: pending
+# Dependencies: None
+# Priority: low
+# Description: Crear screenshots, iconos, video preview y descripción optimizada para App Store submission
+# Details:
+Crear 5 screenshots por device size requerido (6.5" iPhone, 5.5" iPhone, iPad opcional): timer activo, panic modal, metrics dashboard, learning content, profile. Crear app icon 1024×1024 PNG zen-inspired. Grabar app preview video 15-30s mostrando core flow. Escribir App Store description optimizada con keywords 'intermittent fasting, IF tracker, meditation'. Preparar keywords string <100 chars.
+
+# Test Strategy:
+Verificar screenshots cumplen guidelines App Store, probar video preview <30s, validar description compelling
+
+# Subtasks:
+## 1. Crear screenshots para diferentes tamaños de dispositivos iOS [pending]
+### Dependencies: None
+### Description: Generar capturas de pantalla optimizadas para App Store mostrando las funcionalidades principales de la aplicación
+### Details:
+Crear 5 screenshots por cada tamaño de dispositivo requerido (6.5" iPhone, 5.5" iPhone, iPad opcional) mostrando: timer activo, panic modal, metrics dashboard, learning content, y profile. Usar herramientas como Simulator de Xcode o dispositivos reales para capturar pantallas de alta calidad. Asegurar que las capturas muestren la interfaz completa sin elementos debug y con datos realistas.
+
+## 2. Diseñar icono de aplicación y crear video preview [pending]
+### Dependencies: None
+### Description: Crear el icono oficial de la aplicación y producir un video promocional para el App Store
+### Details:
+Diseñar app icon de 1024×1024 PNG con inspiración zen, utilizando la paleta de colores de la aplicación (teal/green). Grabar app preview video de 15-30 segundos mostrando el flujo principal: abrir app, iniciar timer, mostrar breathing animation, y dashboard de métricas. Usar herramientas como QuickTime para grabación y herramientas de edición para optimizar el video.
+
+## 3. Escribir descripción y metadata optimizada para App Store [pending]
+### Dependencies: None
+### Description: Crear contenido de marketing optimizado para mejorar la visibilidad en App Store
+### Details:
+Escribir App Store description optimizada incluyendo keywords relevantes como 'intermittent fasting', 'IF tracker', 'meditation'. Crear título atractivo y subtitle que resalten los beneficios principales. Preparar keywords string de menos de 100 caracteres para maximizar discoverabilidad. Incluir información sobre funcionalidades clave, beneficios del ayuno intermitente, y características de meditación.
+

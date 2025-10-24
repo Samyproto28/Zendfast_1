@@ -1,0 +1,31 @@
+# Task ID: 22
+# Title: Crear MetricsService para cálculo de estadísticas
+# Status: pending
+# Dependencies: 7
+# Priority: medium
+# Description: Implementar servicio que calcule streak, horas totales, tasa de completación y análisis de patrones del usuario
+# Details:
+Crear MetricsService con métodos: calculateStreak(), getTotalHours(), getCompletionRate(), getLongestFast(), getPatterns(). Streak = días consecutivos con ayunos completados. Completion rate = completed sessions / total sessions. Patterns = análisis best days/times para start fasts. Usar Isar queries optimizadas con indices. Cache calculations en user_metrics table para performance.
+
+# Test Strategy:
+Verificar cálculos matemáticos correctos, probar performance con large datasets, validar cache updates apropiadamente
+
+# Subtasks:
+## 1. Crear estructura base del MetricsService con métodos principales [pending]
+### Dependencies: None
+### Description: Implementar la clase MetricsService con todos los métodos principales definidos y su estructura básica
+### Details:
+Crear archivo metrics_service.dart en lib/services/. Definir clase MetricsService con métodos calculateStreak(), getTotalHours(), getCompletionRate(), getLongestFast(), getPatterns(). Implementar constructor que reciba dependencias necesarias como FastingRepository e Isar database. Crear interfaces/tipos para responses de cada método. Establecer documentación básica para cada método explicando qué calculan y qué retornan.
+
+## 2. Implementar lógica de cálculo para streak y métricas temporales [pending]
+### Dependencies: 22.1
+### Description: Desarrollar algoritmos de cálculo para streak de días consecutivos, horas totales y ayuno más largo
+### Details:
+Implementar calculateStreak() que consulte ayunos completados ordenados por fecha y calcule días consecutivos actuales. Implementar getTotalHours() sumando duración de todas las sesiones completadas. Implementar getLongestFast() encontrando sesión con mayor duración. Usar Isar queries optimizadas con filtros por fechas y estados. Manejar edge cases como ayunos que cruzan medianoche y diferentes zonas horarias.
+
+## 3. Implementar análisis de patrones y sistema de cache [pending]
+### Dependencies: 22.2
+### Description: Desarrollar cálculo de tasa de completación, análisis de patrones de usuario y sistema de cache para performance
+### Details:
+Implementar getCompletionRate() calculando completed sessions / total sessions con filtros temporales. Implementar getPatterns() analizando mejores días de semana y horas para iniciar ayunos basado en historical data. Crear tabla user_metrics en Isar para cache de cálculos pesados con timestamps. Implementar invalidación de cache cuando se agregan nuevos datos. Optimizar queries con índices apropiados en fechas y user_id.
+

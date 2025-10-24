@@ -1,0 +1,31 @@
+# Task ID: 36
+# Title: Configurar Sentry para monitoreo de errores
+# Status: pending
+# Dependencies: None
+# Priority: low
+# Description: Integrar Sentry SDK para tracking automático de crashes, errores y performance monitoring en producción
+# Details:
+Instalar sentry_flutter ^7.0.0. Configurar DSN y environment (dev/prod). Wrap runApp en Sentry.init(). Implementar custom error boundaries para graceful error handling. Setup source maps upload para readable stack traces. Configure performance monitoring para detectar slow frames, large widget builds. Implement user context attachment (user ID, subscription status). Setup release tracking.
+
+# Test Strategy:
+Verificar errores se reportan a Sentry, probar source maps funcionan, validar performance monitoring activo
+
+# Subtasks:
+## 1. Configurar setup inicial de Sentry SDK [pending]
+### Dependencies: None
+### Description: Instalar Sentry Flutter SDK, configurar DSN y environments, y realizar integración básica
+### Details:
+Instalar sentry_flutter ^7.0.0 en pubspec.yaml. Crear archivo sentry_config.dart para manejar DSN y environment variables (development/production). Configurar Sentry.init() wrapper alrededor de runApp() en main.dart. Implementar custom error boundaries para graceful error handling. Configurar diferentes DSN para dev/prod environments usando flavors.
+
+## 2. Configurar source maps y contexto de usuario [pending]
+### Dependencies: 36.1
+### Description: Implementar upload de source maps para stack traces legibles y configurar contexto de usuario
+### Details:
+Setup source maps upload automático para builds de release que permita readable stack traces en Sentry. Implementar user context attachment incluyendo user ID, subscription status, y metadata relevante. Configurar Sentry tags para categorizar errores por tipo de usuario (free/premium). Implementar breadcrumbs para tracking de user journey antes del error.
+
+## 3. Configurar performance monitoring y release tracking [pending]
+### Dependencies: 36.1
+### Description: Implementar monitoreo de performance y configurar tracking de releases automático
+### Details:
+Configure performance monitoring para detectar slow frames, large widget builds, y slow navigation transitions. Implementar custom performance transactions para operaciones críticas como login, data sync, y screen loads. Setup release tracking automático con CI/CD integration para trackear cuando nuevas versiones causan regressions. Configurar alertas automáticas para performance degradation y crash rate increases.
+

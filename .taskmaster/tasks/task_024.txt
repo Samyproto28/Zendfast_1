@@ -1,0 +1,31 @@
+# Task ID: 24
+# Title: Implementar calendario heatmap para historial visual
+# Status: pending
+# Dependencies: 23
+# Priority: low
+# Description: Crear vista de calendario que muestre días con ayunos completados, interrumpidos o sin actividad
+# Details:
+Crear CalendarHeatmapWidget usando table_calendar ^3.0.9 o custom implementation. Color coding: verde para completed fasts, naranja para interrupted, gris para no sessions. Implementar tap en day para mostrar session details en modal. Agregar legend explicando colors. Navigation entre meses. Load data efficiently para date ranges. Considerar different intensities basado en duration/success.
+
+# Test Strategy:
+Verificar colores reflejan datos correctamente, probar navigation meses funciona, validar performance con year data
+
+# Subtasks:
+## 1. Implementar estructura básica del CalendarHeatmapWidget [pending]
+### Dependencies: None
+### Description: Crear el widget base del calendario heatmap con navegación entre meses y estructura de datos para los ayunos
+### Details:
+Crear CalendarHeatmapWidget usando table_calendar ^3.0.9 o implementación custom. Configurar navigation entre meses con botones prev/next. Definir estructura de datos para mapear dates a session states. Implementar básico calendar layout sin color coding aún. Configurar calendar configuration con firstDay, lastDay, y calendarFormat apropiados.
+
+## 2. Implementar sistema de color coding para estados de ayuno [pending]
+### Dependencies: 24.1
+### Description: Desarrollar la lógica de colores para mostrar visualmente los diferentes estados de ayuno en cada día del calendario
+### Details:
+Implementar color coding system: verde para completed fasts, naranja para interrupted, gris para no sessions. Crear helper methods para determinar color basado en session data. Considerar diferentes intensities basado en duration/success rate. Implementar efficient data loading para date ranges para evitar performance issues. Crear CalendarDay widget customizado para mostrar colors apropiados.
+
+## 3. Agregar interactividad y leyenda explicativa [pending]
+### Dependencies: 24.2
+### Description: Implementar funcionalidad de tap en días del calendario para mostrar detalles y agregar leyenda explicativa de colores
+### Details:
+Implementar tap en day para mostrar session details en modal popup con información completa del ayuno. Crear leyenda explicando color meanings (verde=completado, naranja=interrumpido, gris=sin actividad). Diseñar SessionDetailsModal con duration, start/end times, notes si available. Posicionar leyenda en bottom o top del calendario. Implementar animaciones smooth para modal transitions.
+

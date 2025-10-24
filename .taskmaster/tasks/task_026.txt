@@ -1,0 +1,31 @@
+# Task ID: 26
+# Title: Desarrollar ContentService para gestión de contenido educativo
+# Status: pending
+# Dependencies: 25
+# Priority: medium
+# Description: Implementar servicio para fetching, caching y gestión de favoritos para contenido de aprendizaje
+# Details:
+Crear ContentService con métodos: fetchContent(), getByCategory(), getFavorites(), toggleFavorite(), cacheForOffline(). Implementar smart caching: articles cache full content for offline, videos cache metadata only. Manejar favorites como separate Isar collection o field en ContentItem. Sync favorites con Supabase. Implementar search functionality para find content.
+
+# Test Strategy:
+Probar caching funciona offline, verificar favorites sync entre devices, validar search performance
+
+# Subtasks:
+## 1. Implementar estructura base del ContentService [pending]
+### Dependencies: None
+### Description: Crear la clase ContentService con métodos principales y configuración inicial para gestión de contenido educativo
+### Details:
+Crear archivo content_service.dart con clase ContentService. Implementar métodos base: fetchContent(), getByCategory(), getFavorites(), toggleFavorite(), cacheForOffline(). Configurar dependency injection con Riverpod. Definir interfaces y tipos de datos para ContentItem. Implementar error handling básico y logging.
+
+## 2. Implementar sistema de caching inteligente [pending]
+### Dependencies: 26.1
+### Description: Desarrollar lógica de caching diferenciado para artículos completos y metadata de videos usando Isar
+### Details:
+Implementar smart caching: artículos guardan contenido completo para lectura offline, videos solo metadata (título, duración, thumbnail). Usar Isar para persistencia local. Crear ContentCache model con campos: id, type, fullContent, metadata, timestamp, expirationDate. Implementar cleanup automático de cache expirado. Manejar límites de storage.
+
+## 3. Implementar gestión de favoritos y funcionalidad de búsqueda [pending]
+### Dependencies: 26.2
+### Description: Desarrollar sistema de favoritos con sincronización Supabase y funcionalidad de búsqueda de contenido
+### Details:
+Crear FavoriteContent collection en Isar o field en ContentItem. Implementar toggleFavorite() con sync bidireccional a Supabase. Desarrollar search functionality con filtros por categoría, tipo, favoritos. Implementar indexing para búsqueda rápida. Manejar offline/online state para favorites sync. Agregar debounce para search queries.
+

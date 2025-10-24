@@ -1,0 +1,31 @@
+# Task ID: 12
+# Title: Crear modal de pánico con contenido motivacional
+# Status: pending
+# Dependencies: 11
+# Priority: high
+# Description: Desarrollar overlay que se muestra al presionar botón pánico con quotes motivacionales y opciones de apoyo
+# Details:
+Crear PanicModal como full-screen overlay con blur background. Mostrar frase motivacional aleatoria de categories: motivation, anti_binge, calm. Incluir botones: 'Meditar 5 min', 'Continuar ayuno', 'No puedo seguir'. Implementar repository MotivationalPhrasesRepository que fetch desde Supabase o cache local. Agregar ilustraciones calm/zen. Usar Material 3 modal design patterns.
+
+# Test Strategy:
+Probar modal aparece rápidamente, verificar frases cargan offline, validar UX no es intrusiva pero efectiva
+
+# Subtasks:
+## 1. Implementar PanicModal con diseño full-screen overlay [pending]
+### Dependencies: None
+### Description: Crear el componente PanicModal como full-screen overlay con blur background siguiendo patrones de Material 3 modal design
+### Details:
+Crear PanicModal widget que ocupe toda la pantalla con blur background effect. Implementar diseño responsivo con padding apropiado. Usar Material 3 modal design patterns con elevation y animaciones de entrada/salida. Agregar ilustraciones calm/zen en la parte superior. Configurar dismiss behavior y accessibility features. Asegurar que el modal se muestre correctamente sobre todo el contenido existente.
+
+## 2. Desarrollar MotivationalPhrasesRepository para gestión de frases [pending]
+### Dependencies: 12.1
+### Description: Implementar repositorio que gestione frases motivacionales desde Supabase con cache local para acceso offline
+### Details:
+Crear MotivationalPhrasesRepository con métodos: getRandomPhrase(category), loadPhrasesFromSupabase(), cachePhrasesLocally(). Implementar model MotivationalPhrase con campos: id, text, category (motivation, anti_binge, calm), language. Configurar cache local usando Shared Preferences o Hive para acceso offline. Implementar fallback phrases en caso de no connectivity. Manejar categorización y filtrado de frases según contexto.
+
+## 3. Implementar botones de acción y lógica de respuesta del modal [pending]
+### Dependencies: 12.1, 12.2
+### Description: Crear botones de acción 'Meditar 5 min', 'Continuar ayuno', 'No puedo seguir' con navegación y lógica correspondiente
+### Details:
+Implementar tres botones principales con Material 3 styling: 'Meditar 5 min' (navega a timer meditación), 'Continuar ayuno' (cierra modal y continúa timer), 'No puedo seguir' (pausa/termina sesión con confirmación). Agregar ripple effects y estados hover/pressed. Implementar NavigationService calls para routing apropiado. Manejar estados de loading durante acciones. Integrar analytics tracking para user actions en panic modal.
+

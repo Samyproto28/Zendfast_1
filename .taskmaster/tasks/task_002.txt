@@ -1,0 +1,31 @@
+# Task ID: 2
+# Title: Configurar base de datos Isar v3.1.0 con esquemas principales
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Inicializar Isar con esquemas para FastingSession, UserProfile, HydrationLog y ContentItem con relaciones y índices optimizados
+# Details:
+Instalar isar 3.1.0, isar_flutter_libs, build_runner. Crear esquemas @collection para: FastingSession (id, userId, startTime, endTime, durationMinutes, completed, interrupted, planType), UserProfile (id, weightKg, heightCm, dailyHydrationGoal calculado), HydrationLog (id, userId, amount, timestamp), ContentItem (id, title, contentType, category, url, isPremium). Configurar índices para consultas frecuentes (userId, timestamp). Implementar DatabaseService singleton.
+
+# Test Strategy:
+Pruebas unitarias CRUD para cada colección, verificar migraciones funcionan, probar rendimiento con 1000+ registros
+
+# Subtasks:
+## 1. Instalar dependencias de Isar y configurar build tools [pending]
+### Dependencies: None
+### Description: Instalar las dependencias necesarias de Isar 3.1.0 y configurar las herramientas de construcción para Flutter
+### Details:
+Agregar al pubspec.yaml: isar: ^3.1.0, isar_flutter_libs: ^3.1.0, path_provider: ^2.0.11. En dev_dependencies agregar: build_runner: ^2.2.1, isar_generator: ^3.1.0. Ejecutar flutter pub get para instalar dependencias. Configurar build.yaml si es necesario para optimizaciones de generación de código.
+
+## 2. Crear esquemas de colecciones con anotaciones @collection [pending]
+### Dependencies: 2.1
+### Description: Definir los modelos de datos FastingSession, UserProfile, HydrationLog y ContentItem con sus campos y tipos correspondientes
+### Details:
+Crear lib/models/ con archivos: fasting_session.dart (id, userId, startTime, endTime, durationMinutes, completed, interrupted, planType), user_profile.dart (id, weightKg, heightCm, dailyHydrationGoal calculado), hydration_log.dart (id, userId, amount, timestamp), content_item.dart (id, title, contentType, category, url, isPremium). Usar anotaciones @collection, @Id(), @Index() para optimización. Definir relaciones entre entidades usando @Backlink() donde sea apropiado.
+
+## 3. Implementar DatabaseService singleton con inicialización de Isar [pending]
+### Dependencies: 2.2
+### Description: Crear servicio singleton para manejar la conexión a la base de datos Isar y operaciones CRUD básicas
+### Details:
+Crear lib/services/database_service.dart como singleton. Implementar método initializeDatabase() que abra Isar con todos los esquemas definidos. Crear métodos CRUD básicos para cada colección: createFastingSession(), getUserProfile(), logHydration(), getContentItems(). Configurar índices compuestos para consultas frecuentes (userId + timestamp). Manejar errores de inicialización y proporcionar fallbacks apropiados.
+

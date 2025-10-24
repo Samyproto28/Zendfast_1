@@ -1,0 +1,31 @@
+# Task ID: 19
+# Title: Implementar indicador de progreso de hidratación
+# Status: pending
+# Dependencies: 18
+# Priority: low
+# Description: Crear widget visual que muestre progreso diario de hidratación como barra o círculo con meta dinámica
+# Details:
+Crear HydrationProgressIndicator widget como linear progress bar o circular indicator. Mostrar: current intake / daily goal con colors: azul para progreso, verde cuando completado (≥100%). Agregar text overlay con ml consumed y ml remaining. Actualizar en tiempo real via Riverpod hydrationProvider. Implementar animaciones smooth para changes. Considerar diferentes visual styles según contexto (dashboard vs home).
+
+# Test Strategy:
+Verificar progreso actualiza instantáneamente tras log, probar animaciones fluidas, validar cálculos visuales correctos
+
+# Subtasks:
+## 1. Crear widget HydrationProgressIndicator básico [pending]
+### Dependencies: None
+### Description: Desarrollar el componente base del indicador de progreso de hidratación con estructura inicial y estilos
+### Details:
+Crear StatelessWidget HydrationProgressIndicator que reciba currentIntake y dailyGoal como parámetros. Implementar LinearProgressIndicator con BorderRadius personalizado. Definir colores: azul (#2196F3) para progreso normal, verde (#4CAF50) cuando ≥100%. Configurar height de 12dp y width responsivo. Agregar Container wrapper con padding y margin apropiados para diferentes contextos (dashboard vs home).
+
+## 2. Agregar text overlay y cálculos visuales [pending]
+### Dependencies: 19.1
+### Description: Implementar superposición de texto mostrando ml consumidos y restantes con formateo apropiado
+### Details:
+Agregar Stack widget con Positioned text overlay en el centro del progress bar. Mostrar formato '{currentMl}ml / {goalMl}ml' o '{remainingMl}ml restantes' según preferencia. Implementar helper methods: calculatePercentage(), formatMlText(), getRemainingMl(). Usar TextStyle con fontSize 12sp, fontWeight medium, color blanco con shadow para legibilidad. Responsive text que se ajuste al ancho disponible.
+
+## 3. Integrar Riverpod y animaciones en tiempo real [pending]
+### Dependencies: 19.2
+### Description: Conectar el indicador con hydrationProvider para actualizaciones en tiempo real y agregar animaciones fluidas
+### Details:
+Convertir a ConsumerWidget y escuchar hydrationProvider.currentDailyIntake y dailyGoal. Implementar AnimatedContainer con Duration(milliseconds: 500) y Curves.easeInOut para smooth transitions. Agregar TweenAnimationBuilder para animar cambios de valor progresivamente. Configurar AnimationController para pulse effect cuando se alcanza 100%. Implementar didUpdateWidget para detectar cambios y triggear animaciones apropiadas.
+

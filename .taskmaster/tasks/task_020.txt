@@ -1,0 +1,31 @@
+# Task ID: 20
+# Title: Desarrollar pantalla de onboarding con flujo de 6 pasos
+# Status: pending
+# Dependencies: 6
+# Priority: high
+# Description: Crear experiencia de primera vez con splash, introducción, registro, cuestionario, paywall y recomendación detox
+# Details:
+Crear OnboardingCoordinator con PageView de 6 screens: SplashScreen (logo + loading), IntroScreen (beneficios app), RegisterScreen (email/password), QuestionnaireScreen (peso, altura, experiencia), PaywallScreen (Superwall), DetoxRecommendationScreen (48h plan opcional). Implementar navigation entre steps con progress indicator. Guardar answers en UserProfile. Usar go_router para deep linking. Permitir skip en algunos steps.
+
+# Test Strategy:
+Probar flujo completo funciona, verificar datos se guardan correctamente, validar navigation y back handling
+
+# Subtasks:
+## 1. Crear estructura base del OnboardingCoordinator y navegación [pending]
+### Dependencies: None
+### Description: Implementar el coordinador principal del onboarding con PageView y sistema de navegación entre las 6 pantallas
+### Details:
+Crear OnboardingCoordinator que maneje PageViewController con 6 screens. Implementar navegación forward/backward con botones Next/Previous. Agregar progress indicator (6 dots o barra de progreso). Configurar go_router para deep linking a pasos específicos. Implementar lógica para skip opcional en ciertos steps. Manejar state management con Riverpod para current step y user progress.
+
+## 2. Desarrollar las 6 pantallas del flujo de onboarding [pending]
+### Dependencies: 20.1
+### Description: Crear todas las pantallas individuales: Splash, Intro, Register, Questionnaire, Paywall y DetoxRecommendation
+### Details:
+Implementar SplashScreen con logo animado y loading indicator. Crear IntroScreen mostrando beneficios de la app con ilustraciones. Desarrollar RegisterScreen con formulario email/password y validación. Construir QuestionnaireScreen para capturar peso, altura y experiencia previa. Integrar PaywallScreen con Superwall SDK para suscripciones. Diseñar DetoxRecommendationScreen con plan detox de 48h opcional.
+
+## 3. Implementar persistencia de datos y finalización del onboarding [pending]
+### Dependencies: 20.1, 20.2
+### Description: Guardar respuestas del usuario en UserProfile y completar el flujo de onboarding
+### Details:
+Implementar guardado de registration data (email/password) en authentication service. Persistir questionnaire answers (peso, altura, experiencia) en UserProfile usando Isar database. Guardar paywall decisions y subscription status. Implementar completion callback que marque onboarding como terminado y navigate a main app. Manejar error states y retry logic para failed saves.
+

@@ -1,0 +1,43 @@
+# Task ID: 3
+# Title: Configurar cliente Supabase con autenticación y RLS
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Establecer conexión con Supabase, configurar autenticación email/password y políticas Row Level Security para aislamiento de datos
+# Details:
+Instalar supabase_flutter ^2.0.0. Configurar client con URL y anon key desde environment variables. Implementar AuthService con métodos signUp, signIn, signOut, resetPassword. Crear tablas en Supabase: user_profiles, fasting_sessions, hydration_logs, learning_content, analytics_events. Configurar RLS policies: usuarios solo acceden a sus datos. Implementar manejo de errores Supabase específicos.
+
+# Test Strategy:
+Pruebas de integración para auth flows, verificar RLS bloquea acceso no autorizado, probar conexión offline/online
+
+# Subtasks:
+## 1. Configurar cliente Supabase y variables de entorno [pending]
+### Dependencies: None
+### Description: Instalar y configurar el cliente Supabase con credenciales de entorno
+### Details:
+Instalar supabase_flutter ^2.0.0 en pubspec.yaml. Crear archivo .env con SUPABASE_URL y SUPABASE_ANON_KEY. Configurar flutter_dotenv para cargar variables. Inicializar cliente Supabase en main.dart con credenciales de entorno. Configurar manejo seguro de API keys.
+
+## 2. Implementar AuthService con métodos de autenticación [pending]
+### Dependencies: 3.1
+### Description: Crear servicio de autenticación con todos los flujos requeridos
+### Details:
+Crear AuthService class con métodos signUp, signIn, signOut, resetPassword. Implementar manejo de estados de autenticación con Stream. Configurar persistencia de sesión automática. Implementar validación de email y contraseña. Añadir manejo de errores específicos de Supabase Auth.
+
+## 3. Crear estructura de tablas en Supabase [pending]
+### Dependencies: 3.1
+### Description: Configurar todas las tablas necesarias en la base de datos
+### Details:
+Crear tablas: user_profiles (id, user_id, name, preferences), fasting_sessions (id, user_id, start_time, end_time, duration), hydration_logs (id, user_id, amount, timestamp), learning_content (id, title, content, category), analytics_events (id, user_id, event_name, properties, timestamp). Configurar relaciones foreign key apropiadas.
+
+## 4. Configurar políticas RLS para seguridad de datos [pending]
+### Dependencies: 3.3
+### Description: Implementar Row Level Security para aislamiento completo de datos de usuario
+### Details:
+Habilitar RLS en todas las tablas de usuario. Crear políticas: usuarios solo pueden leer/escribir sus propios datos basado en auth.uid(). Configurar políticas específicas para user_profiles, fasting_sessions, hydration_logs, analytics_events. Crear políticas de lectura pública solo para learning_content.
+
+## 5. Implementar manejo de errores y testing de flujos [pending]
+### Dependencies: 3.2, 3.4
+### Description: Configurar manejo robusto de errores y testing completo del sistema
+### Details:
+Crear SupabaseErrorHandler para manejar errores específicos (network, auth, database). Implementar retry logic para operaciones fallidas. Crear tests de integración para auth flows completos. Probar escenarios offline/online. Implementar logging de errores para debugging.
+

@@ -1,0 +1,31 @@
+# Task ID: 11
+# Title: Implementar botón de pánico como FloatingActionButton
+# Status: pending
+# Dependencies: 10
+# Priority: high
+# Description: Crear botón pánico persistente que aparece solo durante ayuno activo para apoyo emocional en momentos de antojos
+# Details:
+Crear PanicButton como FloatingActionButton naranja (#ffb366) de 64×64dp con icono corazón o SOS. Mostrar solo cuando fastingState == fasting. Implementar animación pulse sutil (no distractiva). Posicionar en bottom-right con elevation 8dp. Al tap, abrir PanicModal con opciones: frases motivacionales, meditación respiración, opción 'No puedo continuar'. Trackear eventos panic_button_used en analytics.
+
+# Test Strategy:
+Verificar botón solo visible durante ayuno, probar animación no afecta rendimiento, validar analytics tracking
+
+# Subtasks:
+## 1. Crear componente PanicButton con FloatingActionButton [pending]
+### Dependencies: None
+### Description: Implementar el componente visual del botón de pánico como FloatingActionButton con estilo específico
+### Details:
+Crear widget PanicButton que extienda FloatingActionButton con color naranja (#ffb366), tamaño 64×64dp, icono de corazón o SOS. Posicionar en bottom-right de la pantalla con elevation 8dp. Implementar visibilidad condicional basada en fastingState == fasting usando Consumer/Riverpod.
+
+## 2. Implementar animación pulse sutil para el botón [pending]
+### Dependencies: 11.1
+### Description: Agregar animación de pulso no distractiva al FloatingActionButton para atraer atención sin ser molesto
+### Details:
+Implementar AnimationController con Tween para crear efecto pulse sutil. Usar Transform.scale con values entre 1.0 y 1.1, duración 1.5-2 segundos, repeat infinito. Aplicar CurvedAnimation con Curves.easeInOut para transición suave. Optimizar para no afectar rendimiento usando SingleTickerProviderStateMixin.
+
+## 3. Integrar analytics tracking para eventos del botón [pending]
+### Dependencies: 11.1
+### Description: Implementar seguimiento de analytics cuando el usuario interactúa con el botón de pánico
+### Details:
+Agregar evento 'panic_button_used' al AnalyticsService existente. Incluir metadata: timestamp, duración actual del ayuno, tipo de ayuno activo. Llamar analytics tracking en onPressed callback del FloatingActionButton. Usar patrón fire-and-forget para no bloquear UI. Considerar batching de eventos si es necesario.
+

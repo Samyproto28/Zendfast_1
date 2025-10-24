@@ -1,0 +1,31 @@
+# Task ID: 23
+# Title: Desarrollar MetricsDashboardScreen con widgets visuales
+# Status: pending
+# Dependencies: 22
+# Priority: medium
+# Description: Crear pantalla principal de métricas mostrando streak actual, total de horas ayunadas y tasa de éxito
+# Details:
+Crear MetricsDashboardScreen con cards para: current streak (con fire icon), total hours fasted, completion rate (percentage), longest fast. Implementar MetricCard widget reusable con title, value, icon, trend indicator. Usar Material 3 card design con elevation y colors apropiados. Agregar subtle animations para value changes. Considerar charts library para future enhancements.
+
+# Test Strategy:
+Verificar métricas se actualizan en tiempo real, probar UI responsive en diferentes screen sizes, validar accesibilidad
+
+# Subtasks:
+## 1. Crear componente MetricCard reutilizable con Material 3 [pending]
+### Dependencies: None
+### Description: Desarrollar widget reutilizable MetricCard que mostrará métricas individuales con diseño Material 3
+### Details:
+Implementar MetricCard widget con propiedades: title (String), value (String), icon (IconData), trend (opcional TrendIndicator). Usar Material 3 Card con elevation apropiada, esquinas redondeadas y colores del theme. Agregar soporte para iconos con color dinámico. Implementar TrendIndicator enum (up, down, stable) con íconos y colores correspondientes. Hacer responsive para diferentes screen sizes.
+
+## 2. Implementar lógica de cálculo de métricas en tiempo real [pending]
+### Dependencies: 23.1
+### Description: Desarrollar providers y servicios para calcular métricas de ayuno dinámicamente
+### Details:
+Crear MetricsCalculatorService con métodos: getCurrentStreak(), getTotalHoursFasted(), getCompletionRate(), getLongestFast(). Implementar Riverpod providers para estado reactivo de métricas. Calcular streak actual basado en ayunos consecutivos completados. Sumar total de horas de todas las sesiones completadas. Calcular completion rate como porcentaje de ayunos completados vs iniciados. Integrar con FastingSessionRepository para datos actualizados.
+
+## 3. Crear MetricsDashboardScreen con layout y animaciones [pending]
+### Dependencies: 23.1, 23.2
+### Description: Ensamblar pantalla principal de métricas usando MetricCards con animaciones suaves
+### Details:
+Crear MetricsDashboardScreen con AppBar y body en GridView o Column layout. Instanciar 4 MetricCards: Current Streak (🔥 icon), Total Hours Fasted, Completion Rate (%), Longest Fast. Conectar con metrics providers para datos reactivos. Implementar AnimatedBuilder para transiciones suaves (250ms) cuando cambian valores. Agregar pull-to-refresh functionality. Usar Theme.colorScheme para colores consistentes. Hacer responsive con breakpoints para tablets.
+
