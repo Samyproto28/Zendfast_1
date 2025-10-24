@@ -60,8 +60,12 @@ dependencies:
   # Permission handling
   permission_handler: ^11.2.0
 
-  # State management
-  provider: ^6.1.1
+  # State management with Riverpod
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Navigation and routing
+  go_router: ^14.2.7
 
 dev_dependencies:
   flutter_test:
@@ -74,9 +78,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
-  # Build runner and Isar code generation
+  # Build runner and code generation
   build_runner: ^2.4.6
   isar_generator: ^3.1.0+1
+  riverpod_generator: ^2.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

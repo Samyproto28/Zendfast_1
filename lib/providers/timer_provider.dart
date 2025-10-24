@@ -1,55 +1,61 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/timer_state.dart';
 import '../services/timer_service.dart';
 
-/// Provider for managing timer state in the UI
-/// Handles synchronization between background service and UI
-class TimerProvider extends ChangeNotifier {
-  final TimerService _timerService = TimerService.instance;
+/// Provider for timer state
+/// Manages timer state using Riverpod StateNotifier
+final timerProvider = StateNotifierProvider<TimerNotifier, TimerState?>((ref) {
+  return TimerNotifier();
+});
 
-  TimerState? _currentState;
+/// Timer State Notifier
+/// Handles synchronization between background service and UI
+class TimerNotifier extends StateNotifier<TimerState?> {
+  final TimerService _timerService = TimerService.instance;
   StreamSubscription<TimerState>? _stateSubscription;
 
-  /// Current timer state
-  TimerState? get currentState => _currentState;
-
-  /// Whether a timer is currently running
-  bool get isRunning => _currentState?.isRunning ?? false;
-
-  /// Remaining time in milliseconds
-  int get remainingMilliseconds =>
-      _currentState?.remainingMilliseconds ?? 0;
-
-  /// Elapsed time in milliseconds
-  int get elapsedMilliseconds =>
-      _currentState?.elapsedMilliseconds ?? 0;
-
-  /// Timer progress (0.0 to 1.0)
-  double get progress => _currentState?.progress ?? 0.0;
-
-  /// Whether timer has completed
-  bool get isCompleted => _currentState?.isCompleted ?? false;
-
-  /// Formatted remaining time
-  String get formattedRemainingTime =>
-      _currentState?.formattedRemainingTime ?? '00:00:00';
-
-  /// Formatted elapsed time
-  String get formattedElapsedTime =>
-      _currentState?.formattedElapsedTime ?? '00:00:00';
+  TimerNotifier() : super(null) {
+    _initialize();
+  }
 
   /// Initialize provider and listen to state changes
-  void initialize() {
+  void _initialize() {
     // Load initial state
     _syncState();
 
     // Listen to state updates from background service
-    _stateSubscription = _timerService.stateStream.listen((state) {
-      _currentState = state;
-      notifyListeners();
+    _stateSubscription = _timerService.stateStream.listen((newState) {
+      state = newState;
     });
   }
+
+  /// Current timer state
+  TimerState? get currentState => state;
+
+  /// Whether a timer is currently running
+  bool get isRunning => state?.isRunning ?? false;
+
+  /// Remaining time in milliseconds
+  int get remainingMilliseconds => state?.remainingMilliseconds ?? 0;
+
+  /// Elapsed time in milliseconds
+  int get elapsedMilliseconds => state?.elapsedMilliseconds ?? 0;
+
+  /// Timer progress (0.0 to 1.0)
+  double get progress => state?.progress ?? 0.0;
+
+  /// Whether timer has completed
+  bool get isCompleted => state?.isCompleted ?? false;
+
+  /// Formatted remaining time
+  String get formattedRemainingTime =>
+      state?.formattedRemainingTime ?? '00:00:00';
+
+  /// Formatted elapsed time
+  String get formattedElapsedTime =>
+      state?.formattedElapsedTime ?? '00:00:00';
 
   /// Start a new timer
   Future<void> startTimer({
@@ -113,8 +119,7 @@ class TimerProvider extends ChangeNotifier {
   Future<void> _syncState() async {
     try {
       await _timerService.syncState();
-      _currentState = _timerService.currentState;
-      notifyListeners();
+      state = _timerService.currentState;
     } catch (e) {
       debugPrint('Error syncing timer state: $e');
     }

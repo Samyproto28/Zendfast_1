@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'theme/theme.dart';
 import 'services/database_service.dart';
 import 'services/timer_service.dart';
 import 'config/supabase_config.dart';
 import 'providers/timer_provider.dart';
+import 'router/app_router.dart';
 import 'utils/app_lifecycle_observer.dart';
 import 'widgets/timer_test_widget.dart';
 
@@ -25,33 +26,28 @@ void main() async {
   // Initialize background timer service for persistent fasting timer
   await TimerService.instance.initialize();
 
-  runApp(const ZendfastApp());
+  runApp(const ProviderScope(child: ZendfastApp()));
 }
 
-class ZendfastApp extends StatelessWidget {
+class ZendfastApp extends ConsumerWidget {
   const ZendfastApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) {
-        final provider = TimerProvider();
-        provider.initialize();
-        return provider;
-      },
-      child: MaterialApp(
-        title: 'Zendfast',
-        debugShowCheckedModeBanner: false,
-        theme: ZendfastTheme.light(),
-        darkTheme: ZendfastTheme.dark(),
-        themeMode: ThemeMode.system, // Follows system theme preference
-        home: const MyHomePage(title: 'Zendfast Demo'),
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      title: 'Zendfast',
+      debugShowCheckedModeBanner: false,
+      theme: ZendfastTheme.light(),
+      darkTheme: ZendfastTheme.dark(),
+      themeMode: ThemeMode.system, // Follows system theme preference
+      routerConfig: router,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -66,10 +62,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   int _counter = 0;
   AppLifecycleObserver? _lifecycleObserver;
 
@@ -78,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     // Set up lifecycle observer to sync timer state when app resumes
-    final timerProvider = Provider.of<TimerProvider>(context, listen: false);
-    _lifecycleObserver = AppLifecycleObserver(timerProvider);
+    final timerNotifier = ref.read(timerProvider.notifier);
+    _lifecycleObserver = AppLifecycleObserver(timerNotifier);
     WidgetsBinding.instance.addObserver(_lifecycleObserver!);
   }
 

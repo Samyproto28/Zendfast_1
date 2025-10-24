@@ -298,7 +298,7 @@
         "dependencies": [
           "3"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -306,7 +306,7 @@
             "description": "Configurar la instancia de Supabase en el proyecto Flutter e implementar la clase AuthService con los métodos básicos de autenticación",
             "dependencies": [],
             "details": "Instalar dependencias supabase_flutter. Configurar SUPABASE_URL y SUPABASE_ANON_KEY en variables de entorno. Crear clase AuthService con SupabaseClient instance. Implementar métodos async signUp(email, password), signIn(email, password), signOut(), getCurrentUser(). Agregar validaciones básicas de email format usando RegExp y password strength (mínimo 8 caracteres). Manejar SupabaseException y retornar Result<User, AuthError> custom types.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Pruebas unitarias para validaciones de email y password. Pruebas de integración para métodos de Auth con mocks de Supabase. Verificar manejo correcto de errores.",
             "parentId": "undefined"
           },
@@ -318,7 +318,7 @@
               1
             ],
             "details": "Crear authStateProvider usando StateNotifierProvider que exponga AuthState{User? user, bool isLoading, String? error, bool isAuthenticated}. Implementar AuthStateNotifier que utilice AuthService y escuche cambios de sesión via Supabase.auth.onAuthStateChange. Crear computed provider isAuthenticatedProvider que retorne bool. Implementar auto-login verificando sesión existente al iniciar app. Manejar estados de loading durante operaciones async.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Pruebas unitarias para AuthStateNotifier. Probar que isAuthenticated se actualiza correctamente. Verificar auto-login funciona tras reinicio de app.",
             "parentId": "undefined"
           },
@@ -330,7 +330,7 @@
               2
             ],
             "details": "Crear LoginScreen y RegisterScreen con formularios usando TextFormField y GlobalKey<FormState>. Implementar validación en tiempo real para email y password con visual feedback. Agregar botones con loading states que consumen authStateProvider. Implementar navigation entre pantallas y redirect automático tras login exitoso. Diseño responsive con constraints para diferentes tamaños de pantalla. Agregar error messages user-friendly y loading indicators durante auth operations.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Pruebas de widget para pantallas de login/registro. Verificar validación funciona correctamente. Probar navigation flows y estados de loading/error.",
             "parentId": "undefined"
           }
@@ -2934,7 +2934,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-24T22:24:49.669Z"
+      "updated": "2025-10-24T23:26:34.581Z"
     }
   }
 }

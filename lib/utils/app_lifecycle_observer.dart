@@ -4,9 +4,9 @@ import '../providers/timer_provider.dart';
 /// Observes app lifecycle changes and syncs timer state
 /// when app returns to foreground
 class AppLifecycleObserver extends WidgetsBindingObserver {
-  final TimerProvider timerProvider;
+  final TimerNotifier timerNotifier;
 
-  AppLifecycleObserver(this.timerProvider);
+  AppLifecycleObserver(this.timerNotifier);
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -38,7 +38,7 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
   /// Called when app returns to foreground
   void _onAppResumed() {
     debugPrint('App resumed - syncing timer state');
-    timerProvider.syncState();
+    timerNotifier.syncState();
   }
 
   /// Called when app becomes inactive

@@ -51,7 +51,7 @@ class AuthService {
 
       app_auth.AuthState newState;
 
-      if (session != null && session.user != null) {
+      if (session != null) {
         newState = app_auth.AuthState.authenticated(
           user: session.user,
           session: session,
@@ -66,7 +66,7 @@ class AuthService {
 
     // Set initial state
     final currentSession = SupabaseConfig.auth.currentSession;
-    if (currentSession != null && currentSession.user != null) {
+    if (currentSession != null) {
       _currentState = app_auth.AuthState.authenticated(
         user: currentSession.user,
         session: currentSession,

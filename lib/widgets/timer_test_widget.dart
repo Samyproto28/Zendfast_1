@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/timer_provider.dart';
 
 /// Simple widget to test the background timer functionality
 /// Can be used to start/stop/pause timer and view its state
-class TimerTestWidget extends StatelessWidget {
+class TimerTestWidget extends ConsumerWidget {
   const TimerTestWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<TimerProvider>(
-      builder: (context, timerProvider, child) {
-        final isRunning = timerProvider.isRunning;
-        final formattedTime = isRunning
-            ? timerProvider.formattedRemainingTime
-            : timerProvider.formattedElapsedTime;
-        final progress = timerProvider.progress;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final timerNotifier = ref.watch(timerProvider.notifier);
+    final timerState = ref.watch(timerProvider);
+
+    final isRunning = timerState?.isRunning ?? false;
+    final formattedTime = isRunning
+        ? (timerState?.formattedRemainingTime ?? '00:00:00')
+        : (timerState?.formattedElapsedTime ?? '00:00:00');
+    final progress = timerState?.progress ?? 0.0;
 
         return Card(
           margin: const EdgeInsets.all(16),
@@ -74,28 +75,28 @@ class TimerTestWidget extends StatelessWidget {
                   children: [
                     if (!isRunning)
                       ElevatedButton.icon(
-                        onPressed: () => _startTimer(context, timerProvider),
+                        onPressed: () => _startTimer(context, timerNotifier),
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('Start 16h Fast'),
                       ),
 
                     if (isRunning)
                       ElevatedButton.icon(
-                        onPressed: () => timerProvider.pauseTimer(),
+                        onPressed: () => timerNotifier.pauseTimer(),
                         icon: const Icon(Icons.pause),
                         label: const Text('Pause'),
                       ),
 
-                    if (!isRunning && timerProvider.currentState != null)
+                    if (!isRunning && timerState != null)
                       ElevatedButton.icon(
-                        onPressed: () => timerProvider.resumeTimer(),
+                        onPressed: () => timerNotifier.resumeTimer(),
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('Resume'),
                       ),
 
-                    if (timerProvider.currentState != null)
+                    if (timerState != null)
                       ElevatedButton.icon(
-                        onPressed: () => timerProvider.cancelTimer(),
+                        onPressed: () => timerNotifier.cancelTimer(),
                         icon: const Icon(Icons.stop),
                         label: const Text('Cancel'),
                         style: ElevatedButton.styleFrom(
@@ -120,14 +121,12 @@ class TimerTestWidget extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
   }
 
-  void _startTimer(BuildContext context, TimerProvider timerProvider) {
+  void _startTimer(BuildContext context, TimerNotifier timerNotifier) {
     // For testing, use a dummy user ID
     // In production, this would come from authentication
-    timerProvider.startTimer(
+    timerNotifier.startTimer(
       userId: 'test_user',
       durationMinutes: 960, // 16 hours
       planType: '16:8',
