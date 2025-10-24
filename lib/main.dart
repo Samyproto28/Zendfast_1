@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import 'theme/theme.dart';
 import 'services/database_service.dart';
+import 'services/timer_service.dart';
+import 'config/supabase_config.dart';
+import 'providers/timer_provider.dart';
+import 'utils/app_lifecycle_observer.dart';
+import 'widgets/timer_test_widget.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized before async operations
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Isar database
+  // Load environment variables from .env file
+  await dotenv.load(fileName: '.env');
+
+  // Initialize Supabase with credentials from environment
+  await SupabaseConfig.initialize();
+
+  // Initialize Isar database for local storage
   await DatabaseService.instance.initialize();
+
+  // Initialize background timer service for persistent fasting timer
+  await TimerService.instance.initialize();
 
   runApp(const ZendfastApp());
 }
@@ -17,13 +33,20 @@ class ZendfastApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Zendfast',
-      debugShowCheckedModeBanner: false,
-      theme: ZendfastTheme.light(),
-      darkTheme: ZendfastTheme.dark(),
-      themeMode: ThemeMode.system, // Follows system theme preference
-      home: const MyHomePage(title: 'Zendfast Demo'),
+    return ChangeNotifierProvider(
+      create: (_) {
+        final provider = TimerProvider();
+        provider.initialize();
+        return provider;
+      },
+      child: MaterialApp(
+        title: 'Zendfast',
+        debugShowCheckedModeBanner: false,
+        theme: ZendfastTheme.light(),
+        darkTheme: ZendfastTheme.dark(),
+        themeMode: ThemeMode.system, // Follows system theme preference
+        home: const MyHomePage(title: 'Zendfast Demo'),
+      ),
     );
   }
 }
@@ -48,6 +71,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  AppLifecycleObserver? _lifecycleObserver;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set up lifecycle observer to sync timer state when app resumes
+    final timerProvider = Provider.of<TimerProvider>(context, listen: false);
+    _lifecycleObserver = AppLifecycleObserver(timerProvider);
+    WidgetsBinding.instance.addObserver(_lifecycleObserver!);
+  }
+
+  @override
+  void dispose() {
+    // Remove lifecycle observer
+    if (_lifecycleObserver != null) {
+      WidgetsBinding.instance.removeObserver(_lifecycleObserver!);
+    }
+    super.dispose();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -78,29 +121,26 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            // Background Timer Test Widget
+            const TimerTestWidget(),
+
+            const SizedBox(height: 32),
+
+            // Original demo counter
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('You have pushed the button this many times:'),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
