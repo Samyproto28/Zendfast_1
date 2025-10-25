@@ -2922,6 +2922,270 @@
         "complexity": 5,
         "recommendedSubtasks": 3,
         "expansionPrompt": "Break down this task with a focus on ejecutar submission a app store y google play."
+      },
+      {
+        "id": 56,
+        "title": "Configurar go_router con guards de autenticación y deep linking completo",
+        "description": "Implementar sistema completo de rutas protegidas con guards de autenticación, deep linking para notificaciones push y enlaces externos, y navegación tipo-segura para toda la aplicación",
+        "details": "Extender el actual app_router.dart existente para incluir rutas completas de la aplicación: /home, /fasting (con subrutas /start, /progress), /hydration, /learning (con subrutas /articles/:id), /profile, /settings. Implementar AuthGuard middleware que verifique isAuthenticatedProvider antes de permitir acceso a rutas protegidas. Configurar deep linking handlers para notificaciones: fast_milestone -> /fasting/progress, hydration_reminder -> /hydration, learning_content -> /learning/articles/:id. Configurar Universal Links para iOS (apple-app-site-association) y App Links para Android (assetlinks.json) en dominio zendfast.app. Implementar typed navigation con rutas nombradas y parámetros tipo-seguro usando go_router extensions. Agregar manejo de rutas no encontradas (404) y redirecciones apropiadas para usuarios no autenticados que intentan acceder a rutas protegidas. Configurar refresh listener que detecte cambios en authState y redirija automáticamente.",
+        "testStrategy": "Verificar que rutas protegidas redirigen a login cuando usuario no autenticado, probar deep links funcionan desde notificaciones push simuladas, validar Universal Links y App Links mediante adb y simulador iOS, confirmar navegación tipo-segura compila sin errores, probar redirecciones automáticas cuando cambia estado de autenticación, verificar manejo de rutas 404",
+        "status": "pending",
+        "dependencies": [
+          6,
+          5
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar estructura de rutas y AuthGuard middleware",
+            "description": "Extender app_router.dart con todas las rutas de la aplicación y implementar guards de autenticación",
+            "dependencies": [],
+            "details": "Definir rutas completas: /home, /fasting (con subrutas /start, /progress), /hydration, /learning (con subrutas /articles/:id), /profile, /settings. Implementar AuthGuard middleware que verifique isAuthenticatedProvider antes de permitir acceso a rutas protegidas. Configurar manejo de rutas 404 y redirecciones para usuarios no autenticados.",
+            "status": "pending",
+            "testStrategy": "Verificar que rutas protegidas redirigen a login cuando usuario no autenticado, probar navegación entre rutas funciona correctamente, validar manejo de rutas no encontradas"
+          },
+          {
+            "id": 2,
+            "title": "Implementar deep linking para notificaciones push",
+            "description": "Configurar handlers para deep links desde notificaciones OneSignal con rutas específicas",
+            "dependencies": [
+              1
+            ],
+            "details": "Configurar deep linking handlers para notificaciones: fast_milestone -> /fasting/progress, hydration_reminder -> /hydration, learning_content -> /learning/articles/:id. Implementar manejo de parámetros en URLs y navegación automática desde notificaciones. Configurar refresh listener que detecte cambios en authState.",
+            "status": "pending",
+            "testStrategy": "Probar deep links funcionan desde notificaciones push simuladas, verificar navegación automática con parámetros correctos, validar manejo de estado de autenticación"
+          },
+          {
+            "id": 3,
+            "title": "Configurar Universal Links (iOS) y App Links (Android)",
+            "description": "Establecer configuración de enlaces profundos nativos para dominio zendfast.app",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar Universal Links para iOS con apple-app-site-association en dominio zendfast.app. Configurar App Links para Android con assetlinks.json. Implementar manejo nativo de enlaces desde navegadores y otras aplicaciones. Configurar verificación de dominio y certificados.",
+            "status": "pending",
+            "testStrategy": "Validar Universal Links y App Links mediante adb y simulador iOS, probar enlaces funcionan desde navegadores móviles, verificar apertura automática de la aplicación"
+          },
+          {
+            "id": 4,
+            "title": "Implementar navegación tipo-segura con go_router extensions",
+            "description": "Crear sistema de navegación con tipos seguros y rutas nombradas para toda la aplicación",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar typed navigation con rutas nombradas y parámetros tipo-seguro usando go_router extensions. Crear clases de navegación que garanticen tipos correctos en tiempo de compilación. Agregar métodos helper para navegación común y manejo de parámetros. Configurar redirecciones automáticas basadas en estado de autenticación.",
+            "status": "pending",
+            "testStrategy": "Confirmar navegación tipo-segura compila sin errores de tipos, probar redirecciones automáticas funcionan correctamente, validar parámetros se pasan correctamente entre rutas"
+          }
+        ]
+      },
+      {
+        "id": 57,
+        "title": "Implementar sistema completo de analytics y tracking de eventos en analytics_events de Supabase",
+        "description": "Desarrollar un sistema robusto de analytics que rastree eventos críticos del usuario, implemente embudo de conversión, métricas de retención y sincronización offline/online",
+        "details": "Crear AnalyticsService que maneje tracking de eventos críticos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, app_opened, user_registered. Implementar AnalyticsEvent model con fields: id, user_id, event_name, properties (JSON), timestamp, session_id, platform, app_version. Crear AnalyticsRepository con Isar para storage offline y sync automático con analytics_events table en Supabase. Implementar FunnelAnalytics class para trackear conversion funnel: registration → first_fast → fast_completion → premium_trial → premium_conversion. Desarrollar RetentionMetrics para calcular day 1, 7, 30 retention rates. Crear EngagementMetrics para session duration, feature usage frequency, panic button correlation. Implementar EventBatcher para optimizar network requests enviando eventos en batch cada 30 segundos o 10 eventos. Agregar offline queue con retry logic para eventos fallidos. Crear AnalyticsDashboard widget para visualizar métricas key con charts usando fl_chart package. Implementar privacy-compliant tracking sin PII, hash user identifiers. Configurar automated funnel analysis con cohort tracking mensual.",
+        "testStrategy": "Verificar todos los eventos críticos se registran correctamente tanto online como offline. Probar sincronización automática funciona tras reconexión. Validar embudo de conversión calcula métricas precisas. Verificar retención y engagement metrics son exactos comparando con data manual. Probar performance del EventBatcher bajo carga alta. Validar privacy compliance verificando no se almacena PII. Testear dashboard muestra visualizaciones correctas. Verificar eventos persisten tras force-close de app.",
+        "status": "pending",
+        "dependencies": [
+          48,
+          52
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar servicio base de analytics y modelo de eventos",
+            "description": "Crear AnalyticsService principal que maneje tracking de eventos críticos del usuario y implementar modelo AnalyticsEvent con campos necesarios para almacenamiento local y remoto",
+            "dependencies": [],
+            "details": "Desarrollar AnalyticsService con métodos para trackear eventos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, app_opened, user_registered. Implementar AnalyticsEvent model con campos: id, user_id, event_name, properties (JSON), timestamp, session_id, platform, app_version. Configurar privacy-compliant tracking sin PII, hash user identifiers. Establecer base para dependency injection con Riverpod.",
+            "status": "pending",
+            "testStrategy": "Verificar todos los eventos críticos se registran correctamente con timestamps precisos. Probar hash de user identifiers funciona apropiadamente. Validar estructura JSON properties es correcta para cada tipo de evento."
+          },
+          {
+            "id": 2,
+            "title": "Desarrollar métricas de funnel y retención",
+            "description": "Implementar clases especializadas para calcular métricas de conversión, análisis de embudo y tasas de retención de usuarios",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear FunnelAnalytics class para trackear conversion funnel: registration → first_fast → fast_completion → premium_trial → premium_conversion. Desarrollar RetentionMetrics para calcular day 1, 7, 30 retention rates con cohort tracking mensual. Implementar EngagementMetrics para session duration, feature usage frequency, panic button correlation. Configurar automated funnel analysis con algoritmos de cálculo eficientes.",
+            "status": "pending",
+            "testStrategy": "Validar embudo de conversión calcula métricas precisas comparando con data de prueba manual. Verificar retención y engagement metrics son exactos. Probar cohort analysis funciona correctamente con diferentes rangos de fechas."
+          },
+          {
+            "id": 3,
+            "title": "Implementar sistema de batching y sincronización offline",
+            "description": "Desarrollar AnalyticsRepository con almacenamiento local Isar y sistema de sincronización automática con Supabase incluyendo cola offline y retry logic",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear AnalyticsRepository con Isar para storage offline y sync automático con analytics_events table en Supabase. Implementar EventBatcher para optimizar network requests enviando eventos en batch cada 30 segundos o 10 eventos. Agregar offline queue con retry logic para eventos fallidos. Configurar background sync que funcione cuando app vuelve a estar online. Implementar conflict resolution para eventos duplicados.",
+            "status": "pending",
+            "testStrategy": "Probar sincronización automática funciona tras reconexión a internet. Verificar eventos se almacenan correctamente offline. Validar batching optimiza requests de red. Probar retry logic maneja fallos de red apropiadamente."
+          },
+          {
+            "id": 4,
+            "title": "Crear dashboard de visualización de métricas",
+            "description": "Desarrollar AnalyticsDashboard widget con charts interactivos para visualizar métricas clave usando fl_chart package",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Crear AnalyticsDashboard widget para visualizar métricas key con charts usando fl_chart package. Implementar gráficos para funnel conversion, retention curves, engagement trends, y event frequency. Agregar filtros por fecha range y tipo de evento. Crear widgets específicos para mostrar KPIs principales: DAU, conversion rate, average session duration. Implementar responsive design que funcione en diferentes tamaños de pantalla.",
+            "status": "pending",
+            "testStrategy": "Verificar charts se renderizan correctamente con data real. Probar interactividad de filtros funciona apropiadamente. Validar responsive design en diferentes dispositivos. Confirmar performance es buena con datasets grandes."
+          }
+        ]
+      },
+      {
+        "id": 58,
+        "title": "Implementar features de GDPR compliance incluyendo exportación de datos del usuario, eliminación completa de cuenta con cascada en todas las tablas relacionadas, gestión de consentimientos explícitos, política de privacidad accesible, y cumplimiento con CCPA",
+        "description": "Desarrollar sistema completo de cumplimiento GDPR/CCPA con exportación de datos, eliminación en cascada, gestión de consentimientos y política de privacidad para ejercer derechos de privacidad desde el perfil del usuario",
+        "details": "Implementar DataPrivacyService con exportUserData() que genere JSON/CSV de FastingSession, UserProfile, HydrationLog y ContentItem favoritos. Crear AccountDeletionService con deleteUserAccount() que ejecute cascada en Supabase (user_profiles, fasting_sessions, hydration_logs, analytics_events) y Isar local. Desarrollar ConsentManager con toggles para analytics tracking, marketing communications, data processing con storage en user_consents table. Crear PrivacyPolicyScreen accesible desde Settings con texto actualizable desde Supabase. Implementar DataRightsScreen en UserProfile con botones: 'Exportar mis datos', 'Eliminar cuenta permanentemente', 'Gestionar consentimientos'. Para CCPA: agregar 'Do Not Sell My Data' toggle. Usar flutter_file_saver para export downloads. Implementar confirmación multi-step para account deletion con password verification. Asegurar compliance con retention periods y audit logging.",
+        "testStrategy": "Verificar exportación genera archivo completo con todos los datos del usuario, probar eliminación en cascada no deja datos huérfanos en ninguna tabla, validar consentimientos se persisten correctamente y afectan funcionalidad, confirmar política de privacidad se actualiza dinámicamente, testear flujo completo de eliminación de cuenta requiere confirmación de contraseña",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3,
+          48
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar DataPrivacyService con exportación completa de datos del usuario",
+            "description": "Desarrollar servicio para exportar todos los datos del usuario en formatos JSON/CSV incluyendo sesiones de ayuno, perfil, logs de hidratación y contenido favorito",
+            "dependencies": [],
+            "details": "Crear DataPrivacyService con método exportUserData() que consulte todas las tablas relacionadas (FastingSession, UserProfile, HydrationLog, ContentItem favoritos) tanto de Supabase como Isar local. Generar archivos JSON estructurado y CSV para facilitar lectura. Usar flutter_file_saver para permitir descarga. Incluir metadatos como fecha de exportación y versión de datos. Implementar compresión ZIP si el archivo es grande.",
+            "status": "pending",
+            "testStrategy": "Verificar que la exportación incluye todos los datos del usuario sin omisiones, probar generación correcta de archivos JSON/CSV, validar descarga funciona en diferentes dispositivos, confirmar estructura de datos es completa y legible"
+          },
+          {
+            "id": 2,
+            "title": "Desarrollar AccountDeletionService con eliminación en cascada completa",
+            "description": "Implementar servicio de eliminación de cuenta que ejecute cascada segura en todas las tablas relacionadas tanto en Supabase como almacenamiento local",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear AccountDeletionService con deleteUserAccount() que elimine datos en orden correcto: primero tablas dependientes (fasting_sessions, hydration_logs, analytics_events) luego user_profiles en Supabase. Limpiar datos locales en Isar. Implementar transacciones para asegurar atomicidad. Agregar logs de auditoría antes de eliminación. Implementar verificación multi-step con confirmación de contraseña y período de gracia de 30 días.",
+            "status": "pending",
+            "testStrategy": "Probar eliminación no deja datos huérfanos en ninguna tabla, verificar transacciones son atómicas, validar logs de auditoría se crean correctamente, confirmar verificación de contraseña funciona, testear período de gracia permite recuperación"
+          },
+          {
+            "id": 3,
+            "title": "Crear ConsentManager con gestión granular de consentimientos GDPR/CCPA",
+            "description": "Desarrollar sistema de gestión de consentimientos con toggles granulares para diferentes tipos de procesamiento de datos y cumplimiento legal",
+            "dependencies": [],
+            "details": "Implementar ConsentManager con storage en tabla user_consents. Crear toggles para: analytics tracking, marketing communications, data processing, cookies no esenciales. Para CCPA agregar 'Do Not Sell My Data' toggle. Implementar versioning de consentimientos para trackear cambios. Crear ConsentScreen con explicaciones claras de cada permiso. Integrar con analytics providers para respetar preferencias. Asegurar defaults cumplen con GDPR (opt-in required).",
+            "status": "pending",
+            "testStrategy": "Verificar consentimientos se persisten correctamente en base de datos, probar toggles afectan funcionalidad apropiadamente, validar versioning funciona para auditoría, confirmar defaults cumplen GDPR, testear integración con providers de analytics"
+          },
+          {
+            "id": 4,
+            "title": "Implementar PrivacyPolicyScreen y DataRightsScreen con flujos completos",
+            "description": "Crear pantallas de política de privacidad dinámica y ejercicio de derechos de datos con todos los flujos de confirmación requeridos",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Crear PrivacyPolicyScreen que cargue contenido desde Supabase (tabla privacy_policy) para actualizaciones dinámicas. Implementar DataRightsScreen accesible desde UserProfile con botones: 'Exportar mis datos', 'Eliminar cuenta permanentemente', 'Gestionar consentimientos'. Crear flujos de confirmación multi-step para eliminación de cuenta. Agregar enlaces a políticas desde Settings. Implementar notificaciones cuando políticas cambien. Asegurar accesibilidad y claridad legal.",
+            "status": "pending",
+            "testStrategy": "Verificar política de privacidad se actualiza dinámicamente desde Supabase, probar todos los botones de derechos funcionan correctamente, validar flujos de confirmación previenen eliminaciones accidentales, confirmar accesibilidad desde Settings, testear notificaciones de cambios en políticas"
+          }
+        ]
+      },
+      {
+        "id": 59,
+        "title": "Implementar sistema de estado global UI para Loading, Error y Empty states",
+        "description": "Desarrollar sistema integral de estados UI consistente con widgets reutilizables LoadingState, ErrorState y EmptyState, providers Riverpod para gestión global, y cumplimiento WCAG 2.1 AA en toda la aplicación",
+        "details": "Crear archivo lib/widgets/ui_states/loading_state.dart con widget LoadingState que use CircularProgressIndicator con colores ZendfastColors.primary, animaciones ZendfastAnimations.standard, y texto descriptivo opcional. Implementar lib/widgets/ui_states/error_state.dart con ErrorState que muestre ícono de error, mensaje personalizable, botón retry opcional con PrimaryButton style, y colores semánticos ZendfastColors.error. Desarrollar lib/widgets/ui_states/empty_state.dart con EmptyState siguiendo patrón existente del Frontend Guidelines pero extendido con ilustraciones opcionales, acciones múltiples, y variantes para diferentes contextos (no data, no results, offline). Crear lib/providers/ui_state_provider.dart con Riverpod StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty con métodos setLoading(), setError(), setEmpty(), clearState(). Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine los tres estados y los muestre automáticamente basado en provider state. Asegurar cumplimiento WCAG 2.1 AA: contrastaratio mínimo 4.5:1, Semantics labels, touch targets 44dp mínimo, support para screen readers con announcements, y text scaling compatible. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography, y espaciado ZendfastSpacing existentes. Proporcionar examples de uso con diferentes servicios (auth, timer, database) y documentar patterns de implementación.",
+        "testStrategy": "Verificar contraste WCAG 2.1 AA con color contrast analyzer en todos los estados, probar con TalkBack/VoiceOver para validar screen reader announcements, verificar touch targets cumplen 44dp mínimo, probar scaling de texto hasta 200% sin overflow, validar estados se muestran correctamente en diferentes tamaños de pantalla, testear transiciones entre estados son fluidas y accesibles, verificar providers actualizan UI reactivamente, probar retry actions funcionan correctamente, validar empty states muestran acciones apropiadas según contexto",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear widgets base de estado UI con cumplimiento WCAG",
+            "description": "Implementar LoadingState, ErrorState y EmptyState widgets con contraste mínimo 4.5:1, touch targets 44dp, labels semánticos y compatibilidad con lectores de pantalla",
+            "dependencies": [],
+            "details": "Crear lib/widgets/ui_states/loading_state.dart con CircularProgressIndicator usando ZendfastColors.primary y animaciones ZendfastAnimations.standard. Implementar lib/widgets/ui_states/error_state.dart con ícono de error, mensaje personalizable y botón retry usando PrimaryButton. Desarrollar lib/widgets/ui_states/empty_state.dart con ilustraciones opcionales y acciones múltiples. Asegurar cumplimiento WCAG 2.1 AA con contrast ratio mínimo 4.5:1, Semantics labels apropiados, touch targets de 44dp mínimo y soporte para screen readers con announcements.",
+            "status": "pending",
+            "testStrategy": "Verificar contraste WCAG 2.1 AA con color contrast analyzer, probar con TalkBack/VoiceOver para validar announcements, verificar touch targets cumplen 44dp mínimo, probar scaling de texto hasta 200%"
+          },
+          {
+            "id": 2,
+            "title": "Implementar providers Riverpod para gestión global de estados",
+            "description": "Desarrollar sistema de gestión de estado global usando Riverpod para coordinar estados de loading, error y empty en toda la aplicación",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear lib/providers/ui_state_provider.dart con StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty. Implementar métodos setLoading(), setError(), setEmpty(), clearState() para transiciones de estado. Configurar notificaciones automáticas a widgets suscritos. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography y espaciado ZendfastSpacing existentes.",
+            "status": "pending",
+            "testStrategy": "Verificar estados se actualizan correctamente entre widgets, probar transiciones de estado fluidas, validar notificaciones automáticas funcionan"
+          },
+          {
+            "id": 3,
+            "title": "Desarrollar wrapper adaptativo con integración completa",
+            "description": "Crear AdaptiveStateWrapper que combine automáticamente los tres estados y proporcionar ejemplos de uso con diferentes servicios",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine LoadingState, ErrorState y EmptyState mostrándolos automáticamente basado en provider state. Crear ejemplos de uso con diferentes servicios (auth, timer, database). Documentar patterns de implementación y mejores prácticas. Asegurar integración completa con sistema de diseño existente y proporcionar guías de uso para desarrolladores.",
+            "status": "pending",
+            "testStrategy": "Probar wrapper muestra estados correctos automáticamente, verificar ejemplos funcionan con servicios reales, validar documentación está completa"
+          }
+        ]
+      },
+      {
+        "id": 60,
+        "title": "Implementar sistema de backup automático de datos con exportación periódica a Supabase Storage",
+        "description": "Desarrollar sistema completo de backup automático diario para datos Isar locales con exportación cifrada a Supabase Storage y funcionalidad de restauración.",
+        "details": "Crear BackupService singleton con métodos createBackup(), uploadToSupabase(), downloadBackup(), restoreFromBackup(). Implementar backup diario usando flutter_background_service scheduler que exporte todas las colecciones Isar (FastingSession, UserProfile, HydrationLog, ContentItem) a JSON. Cifrar backups usando dart:convert y crypto package con AES-256-GCM antes de upload a Supabase Storage bucket 'user-backups'. Structure: /backups/{userId}/{timestamp}_backup.json.encrypted. Implementar BackupManager con BackupMetadata model para tracking: timestamp, fileSize, collections, isEncrypted. Crear UI en settings para manual backup, restore, y download complete data (GDPR). Implementar conflict resolution para restore (user choice to overwrite/merge). Usar shared_preferences para backup schedule config y last backup timestamp. Agregar compression con gzip antes encryption para optimize storage.",
+        "testStrategy": "Verificar backup automático se ejecuta diariamente, probar encryption/decryption de datos funciona correctamente, validar upload y download desde Supabase Storage exitoso, confirmar restauración completa no pierde datos, probar GDPR export genera JSON válido con todos los datos de usuario",
+        "status": "pending",
+        "dependencies": [
+          48,
+          49
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar BackupService con scheduling automático diario",
+            "description": "Desarrollar servicio singleton para manejo de backups automáticos con scheduler en background que exporte datos Isar a JSON diariamente",
+            "dependencies": [],
+            "details": "Crear BackupService singleton con métodos createBackup(), scheduleAutomaticBackup(). Implementar flutter_background_service para ejecutar backup diario automático. Exportar todas las colecciones Isar (FastingSession, UserProfile, HydrationLog, ContentItem) a formato JSON. Usar shared_preferences para configurar horario de backup y guardar timestamp del último backup. Implementar compresión gzip de datos antes del cifrado para optimizar almacenamiento.",
+            "status": "pending",
+            "testStrategy": "Verificar que el backup automático se ejecuta correctamente cada 24 horas, probar que todas las colecciones Isar se exportan completamente a JSON, validar que la compresión gzip funciona y reduce el tamaño de archivos"
+          },
+          {
+            "id": 2,
+            "title": "Desarrollar sistema de cifrado AES-256-GCM y upload a Supabase Storage",
+            "description": "Implementar cifrado seguro de backups con AES-256-GCM y sistema de upload/download desde Supabase Storage con estructura organizada",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar cifrado AES-256-GCM usando crypto package para encriptar backups JSON comprimidos. Crear métodos uploadToSupabase() y downloadBackup() en BackupService. Configurar Supabase Storage bucket 'user-backups' con estructura /backups/{userId}/{timestamp}_backup.json.encrypted. Implementar BackupMetadata model para tracking de metadatos: timestamp, fileSize, collections incluidas, isEncrypted. Manejar autenticación y permisos de Supabase Storage.",
+            "status": "pending",
+            "testStrategy": "Probar que el cifrado AES-256-GCM funciona correctamente y los datos se pueden descifrar, verificar que el upload a Supabase Storage es exitoso con la estructura correcta, validar que los metadatos se guardan apropiadamente"
+          },
+          {
+            "id": 3,
+            "title": "Crear UI de gestión de backups con restore y exportación GDPR",
+            "description": "Desarrollar interfaz de usuario completa para gestión manual de backups, restauración de datos y exportación GDPR en configuraciones",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear BackupManager para orchestrar operaciones UI. Implementar pantalla en settings con opciones: backup manual, restaurar desde backup, descargar datos completos (GDPR export). Desarrollar restoreFromBackup() con conflict resolution permitiendo al usuario elegir entre sobrescribir o fusionar datos. Crear UI intuitiva para mostrar backups disponibles, fechas, tamaños. Implementar progress indicators para operaciones largas. Agregar validación de integridad antes de restauración.",
+            "status": "pending",
+            "testStrategy": "Verificar que la UI permite realizar backups manuales correctamente, probar que la restauración funciona sin pérdida de datos, validar que la exportación GDPR genera JSON completo con todos los datos del usuario, confirmar que la resolución de conflictos funciona apropiadamente"
+          }
+        ]
       }
     ],
     "metadata": {
@@ -2934,7 +3198,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-24T23:26:34.581Z"
+      "updated": "2025-10-25T03:00:05.313Z"
     }
   }
 }

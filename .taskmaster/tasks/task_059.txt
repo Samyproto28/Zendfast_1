@@ -1,0 +1,31 @@
+# Task ID: 59
+# Title: Implementar sistema de estado global UI para Loading, Error y Empty states
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Desarrollar sistema integral de estados UI consistente con widgets reutilizables LoadingState, ErrorState y EmptyState, providers Riverpod para gestión global, y cumplimiento WCAG 2.1 AA en toda la aplicación
+# Details:
+Crear archivo lib/widgets/ui_states/loading_state.dart con widget LoadingState que use CircularProgressIndicator con colores ZendfastColors.primary, animaciones ZendfastAnimations.standard, y texto descriptivo opcional. Implementar lib/widgets/ui_states/error_state.dart con ErrorState que muestre ícono de error, mensaje personalizable, botón retry opcional con PrimaryButton style, y colores semánticos ZendfastColors.error. Desarrollar lib/widgets/ui_states/empty_state.dart con EmptyState siguiendo patrón existente del Frontend Guidelines pero extendido con ilustraciones opcionales, acciones múltiples, y variantes para diferentes contextos (no data, no results, offline). Crear lib/providers/ui_state_provider.dart con Riverpod StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty con métodos setLoading(), setError(), setEmpty(), clearState(). Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine los tres estados y los muestre automáticamente basado en provider state. Asegurar cumplimiento WCAG 2.1 AA: contrastaratio mínimo 4.5:1, Semantics labels, touch targets 44dp mínimo, support para screen readers con announcements, y text scaling compatible. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography, y espaciado ZendfastSpacing existentes. Proporcionar examples de uso con diferentes servicios (auth, timer, database) y documentar patterns de implementación.
+
+# Test Strategy:
+Verificar contraste WCAG 2.1 AA con color contrast analyzer en todos los estados, probar con TalkBack/VoiceOver para validar screen reader announcements, verificar touch targets cumplen 44dp mínimo, probar scaling de texto hasta 200% sin overflow, validar estados se muestran correctamente en diferentes tamaños de pantalla, testear transiciones entre estados son fluidas y accesibles, verificar providers actualizan UI reactivamente, probar retry actions funcionan correctamente, validar empty states muestran acciones apropiadas según contexto
+
+# Subtasks:
+## 1. Crear widgets base de estado UI con cumplimiento WCAG [pending]
+### Dependencies: None
+### Description: Implementar LoadingState, ErrorState y EmptyState widgets con contraste mínimo 4.5:1, touch targets 44dp, labels semánticos y compatibilidad con lectores de pantalla
+### Details:
+Crear lib/widgets/ui_states/loading_state.dart con CircularProgressIndicator usando ZendfastColors.primary y animaciones ZendfastAnimations.standard. Implementar lib/widgets/ui_states/error_state.dart con ícono de error, mensaje personalizable y botón retry usando PrimaryButton. Desarrollar lib/widgets/ui_states/empty_state.dart con ilustraciones opcionales y acciones múltiples. Asegurar cumplimiento WCAG 2.1 AA con contrast ratio mínimo 4.5:1, Semantics labels apropiados, touch targets de 44dp mínimo y soporte para screen readers con announcements.
+
+## 2. Implementar providers Riverpod para gestión global de estados [pending]
+### Dependencies: 59.1
+### Description: Desarrollar sistema de gestión de estado global usando Riverpod para coordinar estados de loading, error y empty en toda la aplicación
+### Details:
+Crear lib/providers/ui_state_provider.dart con StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty. Implementar métodos setLoading(), setError(), setEmpty(), clearState() para transiciones de estado. Configurar notificaciones automáticas a widgets suscritos. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography y espaciado ZendfastSpacing existentes.
+
+## 3. Desarrollar wrapper adaptativo con integración completa [pending]
+### Dependencies: 59.1, 59.2
+### Description: Crear AdaptiveStateWrapper que combine automáticamente los tres estados y proporcionar ejemplos de uso con diferentes servicios
+### Details:
+Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine LoadingState, ErrorState y EmptyState mostrándolos automáticamente basado en provider state. Crear ejemplos de uso con diferentes servicios (auth, timer, database). Documentar patterns de implementación y mejores prácticas. Asegurar integración completa con sistema de diseño existente y proporcionar guías de uso para desarrolladores.
+

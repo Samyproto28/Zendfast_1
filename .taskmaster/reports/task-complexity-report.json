@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"generatedAt": "2025-10-22T14:25:26.788Z",
+		"generatedAt": "2025-10-25T03:09:18.392Z",
 		"tasksAnalyzed": 55,
-		"totalTasks": 55,
+		"totalTasks": 60,
 		"analysisCount": 55,
 		"thresholdScore": 5,
 		"projectName": "Zendfast",
@@ -10,444 +10,444 @@
 	},
 	"complexityAnalysis": [
 		{
-			"taskId": 33,
-			"taskTitle": "Configurar programación de notificaciones con OneSignal",
-			"complexityScore": 6,
-			"recommendedSubtasks": 4,
-			"expansionPrompt": "Dividir en subtareas específicas para programación de notificaciones: configurar servicio de scheduling, implementar templates de notificaciones, manejar preferencias de usuario y gestionar cambios de zona horaria",
-			"reasoning": "Complejidad media-alta debido a integración con OneSignal API, manejo de múltiples tipos de notificaciones, programación precisa de tiempos y consideraciones de zona horaria. Requiere testing exhaustivo para verificar entrega"
-		},
-		{
-			"taskId": 40,
-			"taskTitle": "Configurar flavors de Flutter (development/production)",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Dividir en configuración específica por plataforma: setup de Android flavors y build.gradle, configuración de iOS schemes, e implementación de AppConfig para manejo de environment variables",
-			"reasoning": "Complejidad media debido a configuración de múltiples plataformas, manejo de environment variables y configuración de CI/CD. Requiere conocimiento específico de build systems de Android e iOS"
-		},
-		{
-			"taskId": 42,
-			"taskTitle": "Configurar CI/CD con Codemagic",
-			"complexityScore": 7,
-			"recommendedSubtasks": 5,
-			"expansionPrompt": "Crear subtareas para cada aspecto del pipeline: configuración de workflows, setup de environment variables y certificados, configuración de testing automatizado, deployment automation, y notificaciones de build status",
-			"reasoning": "Complejidad alta debido a integración múltiple (Sentry, app stores, certificados), configuración de pipeline completo, manejo de secrets y deployment automatizado. Requiere experiencia DevOps significativa"
-		},
-		{
-			"taskId": 52,
-			"taskTitle": "Configurar monitoreo de app con analytics custom",
-			"complexityScore": 4,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Dividir en implementación de tracking de eventos, configuración de analytics backend (Supabase/terceros), y creación de dashboard para visualización de métricas",
-			"reasoning": "Complejidad media-baja. Implementación relativamente directa de eventos analíticos, pero requiere consideraciones de privacidad y configuración de backend para almacenamiento"
-		},
-		{
 			"taskId": 5,
 			"taskTitle": "Configurar OneSignal para notificaciones push",
 			"complexityScore": 6,
 			"recommendedSubtasks": 4,
-			"expansionPrompt": "Dividir en setup inicial de OneSignal SDK, configuración de permisos por plataforma, implementación de templates de notificaciones, y manejo de deep links desde notificaciones",
-			"reasoning": "Complejidad media-alta debido a configuración específica por plataforma (iOS/Android), manejo de permisos, integración de deep linking y testing en múltiples escenarios (foreground/background)"
-		},
-		{
-			"taskId": 48,
-			"taskTitle": "Configurar esquemas de base de datos Supabase con RLS",
-			"complexityScore": 8,
-			"recommendedSubtasks": 6,
-			"expansionPrompt": "Dividir en diseño de esquemas de base de datos, configuración de políticas RLS, creación de triggers automáticos, setup de migraciones, seeding de datos iniciales, y testing de seguridad",
-			"reasoning": "Complejidad alta debido a diseño completo de base de datos, configuración de seguridad crítica (RLS), triggers complejos y necesidad de testing exhaustivo de políticas de acceso"
-		},
-		{
-			"taskId": 31,
-			"taskTitle": "Configurar Superwall para monetización y paywall",
-			"complexityScore": 6,
-			"recommendedSubtasks": 4,
-			"expansionPrompt": "Dividir en integración del SDK Superwall, configuración de productos y suscripciones, implementación de triggers de paywall, y manejo de webhooks para eventos de suscripción",
-			"reasoning": "Complejidad media-alta debido a integración con sistema de pagos, configuración de productos/suscripciones, manejo de webhooks y testing de flujos críticos de monetización"
-		},
-		{
-			"taskId": 36,
-			"taskTitle": "Configurar Sentry para monitoreo de errores",
-			"complexityScore": 4,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Dividir en setup inicial de Sentry SDK, configuración de source maps y contexto de usuario, y configuración de performance monitoring y alertas",
-			"reasoning": "Complejidad media-baja. Setup relativamente straightforward de Sentry, pero requiere configuración apropiada de source maps y performance monitoring para máximo beneficio"
-		},
-		{
-			"taskId": 3,
-			"taskTitle": "Configurar cliente Supabase con autenticación y RLS",
-			"complexityScore": 7,
-			"recommendedSubtasks": 5,
-			"expansionPrompt": "Dividir en setup de cliente Supabase, implementación de AuthService, configuración de tablas y RLS policies, manejo de errores específicos, y testing de flows de autenticación",
-			"reasoning": "Complejidad alta debido a configuración de autenticación completa, setup de RLS crítico para seguridad, manejo de múltiples flujos de auth y testing exhaustivo requerido"
-		},
-		{
-			"taskId": 34,
-			"taskTitle": "Implementar deep linking para notificaciones",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Dividir en configuración de routing con go_router, implementación de NotificationHandler para parsing, y setup de Universal/App Links con verificación de dominio",
-			"reasoning": "Complejidad media debido a configuración específica por plataforma (Universal Links/App Links), parsing correcto de notification data y testing de routing desde múltiples puntos de entrada"
-		},
-		{
-			"taskId": 1,
-			"taskTitle": "Configurar sistema de diseño Zendfast (colores, tipografía, espaciado)",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on configurar sistema de diseño zendfast (colores, tipografía, espaciado).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
-		},
-		{
-			"taskId": 2,
-			"taskTitle": "Configurar base de datos Isar v3.1.0 con esquemas principales",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on configurar base de datos isar v3.1.0 con esquemas principales.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
-		},
-		{
-			"taskId": 4,
-			"taskTitle": "Implementar servicio de fondo para persistencia del timer",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar servicio de fondo para persistencia del timer.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
-		},
-		{
-			"taskId": 6,
-			"taskTitle": "Implementar sistema de autenticación con Supabase Auth",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar sistema de autenticación con supabase auth.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración del SDK de OneSignal, configuración de permisos por plataforma, implementación de templates de notificaciones específicos para ayuno e hidratación, y configuración de deep linking desde notificaciones push",
+			"reasoning": "Integración de OneSignal requiere configuración específica para iOS y Android, manejo de permisos complejos, templates de notificaciones personalizados y deep linking. La configuración de diferentes plataformas añade complejidad técnica."
 		},
 		{
 			"taskId": 7,
 			"taskTitle": "Crear modelo FastingSession en Isar",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelo fastingsession en isar.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en definición del esquema con anotaciones Isar, implementación de métodos de cálculo de tiempo y progreso, e integración de serialización JSON para sincronización con Supabase",
+			"reasoning": "Modelo relativamente directo pero requiere configuración precisa de Isar, métodos de cálculo de tiempo, y serialización para sync. La lógica de cálculo de tiempo transcurrido añade cierta complejidad."
 		},
 		{
 			"taskId": 8,
 			"taskTitle": "Desarrollar TimerService con lógica de ayuno",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar timerservice con lógica de ayuno.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en implementación del singleton base con estado, desarrollo de métodos de control del timer, integración con persistencia Isar, y manejo de casos edge como cambios de zona horaria",
+			"reasoning": "Sistema crítico que requiere precisión temporal, manejo de estados complejos, persistencia confiable, y casos edge como cambios de zona horaria. La coordinación entre background service y UI añade complejidad significativa."
 		},
 		{
 			"taskId": 9,
 			"taskTitle": "Crear pantalla de selección de planes de ayuno",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear pantalla de selección de planes de ayuno.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación del modelo de datos para planes, desarrollo del widget visual de selección con Material 3, e implementación de la pantalla completa con persistencia",
+			"reasoning": "UI relativamente compleja con selección visual, diferentes estados, y persistencia de datos. Requiere diseño cuidadoso de la experiencia de usuario y manejo de estado."
 		},
 		{
 			"taskId": 10,
 			"taskTitle": "Desarrollar pantalla principal FastingHomeScreen",
-			"complexityScore": 5,
-			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar pantalla principal fastinghomescreen.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en implementación del timer central visual, desarrollo de indicadores de progreso y botones de control, integración con providers reactivos, y implementación de animaciones fluidas",
+			"reasoning": "Pantalla central crítica que requiere actualizaciones en tiempo real, múltiples componentes visuales coordinados, y animaciones complejas. La sincronización entre timer y UI añade complejidad."
 		},
 		{
 			"taskId": 11,
 			"taskTitle": "Implementar botón de pánico como FloatingActionButton",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar botón de pánico como floatingactionbutton.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación del componente visual del botón, implementación de animaciones sutiles, e integración con analytics para tracking de uso",
+			"reasoning": "Componente relativamente simple pero requiere animaciones sutiles, lógica condicional de visibilidad, y integración con analytics. La animación debe ser cuidadosamente implementada."
 		},
 		{
 			"taskId": 12,
 			"taskTitle": "Crear modal de pánico con contenido motivacional",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modal de pánico con contenido motivacional.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en diseño del modal con overlay, implementación del repositorio de frases motivacionales, y desarrollo de la lógica de interacción y navegación",
+			"reasoning": "Modal complejo que requiere diseño visual cuidadoso, gestión de contenido dinámico desde base de datos, y múltiples opciones de navegación. La integración con repositorio de frases añade complejidad."
 		},
 		{
 			"taskId": 13,
 			"taskTitle": "Implementar animación de respiración 4-4-8 con Lottie",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar animación de respiración 4-4-8 con lottie.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de Lottie y assets, implementación de la pantalla de meditación con timing preciso, y desarrollo de controles de usuario y navegación",
+			"reasoning": "Requiere integración de Lottie, timing preciso para patrón 4-4-8, y múltiples controles de usuario. La sincronización entre animación y timing añade complejidad técnica."
 		},
 		{
 			"taskId": 14,
 			"taskTitle": "Crear biblioteca de frases motivacionales",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear biblioteca de frases motivacionales.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación del modelo de datos y esquema, implementación del repositorio con funcionalidad anti-repetición, y configuración de sincronización con Supabase",
+			"reasoning": "Sistema de contenido que requiere modelado de datos, lógica anti-repetición compleja, y sincronización bidireccional. El manejo de categorización y caché offline añade complejidad."
 		},
 		{
 			"taskId": 15,
 			"taskTitle": "Implementar gestión de sesiones (completar/interrumpir ayuno)",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar gestión de sesiones (completar/interrumpir ayuno).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en extensión de TimerService con métodos de finalización, implementación de persistencia y sincronización, y desarrollo de SessionManager para coordinar flujos",
+			"reasoning": "Lógica crítica que maneja finalización de sesiones, actualización de métricas, y sincronización. Requiere coordinación entre múltiples servicios y manejo de casos edge."
 		},
 		{
 			"taskId": 16,
 			"taskTitle": "Crear modelo UserProfile con cálculo de hidratación",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelo userprofile con cálculo de hidratación.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en definición del esquema base, implementación de cálculos automáticos de hidratación, y desarrollo del repositorio con sincronización Supabase",
+			"reasoning": "Modelo con cálculos automáticos relativamente simple, pero requiere sincronización confiable y validaciones. Los cálculos de hidratación añaden cierta complejidad lógica."
 		},
 		{
 			"taskId": 17,
 			"taskTitle": "Desarrollar servicio de hidratación (HydrationService)",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar servicio de hidratación (hydrationservice).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en implementación del modelo de datos de hidratación, desarrollo de métodos core del servicio, y configuración de reset automático con integración UserProfile",
+			"reasoning": "Servicio complejo que requiere tracking temporal, cálculos de progreso, reset automático nocturno, y manejo de zonas horarias. La coordinación con UserProfile añade complejidad."
 		},
 		{
 			"taskId": 18,
 			"taskTitle": "Crear WaterButton widget para logging rápido",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear waterbutton widget para logging rápido.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en implementación del componente base del botón, desarrollo de funcionalidad de logging con feedback, y adición de badge de progreso con configuración",
+			"reasoning": "Widget interactivo que requiere animaciones, feedback háptico, debouncing, y funcionalidad de configuración. La integración con servicio de hidratación es directa pero requiere UX cuidadoso."
 		},
 		{
 			"taskId": 19,
 			"taskTitle": "Implementar indicador de progreso de hidratación",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar indicador de progreso de hidratación.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación del widget base del indicador, implementación de overlay de texto con cálculos, e integración con Riverpod para actualizaciones en tiempo real",
+			"reasoning": "Widget visual que requiere cálculos precisos, animaciones fluidas, y actualizaciones reactivas. La sincronización con el estado global es importante pero bien definida."
 		},
 		{
 			"taskId": 20,
 			"taskTitle": "Desarrollar pantalla de onboarding con flujo de 6 pasos",
-			"complexityScore": 5,
+			"complexityScore": 7,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar pantalla de onboarding con flujo de 6 pasos.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura base del coordinador con navegación, desarrollo de las 6 pantallas individuales, e implementación de persistencia y finalización del flujo",
+			"reasoning": "Flujo complejo con múltiples pantallas, integración con servicios externos (Superwall), validaciones de formularios, y persistencia de datos. La coordinación entre pantallas añade complejidad significativa."
 		},
 		{
 			"taskId": 21,
 			"taskTitle": "Implementar plan de detox de 48 horas (opcional)",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar plan de detox de 48 horas (opcional).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de pantalla con timer independiente, implementación de sistema de check-ins y alimentos permitidos, y desarrollo de servicio de detox con finalización",
+			"reasoning": "Feature adicional que requiere timer separado, UI específica, y lógica de tracking. Menor complejidad por ser opcional pero requiere integración cuidadosa con flujo principal."
 		},
 		{
 			"taskId": 22,
 			"taskTitle": "Crear MetricsService para cálculo de estadísticas",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear metricsservice para cálculo de estadísticas.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura base del servicio, implementación de cálculos de streak y métricas temporales, y desarrollo de análisis de patrones con sistema de caché",
+			"reasoning": "Servicio de análisis complejo que requiere algoritmos de cálculo precisos, queries optimizadas, y sistema de caché. Los cálculos de patrones y streak añaden complejidad algorítmica."
 		},
 		{
 			"taskId": 23,
 			"taskTitle": "Desarrollar MetricsDashboardScreen con widgets visuales",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar metricsdashboardscreen con widgets visuales.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de componente MetricCard reutilizable, implementación de cálculo de métricas en tiempo real, y desarrollo de la pantalla completa con animaciones",
+			"reasoning": "Dashboard que requiere múltiples componentes visuales, cálculos en tiempo real, y animaciones fluidas. La coordinación entre diferentes métricas añade complejidad."
 		},
 		{
 			"taskId": 24,
 			"taskTitle": "Implementar calendario heatmap para historial visual",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar calendario heatmap para historial visual.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura básica del calendario, implementación de sistema de colores para estados, y adición de interactividad con modales de detalles",
+			"reasoning": "Componente visual complejo que requiere integración con calendario, mapeo de datos a colores, y interactividad avanzada. El manejo eficiente de grandes volúmenes de datos añade complejidad."
 		},
 		{
 			"taskId": 25,
 			"taskTitle": "Crear modelo ContentItem para biblioteca de aprendizaje",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear modelo contentitem para biblioteca de aprendizaje.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de enums para clasificación, implementación de la clase principal con Isar, y configuración de sincronización con Supabase",
+			"reasoning": "Modelo de datos con categorización que requiere enums bien definidos, serialización, y sincronización. Relativamente directo pero requiere diseño cuidadoso de la estructura."
 		},
 		{
 			"taskId": 26,
 			"taskTitle": "Desarrollar ContentService para gestión de contenido educativo",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar contentservice para gestión de contenido educativo.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura base del servicio, implementación de sistema de caché inteligente diferenciado por tipo, y desarrollo de gestión de favoritos con búsqueda",
+			"reasoning": "Servicio complejo que requiere estrategias de caché diferenciadas, gestión de favoritos con sincronización, y funcionalidad de búsqueda. El manejo offline/online añade complejidad."
 		},
 		{
 			"taskId": 27,
 			"taskTitle": "Crear LearningHomeScreen para exploración de contenido",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear learninghomescreen para exploración de contenido.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura base con TabBar, implementación de componentes de contenido y cards, y adición de sección featured con estados de loading/empty",
+			"reasoning": "Pantalla con múltiples componentes que requiere navegación por pestañas, manejo de estados diversos, y componentes reutilizables. La coordinación entre tabs y estados añade complejidad."
 		},
 		{
 			"taskId": 28,
 			"taskTitle": "Integrar youtube_player_flutter para reproducción de videos",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on integrar youtube_player_flutter para reproducción de videos.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en instalación y configuración del SDK, creación de pantalla con extracción de video ID, e implementación de controles avanzados y manejo de estados",
+			"reasoning": "Integración de reproductor que requiere configuración específica, parsing de URLs, y manejo de estados complejos del video. Los controles avanzados y fallbacks añaden complejidad."
 		},
 		{
 			"taskId": 29,
 			"taskTitle": "Implementar sistema de favoritos para contenido",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar sistema de favoritos para contenido.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en extensión del modelo y repositorio, implementación de UI con animaciones, y configuración de sincronización con resolución de conflictos",
+			"reasoning": "Sistema que requiere extensión de modelos existentes, UI con animaciones, y sincronización bidireccional compleja. La resolución de conflictos entre dispositivos añade complejidad."
 		},
 		{
 			"taskId": 30,
 			"taskTitle": "Crear ProfileScreen para gestión de configuración",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear profilescreen para gestión de configuración.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en estructura base de la pantalla, implementación de secciones de información y configuración, y desarrollo de configuraciones de tema y notificaciones",
+			"reasoning": "Pantalla de configuración completa que requiere múltiples secciones, validaciones de formularios, y persistencia de configuraciones. La variedad de configuraciones añade complejidad."
+		},
+		{
+			"taskId": 31,
+			"taskTitle": "Configurar Superwall para monetización y paywall",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en integración del SDK, creación del servicio wrapper, implementación de triggers y productos, y configuración de webhooks con analytics",
+			"reasoning": "Integración compleja con SDK de terceros que requiere configuración de productos, manejo de webhooks, y tracking de conversiones. El A/B testing y analytics añaden complejidad significativa."
 		},
 		{
 			"taskId": 32,
 			"taskTitle": "Implementar gating de features premium",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar gating de features premium.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de SubscriptionManager, desarrollo de widget PremiumFeatureGate universal, e implementación de gating en features específicas",
+			"reasoning": "Sistema de restricción que requiere verificación de estado de suscripción, componentes reutilizables, y aplicación consistente en múltiples features. La gestión de estados premium añade complejidad."
+		},
+		{
+			"taskId": 33,
+			"taskTitle": "Configurar programación de notificaciones con OneSignal",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en servicio base de scheduling, implementación de notificaciones de ayuno, configuración de preferencias de usuario, y manejo de timezone con hidratación",
+			"reasoning": "Sistema complejo de notificaciones que requiere scheduling preciso, manejo de zonas horarias, preferencias de usuario, y coordinación con diferentes tipos de notificaciones. La precisión temporal es crítica."
+		},
+		{
+			"taskId": 34,
+			"taskTitle": "Implementar deep linking para notificaciones",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en configuración de go_router con rutas, implementación de NotificationHandler para parsing, y configuración de Universal/App Links",
+			"reasoning": "Sistema de navegación profunda que requiere configuración de routing, parsing de datos de notificaciones, y configuración específica para cada plataforma. La verificación de dominio añade complejidad."
 		},
 		{
 			"taskId": 35,
 			"taskTitle": "Desarrollar SyncManager para sincronización bidireccional",
-			"complexityScore": 5,
+			"complexityScore": 8,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar syncmanager para sincronización bidireccional.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en arquitectura base del SyncManager, implementación de cola offline y triggers, y desarrollo de resolución de conflictos con retry logic",
+			"reasoning": "Sistema crítico y complejo que requiere resolución de conflictos, manejo robusto de errores, sincronización bidireccional, y queuing offline. La integridad de datos es crucial y añade complejidad significativa."
+		},
+		{
+			"taskId": 36,
+			"taskTitle": "Configurar Sentry para monitoreo de errores",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en setup inicial de Sentry SDK, configuración de source maps y contexto de usuario, y configuración de performance monitoring",
+			"reasoning": "Integración de monitoring relativamente directa pero requiere configuración cuidadosa de source maps, contexto de usuario, y performance monitoring. La configuración de alertas añade cierta complejidad."
 		},
 		{
 			"taskId": 37,
 			"taskTitle": "Implementar testing de accesibilidad WCAG 2.1 AA",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar testing de accesibilidad wcag 2.1 aa.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de herramientas automatizadas, implementación de validación de contraste y tamaños, y implementación de etiquetas semánticas con testing",
+			"reasoning": "Testing de accesibilidad complejo que requiere herramientas especializadas, validación de múltiples criterios WCAG, y testing manual con screen readers. La cobertura completa añade complejidad significativa."
 		},
 		{
 			"taskId": 38,
 			"taskTitle": "Implementar tema claro/oscuro con toggle del sistema",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar tema claro/oscuro con toggle del sistema.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de esquemas de colores Material 3, implementación de provider con persistencia, y creación de widget toggle con validación",
+			"reasoning": "Sistema de temas relativamente directo pero requiere definición cuidadosa de colores, persistencia de preferencias, y detección automática del sistema. La validación de legibilidad añade complejidad."
 		},
 		{
 			"taskId": 39,
 			"taskTitle": "Crear assets de Lottie para animación de respiración",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear assets de lottie para animación de respiración.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en investigación y selección de assets, diseño personalizado de animación, e integración y optimización en la aplicación",
+			"reasoning": "Creación de assets que requiere diseño visual, optimización de archivos, y timing preciso. La necesidad de mantener tamaño pequeño mientras conserva calidad añade complejidad técnica."
+		},
+		{
+			"taskId": 40,
+			"taskTitle": "Configurar flavors de Flutter (development/production)",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en configuración específica por plataforma: setup de Android flavors, configuración de iOS schemes, e implementación de AppConfig para management de variables",
+			"reasoning": "Configuración de environments que requiere configuración específica para cada plataforma, manejo de variables de entorno, y coordinación entre development y production. La configuración de signing y certificados añade complejidad."
 		},
 		{
 			"taskId": 41,
 			"taskTitle": "Implementar obfuscación de código para producción",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar obfuscación de código para producción.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de flags de obfuscación, configuración de ProGuard y optimizaciones nativas, e integración de symbol files con Sentry",
+			"reasoning": "Proceso de obfuscación que requiere configuración específica por plataforma, manejo de symbol files, y integración con crash reporting. La coordinación con CI/CD añade complejidad."
+		},
+		{
+			"taskId": 42,
+			"taskTitle": "Configurar CI/CD con Codemagic",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Dividir en workflows básicos, configuración de variables y certificados, testing automatizado, deployment automation, y notificaciones",
+			"reasoning": "Pipeline CI/CD complejo que requiere configuración de múltiples workflows, manejo de certificados, testing automatizado, y deployment a múltiples plataformas. La coordinación de todo el proceso de release añade complejidad significativa."
 		},
 		{
 			"taskId": 43,
 			"taskTitle": "Preparar assets para App Store (iOS)",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on preparar assets para app store (ios).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de screenshots para dispositivos, diseño de iconos y video preview, y escritura de descripción optimizada",
+			"reasoning": "Preparación de assets que requiere múltiples formatos, diseño visual cuidadoso, y optimización para App Store. La variedad de tamaños y formatos añade complejidad operacional."
 		},
 		{
 			"taskId": 44,
 			"taskTitle": "Preparar assets para Google Play Store (Android)",
-			"complexityScore": 5,
+			"complexityScore": 4,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on preparar assets para google play store (android).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de screenshots y graphics, escritura de descripciones optimizadas, y configuración de ratings con testing",
+			"reasoning": "Similar a iOS pero con requisitos específicos de Google Play. La configuración de ratings y compliance añade cierta complejidad administrativa."
 		},
 		{
 			"taskId": 45,
 			"taskTitle": "Crear documentación legal (Privacy Policy y Terms of Service)",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear documentación legal (privacy policy y terms of service).",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de Privacy Policy GDPR/CCPA compliant, desarrollo de Terms of Service con disclaimers médicos, e implementación de hosting y acceptance flow",
+			"reasoning": "Documentación legal compleja que requiere compliance con múltiples regulaciones, disclaimers específicos de salud, y implementación de flujos de aceptación. El aspecto legal añade complejidad significativa."
 		},
 		{
 			"taskId": 46,
 			"taskTitle": "Implementar testing de performance con métricas específicas",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar testing de performance con métricas específicas.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de herramientas y métricas, implementación de tests específicos, e integración de testing automatizado en CI",
+			"reasoning": "Testing de performance complejo que requiere métricas específicas, herramientas especializadas, y testing en múltiples dispositivos. La automatización en CI añade complejidad técnica."
 		},
 		{
 			"taskId": 47,
 			"taskTitle": "Desarrollar Edge Functions en Supabase",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on desarrollar edge functions en supabase.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en creación de function de métricas, desarrollo de functions para notificaciones y webhooks, e implementación de utilities con deployment",
+			"reasoning": "Desarrollo serverless que requiere múltiples funciones coordinadas, manejo de webhooks, y integración con servicios externos. El runtime Deno y deployment añaden complejidad técnica."
+		},
+		{
+			"taskId": 48,
+			"taskTitle": "Configurar esquemas de base de datos Supabase con RLS",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Dividir en diseño de esquemas, configuración de políticas RLS, creación de triggers automáticos, sistema de migraciones, seeding de datos, y testing de seguridad",
+			"reasoning": "Configuración de base de datos extremadamente compleja que requiere múltiples tablas, políticas de seguridad robustas, triggers automáticos, y sistema completo de migraciones. La seguridad y integridad de datos son críticas."
 		},
 		{
 			"taskId": 49,
 			"taskTitle": "Implementar sistema de migración de datos",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar sistema de migración de datos.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en servicio de migración para Isar, sistema de migraciones SQL para Supabase, y funcionalidad de export/import GDPR",
+			"reasoning": "Sistema de migración complejo que requiere versionado de esquemas, rollbacks seguros, y funcionalidad de export/import. La integridad de datos durante migraciones añade complejidad crítica."
 		},
 		{
 			"taskId": 50,
 			"taskTitle": "Crear suite de testing E2E completa",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on crear suite de testing e2e completa.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de framework E2E, implementación de tests de flujos críticos, e implementación de testing offline con mocking",
+			"reasoning": "Testing E2E complejo que requiere configuración de emuladores, mocking de servicios externos, y cobertura de flujos críticos. El testing offline y determinístico añade complejidad técnica."
 		},
 		{
 			"taskId": 51,
 			"taskTitle": "Implementar beta testing con usuarios reales",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on implementar beta testing con usuarios reales.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en configuración de distribución beta, reclutamiento y guidelines, e implementación de feedback con métricas",
+			"reasoning": "Programa de beta testing que requiere configuración de distribución, gestión de usuarios, y recolección sistemática de feedback. La coordinación humana añade complejidad operacional."
+		},
+		{
+			"taskId": 52,
+			"taskTitle": "Configurar monitoreo de app con analytics custom",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en implementación de tracking de eventos, configuración de backend analytics, y creación de dashboard de métricas",
+			"reasoning": "Sistema de analytics que requiere tracking de eventos específicos, almacenamiento eficiente, y visualización de métricas. La privacy compliance añade consideraciones adicionales."
 		},
 		{
 			"taskId": 53,
 			"taskTitle": "Optimizar performance y memory usage",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on optimizar performance y memory usage.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en profiling y análisis, optimización de providers y lazy loading, y optimización de animaciones con caching",
+			"reasoning": "Optimización de performance compleja que requiere profiling detallado, optimizaciones específicas, y testing en dispositivos de gama media. El balance entre features y performance añade complejidad."
 		},
 		{
 			"taskId": 54,
 			"taskTitle": "Finalizar preparación para production launch",
-			"complexityScore": 5,
+			"complexityScore": 6,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on finalizar preparación para production launch.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en checklist de compliance, auditoría de seguridad, y polish final con testing en production",
+			"reasoning": "Preparación final crítica que requiere revisión exhaustiva de compliance, seguridad, y polish final. La coordinación de múltiples aspectos para launch añade complejidad operacional."
 		},
 		{
 			"taskId": 55,
 			"taskTitle": "Ejecutar submission a App Store y Google Play",
 			"complexityScore": 5,
 			"recommendedSubtasks": 3,
-			"expansionPrompt": "Break down this task with a focus on ejecutar submission a app store y google play.",
-			"reasoning": "Automatically added due to missing analysis in AI response."
+			"expansionPrompt": "Dividir en preparación y submission iOS, submission Android, y monitoreo del proceso de revisión",
+			"reasoning": "Proceso de submission que requiere coordinación precisa, manejo de assets múltiples, y respuesta a feedback de revisores. La variabilidad del proceso de revisión añade complejidad."
+		},
+		{
+			"taskId": 56,
+			"taskTitle": "Configurar go_router con guards de autenticación y deep linking completo",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en configuración de rutas y guards, implementación de deep linking para notificaciones, configuración de Universal/App Links, y implementación de navegación tipo-segura",
+			"reasoning": "Sistema de routing complejo que requiere guards de autenticación, deep linking desde notificaciones, configuración específica de plataforma, y navegación tipo-segura. La coordinación entre múltiples tipos de navegación añade complejidad significativa."
+		},
+		{
+			"taskId": 57,
+			"taskTitle": "Implementar sistema completo de analytics y tracking de eventos en analytics_events de Supabase",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en implementación del servicio de analytics base, desarrollo de métricas de funnel y retención, implementación de batching y sync offline, y creación de dashboard de visualización",
+			"reasoning": "Sistema de analytics complejo que requiere tracking de múltiples eventos, cálculo de métricas sofisticadas, sincronización offline/online, y visualización de datos. La privacidad y performance añaden complejidad significativa."
+		},
+		{
+			"taskId": 58,
+			"taskTitle": "Implementar features de GDPR compliance incluyendo exportación de datos del usuario, eliminación completa de cuenta con cascada en todas las tablas relacionadas, gestión de consentimientos explícitos, política de privacidad accesible, y cumplimiento con CCPA",
+			"complexityScore": 8,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Dividir en implementación de exportación de datos y eliminación en cascada, desarrollo de gestión de consentimientos, creación de política de privacidad dinámica, e implementación de pantalla de derechos de datos con flujos de confirmación",
+			"reasoning": "Compliance legal extremadamente complejo que requiere exportación completa de datos, eliminación segura en cascada, gestión granular de consentimientos, y cumplimiento con múltiples regulaciones. La criticidad legal y técnica añade complejidad máxima."
+		},
+		{
+			"taskId": 59,
+			"taskTitle": "Implementar sistema de estado global UI para Loading, Error y Empty states",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en creación de widgets de estado base con WCAG compliance, implementación de providers globales para gestión de estado, y desarrollo de wrapper adaptativo con integración completa",
+			"reasoning": "Sistema de UI states que requiere widgets reutilizables, gestión de estado global, compliance de accesibilidad, y integración consistente en toda la aplicación. El cumplimiento WCAG añade complejidad significativa."
+		},
+		{
+			"taskId": 60,
+			"taskTitle": "Implementar sistema de backup automático de datos con exportación periódica a Supabase Storage",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Dividir en implementación del servicio de backup con scheduling, desarrollo de cifrado y upload a Supabase Storage, e implementación de UI de gestión con restore y GDPR export",
+			"reasoning": "Sistema de backup complejo que requiere scheduling automático, cifrado de datos, almacenamiento en la nube, y funcionalidad de restauración. La integridad de datos y seguridad añaden complejidad crítica."
 		}
 	]
 }
