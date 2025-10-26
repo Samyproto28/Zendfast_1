@@ -1022,7 +1022,7 @@
         "dependencies": [
           "6"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1030,7 +1030,7 @@
             "description": "Implementar el coordinador principal del onboarding con PageView y sistema de navegación entre las 6 pantallas",
             "dependencies": [],
             "details": "Crear OnboardingCoordinator que maneje PageViewController con 6 screens. Implementar navegación forward/backward con botones Next/Previous. Agregar progress indicator (6 dots o barra de progreso). Configurar go_router para deep linking a pasos específicos. Implementar lógica para skip opcional en ciertos steps. Manejar state management con Riverpod para current step y user progress.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar navegación entre steps funciona correctamente, verificar progress indicator actualiza, validar deep linking y skip functionality",
             "parentId": "undefined"
           },
@@ -1042,7 +1042,7 @@
               1
             ],
             "details": "Implementar SplashScreen con logo animado y loading indicator. Crear IntroScreen mostrando beneficios de la app con ilustraciones. Desarrollar RegisterScreen con formulario email/password y validación. Construir QuestionnaireScreen para capturar peso, altura y experiencia previa. Integrar PaywallScreen con Superwall SDK para suscripciones. Diseñar DetoxRecommendationScreen con plan detox de 48h opcional.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar cada pantalla renderiza correctamente, verificar formularios validan datos, validar integración Superwall funciona",
             "parentId": "undefined"
           },
@@ -1055,7 +1055,7 @@
               2
             ],
             "details": "Implementar guardado de registration data (email/password) en authentication service. Persistir questionnaire answers (peso, altura, experiencia) en UserProfile usando Isar database. Guardar paywall decisions y subscription status. Implementar completion callback que marque onboarding como terminado y navigate a main app. Manejar error states y retry logic para failed saves.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar datos se guardan correctamente en UserProfile, probar completion flow lleva a main app, validar error handling para failed saves",
             "parentId": "undefined"
           }
@@ -4170,7 +4170,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-26T16:29:54.877Z"
+      "updated": "2025-10-26T20:41:23.239Z"
     }
   }
 }

@@ -27,28 +27,43 @@ const UserProfileSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'gender': PropertySchema(
+    r'detoxPlanOptIn': PropertySchema(
       id: 2,
+      name: r'detoxPlanOptIn',
+      type: IsarType.bool,
+    ),
+    r'fastingExperienceLevel': PropertySchema(
+      id: 3,
+      name: r'fastingExperienceLevel',
+      type: IsarType.string,
+    ),
+    r'gender': PropertySchema(
+      id: 4,
       name: r'gender',
       type: IsarType.string,
     ),
+    r'hasCompletedOnboarding': PropertySchema(
+      id: 5,
+      name: r'hasCompletedOnboarding',
+      type: IsarType.bool,
+    ),
     r'heightCm': PropertySchema(
-      id: 3,
+      id: 6,
       name: r'heightCm',
       type: IsarType.double,
     ),
     r'updatedAt': PropertySchema(
-      id: 4,
+      id: 7,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'userId': PropertySchema(
-      id: 5,
+      id: 8,
       name: r'userId',
       type: IsarType.string,
     ),
     r'weightKg': PropertySchema(
-      id: 6,
+      id: 9,
       name: r'weightKg',
       type: IsarType.double,
     )
@@ -71,6 +86,19 @@ const UserProfileSchema = CollectionSchema(
           caseSensitive: true,
         )
       ],
+    ),
+    r'hasCompletedOnboarding': IndexSchema(
+      id: 4916285906278710164,
+      name: r'hasCompletedOnboarding',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'hasCompletedOnboarding',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
     )
   },
   links: {},
@@ -87,6 +115,12 @@ int _userProfileEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.fastingExperienceLevel;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.gender;
     if (value != null) {
@@ -105,11 +139,14 @@ void _userProfileSerialize(
 ) {
   writer.writeLong(offsets[0], object.age);
   writer.writeDateTime(offsets[1], object.createdAt);
-  writer.writeString(offsets[2], object.gender);
-  writer.writeDouble(offsets[3], object.heightCm);
-  writer.writeDateTime(offsets[4], object.updatedAt);
-  writer.writeString(offsets[5], object.userId);
-  writer.writeDouble(offsets[6], object.weightKg);
+  writer.writeBool(offsets[2], object.detoxPlanOptIn);
+  writer.writeString(offsets[3], object.fastingExperienceLevel);
+  writer.writeString(offsets[4], object.gender);
+  writer.writeBool(offsets[5], object.hasCompletedOnboarding);
+  writer.writeDouble(offsets[6], object.heightCm);
+  writer.writeDateTime(offsets[7], object.updatedAt);
+  writer.writeString(offsets[8], object.userId);
+  writer.writeDouble(offsets[9], object.weightKg);
 }
 
 UserProfile _userProfileDeserialize(
@@ -120,14 +157,17 @@ UserProfile _userProfileDeserialize(
 ) {
   final object = UserProfile(
     age: reader.readLongOrNull(offsets[0]),
-    gender: reader.readStringOrNull(offsets[2]),
-    heightCm: reader.readDoubleOrNull(offsets[3]),
+    detoxPlanOptIn: reader.readBoolOrNull(offsets[2]),
+    fastingExperienceLevel: reader.readStringOrNull(offsets[3]),
+    gender: reader.readStringOrNull(offsets[4]),
+    hasCompletedOnboarding: reader.readBoolOrNull(offsets[5]) ?? false,
+    heightCm: reader.readDoubleOrNull(offsets[6]),
     id: id,
-    userId: reader.readString(offsets[5]),
-    weightKg: reader.readDoubleOrNull(offsets[6]),
+    userId: reader.readString(offsets[8]),
+    weightKg: reader.readDoubleOrNull(offsets[9]),
   );
   object.createdAt = reader.readDateTime(offsets[1]);
-  object.updatedAt = reader.readDateTime(offsets[4]);
+  object.updatedAt = reader.readDateTime(offsets[7]);
   return object;
 }
 
@@ -143,14 +183,20 @@ P _userProfileDeserializeProp<P>(
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 3:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 6:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 7:
+      return (reader.readDateTime(offset)) as P;
+    case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -230,6 +276,15 @@ extension UserProfileQueryWhereSort
   QueryBuilder<UserProfile, UserProfile, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterWhere>
+      anyHasCompletedOnboarding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'hasCompletedOnboarding'),
+      );
     });
   }
 }
@@ -341,6 +396,51 @@ extension UserProfileQueryWhere
               indexName: r'userId',
               lower: [],
               upper: [userId],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterWhereClause>
+      hasCompletedOnboardingEqualTo(bool hasCompletedOnboarding) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'hasCompletedOnboarding',
+        value: [hasCompletedOnboarding],
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterWhereClause>
+      hasCompletedOnboardingNotEqualTo(bool hasCompletedOnboarding) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'hasCompletedOnboarding',
+              lower: [],
+              upper: [hasCompletedOnboarding],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'hasCompletedOnboarding',
+              lower: [hasCompletedOnboarding],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'hasCompletedOnboarding',
+              lower: [hasCompletedOnboarding],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'hasCompletedOnboarding',
+              lower: [],
+              upper: [hasCompletedOnboarding],
               includeUpper: false,
             ));
       }
@@ -471,6 +571,190 @@ extension UserProfileQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      detoxPlanOptInIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'detoxPlanOptIn',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      detoxPlanOptInIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'detoxPlanOptIn',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      detoxPlanOptInEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'detoxPlanOptIn',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fastingExperienceLevel',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fastingExperienceLevel',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fastingExperienceLevel',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fastingExperienceLevel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fastingExperienceLevel',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fastingExperienceLevel',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      fastingExperienceLevelIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fastingExperienceLevel',
+        value: '',
       ));
     });
   }
@@ -622,6 +906,16 @@ extension UserProfileQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'gender',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      hasCompletedOnboardingEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hasCompletedOnboarding',
+        value: value,
       ));
     });
   }
@@ -1066,6 +1360,33 @@ extension UserProfileQuerySortBy
     });
   }
 
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy> sortByDetoxPlanOptIn() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'detoxPlanOptIn', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      sortByDetoxPlanOptInDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'detoxPlanOptIn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      sortByFastingExperienceLevel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fastingExperienceLevel', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      sortByFastingExperienceLevelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fastingExperienceLevel', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserProfile, UserProfile, QAfterSortBy> sortByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
@@ -1075,6 +1396,20 @@ extension UserProfileQuerySortBy
   QueryBuilder<UserProfile, UserProfile, QAfterSortBy> sortByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      sortByHasCompletedOnboarding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasCompletedOnboarding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      sortByHasCompletedOnboardingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasCompletedOnboarding', Sort.desc);
     });
   }
 
@@ -1153,6 +1488,33 @@ extension UserProfileQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy> thenByDetoxPlanOptIn() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'detoxPlanOptIn', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      thenByDetoxPlanOptInDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'detoxPlanOptIn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      thenByFastingExperienceLevel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fastingExperienceLevel', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      thenByFastingExperienceLevelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fastingExperienceLevel', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserProfile, UserProfile, QAfterSortBy> thenByGender() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.asc);
@@ -1162,6 +1524,20 @@ extension UserProfileQuerySortThenBy
   QueryBuilder<UserProfile, UserProfile, QAfterSortBy> thenByGenderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gender', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      thenByHasCompletedOnboarding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasCompletedOnboarding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterSortBy>
+      thenByHasCompletedOnboardingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasCompletedOnboarding', Sort.desc);
     });
   }
 
@@ -1240,10 +1616,31 @@ extension UserProfileQueryWhereDistinct
     });
   }
 
+  QueryBuilder<UserProfile, UserProfile, QDistinct> distinctByDetoxPlanOptIn() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'detoxPlanOptIn');
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QDistinct>
+      distinctByFastingExperienceLevel({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fastingExperienceLevel',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<UserProfile, UserProfile, QDistinct> distinctByGender(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'gender', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QDistinct>
+      distinctByHasCompletedOnboarding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hasCompletedOnboarding');
     });
   }
 
@@ -1293,9 +1690,29 @@ extension UserProfileQueryProperty
     });
   }
 
+  QueryBuilder<UserProfile, bool?, QQueryOperations> detoxPlanOptInProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'detoxPlanOptIn');
+    });
+  }
+
+  QueryBuilder<UserProfile, String?, QQueryOperations>
+      fastingExperienceLevelProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fastingExperienceLevel');
+    });
+  }
+
   QueryBuilder<UserProfile, String?, QQueryOperations> genderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gender');
+    });
+  }
+
+  QueryBuilder<UserProfile, bool, QQueryOperations>
+      hasCompletedOnboardingProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hasCompletedOnboarding');
     });
   }
 

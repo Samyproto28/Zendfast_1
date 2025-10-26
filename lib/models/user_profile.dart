@@ -25,6 +25,16 @@ class UserProfile {
   /// User's gender (optional, for health calculations)
   String? gender;
 
+  /// Fasting experience level: 'beginner', 'intermediate', 'advanced'
+  String? fastingExperienceLevel;
+
+  /// Whether user has completed onboarding flow
+  @Index()
+  bool hasCompletedOnboarding;
+
+  /// Whether user opted into 48h detox plan (null = not answered)
+  bool? detoxPlanOptIn;
+
   /// When this profile was created
   late DateTime createdAt;
 
@@ -39,6 +49,9 @@ class UserProfile {
     this.heightCm,
     this.age,
     this.gender,
+    this.fastingExperienceLevel,
+    this.hasCompletedOnboarding = false,
+    this.detoxPlanOptIn,
   }) {
     createdAt = DateTime.now();
     updatedAt = DateTime.now();
