@@ -67,6 +67,12 @@ dependencies:
   # Navigation and routing
   go_router: ^14.2.7
 
+  # Superwall SDK for paywalls and monetization
+  superwallkit_flutter: ^2.0.5
+
+  # Deep link handling for Superwall
+  uni_links: ^0.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

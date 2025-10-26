@@ -52,8 +52,18 @@ const FastingSessionSchema = CollectionSchema(
       name: r'startTime',
       type: IsarType.dateTime,
     ),
-    r'userId': PropertySchema(
+    r'syncVersion': PropertySchema(
       id: 7,
+      name: r'syncVersion',
+      type: IsarType.long,
+    ),
+    r'updatedAt': PropertySchema(
+      id: 8,
+      name: r'updatedAt',
+      type: IsarType.dateTime,
+    ),
+    r'userId': PropertySchema(
+      id: 9,
       name: r'userId',
       type: IsarType.string,
     )
@@ -154,7 +164,9 @@ void _fastingSessionSerialize(
   writer.writeBool(offsets[4], object.interrupted);
   writer.writeString(offsets[5], object.planType);
   writer.writeDateTime(offsets[6], object.startTime);
-  writer.writeString(offsets[7], object.userId);
+  writer.writeLong(offsets[7], object.syncVersion);
+  writer.writeDateTime(offsets[8], object.updatedAt);
+  writer.writeString(offsets[9], object.userId);
 }
 
 FastingSession _fastingSessionDeserialize(
@@ -171,9 +183,11 @@ FastingSession _fastingSessionDeserialize(
     interrupted: reader.readBoolOrNull(offsets[4]) ?? false,
     planType: reader.readString(offsets[5]),
     startTime: reader.readDateTime(offsets[6]),
-    userId: reader.readString(offsets[7]),
+    syncVersion: reader.readLongOrNull(offsets[7]),
+    userId: reader.readString(offsets[9]),
   );
   object.createdAt = reader.readDateTime(offsets[1]);
+  object.updatedAt = reader.readDateTime(offsets[8]);
   return object;
 }
 
@@ -199,6 +213,10 @@ P _fastingSessionDeserializeProp<P>(
     case 6:
       return (reader.readDateTime(offset)) as P;
     case 7:
+      return (reader.readLongOrNull(offset)) as P;
+    case 8:
+      return (reader.readDateTime(offset)) as P;
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1054,6 +1072,136 @@ extension FastingSessionQueryFilter
   }
 
   QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'syncVersion',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'syncVersion',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'syncVersion',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'syncVersion',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'syncVersion',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      syncVersionBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'syncVersion',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      updatedAtEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      updatedAtGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      updatedAtLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      updatedAtBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'updatedAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
       userIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1291,6 +1439,33 @@ extension FastingSessionQuerySortBy
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      sortBySyncVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'syncVersion', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      sortBySyncVersionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'syncVersion', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy> sortByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      sortByUpdatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QAfterSortBy> sortByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -1412,6 +1587,33 @@ extension FastingSessionQuerySortThenBy
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      thenBySyncVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'syncVersion', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      thenBySyncVersionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'syncVersion', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy> thenByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      thenByUpdatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QAfterSortBy> thenByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
@@ -1476,6 +1678,20 @@ extension FastingSessionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QDistinct>
+      distinctBySyncVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'syncVersion');
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QDistinct>
+      distinctByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'updatedAt');
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QDistinct> distinctByUserId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1532,6 +1748,18 @@ extension FastingSessionQueryProperty
   QueryBuilder<FastingSession, DateTime, QQueryOperations> startTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'startTime');
+    });
+  }
+
+  QueryBuilder<FastingSession, int?, QQueryOperations> syncVersionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'syncVersion');
+    });
+  }
+
+  QueryBuilder<FastingSession, DateTime, QQueryOperations> updatedAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'updatedAt');
     });
   }
 

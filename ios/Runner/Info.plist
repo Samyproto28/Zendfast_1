@@ -59,5 +59,20 @@
 		<string>dev.flutter.background.refresh</string>
 		<string>com.zendfast.timer.refresh</string>
 	</array>
+
+	<!-- Deep Links configuration for Superwall -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>zendfast</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

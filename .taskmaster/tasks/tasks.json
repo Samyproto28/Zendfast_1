@@ -349,7 +349,7 @@
         "dependencies": [
           "2"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -357,7 +357,7 @@
             "description": "Crear la estructura básica de la clase FastingSession con todas las anotaciones Isar requeridas y campos principales",
             "dependencies": [],
             "details": "Crear archivo fasting_session.dart con @collection class FastingSession. Definir campos: Id id (auto-increment), String userId, DateTime startTime, DateTime? endTime, int durationMinutes, bool completed, bool interrupted, String? planType, DateTime createdAt, DateTime updatedAt, int? syncVersion. Agregar imports necesarios de Isar y anotaciones @Index para userId y timestamp.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que el esquema compile correctamente y genere código Isar sin errores",
             "parentId": "undefined"
           },
@@ -369,7 +369,7 @@
               1
             ],
             "details": "Implementar getters y métodos: Duration get elapsedTime (calcula tiempo desde startTime), double get progressPercentage (elapsed/duration * 100), bool get isActive (startTime != null && endTime == null), bool get isCompleted (completed == true). Manejar casos edge como sesiones interrumpidas y cálculos con endTime null.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Pruebas unitarias para cada método calculando escenarios diversos: sesiones activas, completadas, interrumpidas",
             "parentId": "undefined"
           },
@@ -381,7 +381,7 @@
               1
             ],
             "details": "Implementar Map<String, dynamic> toJson() convirtiendo todos los campos a formato JSON compatible con Supabase. Crear factory FastingSession.fromJson(Map<String, dynamic> json) manejando conversiones de DateTime y campos nullable. Asegurar compatibilidad con campos syncVersion para control de versiones.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar serialización correcta round-trip (toJson -> fromJson), validar compatibilidad con formato Supabase",
             "parentId": "undefined"
           }
@@ -3186,6 +3186,978 @@
             "testStrategy": "Verificar que la UI permite realizar backups manuales correctamente, probar que la restauración funciona sin pérdida de datos, validar que la exportación GDPR genera JSON completo con todos los datos del usuario, confirmar que la resolución de conflictos funciona apropiadamente"
           }
         ]
+      },
+      {
+        "id": 61,
+        "title": "Implementar Edge Function 'calculate-user-metrics' en Supabase",
+        "description": "Desarrollar función Edge Function en Supabase que calcule métricas de usuario incluyendo racha actual, horas totales de ayuno, tasa de éxito y efectividad del botón de pánico",
+        "details": "Crear archivo supabase/functions/calculate-user-metrics/index.ts implementando la lógica definida en Backend Structure Document líneas 320-434. Incluir funciones utilitarias: calculateTotalHours() para sumar horas de ayunos completados, calculateCurrentStreak() para racha consecutiva de días, calculateSuccessRate() para porcentaje de ayunos exitosos, calculatePanicUsage() para efectividad del botón pánico cuando es usado. La función debe: 1) Validar entrada JSON con userId, 2) Conectar con Supabase usando SERVICE_ROLE_KEY, 3) Consultar fasting_sessions y hydration_logs del usuario, 4) Calcular todas las métricas usando las funciones helper, 5) Actualizar tabla user_metrics con resultados, 6) Implementar manejo de errores robusto con logging detallado, 7) Retornar respuesta JSON con métricas calculadas. Configurar deployment automático y testing con datos mock. Implementar rate limiting y validación de permisos para seguridad.",
+        "testStrategy": "Crear tests unitarios para cada función de cálculo con datos mock variados. Probar Edge Function end-to-end con usuarios reales y datos de diferentes escenarios (sin datos, pocos ayunos, usuarios activos). Verificar manejo de errores para datos corruptos o faltantes. Validar performance con datasets grandes. Probar deployment y invocar desde Flutter app usando SupabaseConfig.functions. Confirmar actualización correcta de user_metrics table",
+        "status": "pending",
+        "dependencies": [
+          15,
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base del Edge Function calculate-user-metrics",
+            "description": "Establecer la estructura inicial del Edge Function con configuración básica, validación de entrada y conexión a Supabase",
+            "dependencies": [],
+            "details": "Crear archivo supabase/functions/calculate-user-metrics/index.ts con estructura básica de Deno.serve(). Implementar validación de entrada JSON para userId requerido. Configurar conexión a Supabase usando createClient con SERVICE_ROLE_KEY. Implementar manejo básico de errores con try-catch y logging. Agregar headers CORS apropiados para respuestas. Configurar tipos TypeScript para request/response.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para validación de entrada con casos válidos e inválidos. Probar conexión a Supabase con credenciales mock. Verificar manejo de errores retorna códigos HTTP apropiados."
+          },
+          {
+            "id": 2,
+            "title": "Implementar funciones utilitarias de cálculo de métricas",
+            "description": "Desarrollar las funciones helper para calcular todas las métricas de usuario: horas totales, racha actual, tasa de éxito y uso del pánico",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar calculateTotalHours() que sume duration de fasting_sessions completadas. Crear calculateCurrentStreak() que calcule días consecutivos de ayunos exitosos desde la fecha más reciente. Desarrollar calculateSuccessRate() que calcule porcentaje de ayunos completados vs iniciados. Implementar calculatePanicUsage() que analice efectividad del botón pánico correlacionando panic_button_used con session_completed. Incluir manejo de casos edge como usuarios sin datos o datos incompletos.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios exhaustivos para cada función con datasets variados: usuarios nuevos sin datos, usuarios con pocas sesiones, usuarios activos con historial largo. Probar casos edge como sesiones incompletas, datos corruptos y fechas inválidas."
+          },
+          {
+            "id": 3,
+            "title": "Integrar cálculos con base de datos y deployment",
+            "description": "Conectar las funciones de cálculo con consultas a Supabase, actualizar tabla user_metrics y configurar deployment automático",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar consultas SQL para obtener fasting_sessions y hydration_logs del usuario especificado. Integrar las funciones de cálculo con los datos obtenidos. Crear/actualizar registros en tabla user_metrics con las métricas calculadas usando upsert. Implementar rate limiting para prevenir abuse. Agregar validación de permisos verificando que el usuario solo puede consultar sus propias métricas. Configurar deployment automático via Supabase CLI. Crear documentación de API con ejemplos de uso.",
+            "status": "pending",
+            "testStrategy": "Probar Edge Function end-to-end con usuarios reales en diferentes escenarios. Verificar rate limiting funciona correctamente. Validar security: usuarios no pueden acceder datos de otros. Probar deployment automático y rollback. Realizar load testing con múltiples requests concurrentes."
+          }
+        ]
+      },
+      {
+        "id": 62,
+        "title": "Implementar Edge Function 'schedule-notifications' en Supabase para integración con OneSignal",
+        "description": "Desarrollar función Edge Function en Supabase que programe notificaciones push personalizadas según el tipo de plan de ayuno del usuario y sus preferencias",
+        "details": "Crear archivo supabase/functions/schedule-notifications/index.ts implementando la estructura definida en Backend Structure Document líneas 436-543. La función debe: 1) Recibir parámetros userId, sessionId, planType via POST request, 2) Validar entrada JSON y autenticación, 3) Consultar user_profiles para obtener notification_preferences y timezone, 4) Generar schedule de notificaciones basado en planType: inicio/fin de ayuno, recordatorios de hidratación cada 2-3h, mensajes motivacionales cada 4-6h, contenido educativo personalizado, 5) Integrar con OneSignal REST API v1 usando include_external_user_ids para targeting, 6) Programar notificaciones con send_after timestamp respetando user timezone, 7) Implementar lógica para cancelar notificaciones existentes si fast es interrumpido, 8) Manejar diferentes templates según planType (16:8, 18:6, OMAD, 24h), 9) Incluir data payload para deep linking (type: fasting_start/end/hydration/motivation), 10) Error handling robusto con logs structured y response codes apropiados",
+        "testStrategy": "Crear tests unitarios para generateNotificationSchedule() con diferentes planTypes y user preferences. Probar Edge Function end-to-end con usuarios mock y verificar llamadas OneSignal API correctas. Validar timezone handling para diferentes regiones. Probar error scenarios: user sin notificaciones habilitadas, OneSignal API down, invalid input data. Verificar que notifications se cancelan correctamente cuando fast es interrumpido. Test integration con user_profiles table y RLS policies. Validar deep link data estructura es correcta para routing",
+        "status": "pending",
+        "dependencies": [
+          5,
+          47
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base de la Edge Function schedule-notifications",
+            "description": "Implementar la estructura básica del archivo index.ts con validación de entrada, autenticación y manejo de errores inicial",
+            "dependencies": [],
+            "details": "Crear archivo supabase/functions/schedule-notifications/index.ts con estructura base: importar dependencias necesarias (Supabase client, OneSignal), implementar función principal serve() que maneje POST requests, validar parámetros de entrada (userId, sessionId, planType), implementar autenticación JWT, configurar manejo básico de errores con response codes apropiados y logging estructurado",
+            "status": "pending",
+            "testStrategy": "Crear tests para validación de parámetros de entrada, autenticación JWT y respuestas de error apropiadas"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de generación de schedules de notificaciones",
+            "description": "Desarrollar la lógica central que genera schedules personalizados de notificaciones basados en planType y preferencias del usuario",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar función generateNotificationSchedule() que: consulte user_profiles para obtener notification_preferences y timezone, genere schedules específicos por planType (16:8, 18:6, OMAD, 24h) incluyendo notificaciones de inicio/fin de ayuno, recordatorios de hidratación cada 2-3h, mensajes motivacionales cada 4-6h, contenido educativo personalizado, calcule timestamps usando timezone del usuario y respete las preferencias de notificación",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para generateNotificationSchedule() con diferentes planTypes, user preferences y timezones para verificar cálculos correctos"
+          },
+          {
+            "id": 3,
+            "title": "Integrar con OneSignal API y programar notificaciones",
+            "description": "Implementar la integración completa con OneSignal REST API v1 para envío y programación de notificaciones push",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar integración con OneSignal REST API v1: configurar autenticación con API key, usar include_external_user_ids para targeting específico, programar notificaciones con send_after timestamp, incluir templates diferenciados por planType, agregar data payload para deep linking (type: fasting_start/end/hydration/motivation), implementar lógica para cancelar notificaciones existentes si ayuno es interrumpido, manejar respuestas de API y errores de red apropiadamente",
+            "status": "pending",
+            "testStrategy": "Probar integración end-to-end con OneSignal API usando usuarios mock, verificar scheduling correcto y cancelación de notificaciones existentes"
+          }
+        ]
+      },
+      {
+        "id": 63,
+        "title": "Implementar Edge Function 'sync-user-data' en Supabase para sincronización bidireccional",
+        "description": "Desarrollar función Edge Function en Supabase que sincronice bidireccionalmente datos entre base de datos local Isar y Supabase con resolución de conflictos, batch sync y manejo de errores de red.",
+        "details": "Crear archivo supabase/functions/sync-user-data/index.ts implementando la lógica definida en Backend Structure Document líneas 547-618. La función debe: 1) Implementar endpoint POST que reciba array de cambios locales con estructura {table: string, action: 'insert'|'update'|'delete', data: object, localTimestamp: string}, 2) Implementar resolución de conflictos usando timestamp más reciente (last-write-wins) comparando createdAt/updatedAt entre datos locales y remotos, 3) Sincronizar tablas: fasting_sessions (startTime, endTime, completed, interrupted, planType), hydration_logs (amountMl, timestamp), user_metrics (streak, totalHours, successRate), 4) Implementar batch processing para procesar hasta 100 registros por request, 5) Retornar estructura {success: boolean, conflicts: array, serverChanges: array, errors: array} con cambios del servidor que el cliente debe aplicar, 6) Manejar errores de red con retry exponential backoff, timeouts de 30 segundos, y logging detallado, 7) Validar autenticación usando JWT del header Authorization, 8) Implementar rate limiting (100 requests/minuto por usuario), 9) Usar transacciones de base de datos para operaciones atómicas. Estructura de respuesta debe incluir timestamp del servidor para próximas sincronizaciones incrementales.",
+        "testStrategy": "Crear tests unitarios para resolución de conflictos con diferentes scenarios de timestamp. Probar Edge Function end-to-end con datos de FastingSession, HydrationLog y user_metrics simulando casos de conflicto, batch sync de 50+ registros, errores de red y timeouts. Verificar autenticación correcta con tokens JWT válidos/inválidos. Validar rate limiting funciona correctamente. Probar transacciones rollback en caso de errores. Verificar sincronización bidireccional completa con cliente Flutter usando SupabaseConfig.functions.",
+        "status": "pending",
+        "dependencies": [
+          15,
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base y configuración de Edge Function sync-user-data",
+            "description": "Establecer la estructura inicial del archivo index.ts y configurar el endpoint POST para recibir datos de sincronización",
+            "dependencies": [],
+            "details": "Crear archivo supabase/functions/sync-user-data/index.ts con estructura base de Deno Edge Function. Configurar endpoint POST que valide JWT del header Authorization, implemente rate limiting (100 requests/minuto por usuario), y establezca estructura de entrada para array de cambios locales con formato {table: string, action: 'insert'|'update'|'delete', data: object, localTimestamp: string}. Configurar timeouts de 30 segundos y logging detallado para debugging.",
+            "status": "pending",
+            "testStrategy": "Probar autenticación JWT, validar rate limiting con múltiples requests, verificar manejo de timeouts y estructura de entrada correcta"
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de resolución de conflictos y procesamiento por lotes",
+            "description": "Desarrollar algoritmo de resolución de conflictos usando timestamps y sistema de batch processing para hasta 100 registros",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar resolución de conflictos usando estrategia last-write-wins comparando createdAt/updatedAt entre datos locales y remotos. Crear sistema de batch processing que procese hasta 100 registros por request con transacciones atómicas de base de datos. Manejar sincronización para tablas fasting_sessions, hydration_logs y user_metrics con sus campos específicos. Implementar retry con exponential backoff para errores de red.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para diferentes scenarios de conflictos por timestamp, probar batch processing con 50+ registros, validar transacciones atómicas"
+          },
+          {
+            "id": 3,
+            "title": "Implementar respuesta estructurada y cambios del servidor",
+            "description": "Desarrollar sistema de respuesta que incluya conflictos detectados, cambios del servidor y timestamp para sincronizaciones incrementales",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar estructura de respuesta {success: boolean, conflicts: array, serverChanges: array, errors: array} que incluya cambios del servidor que el cliente debe aplicar localmente. Agregar timestamp del servidor para facilitar sincronizaciones incrementales futuras. Manejar y reportar errores detalladamente en el array de errors. Asegurar que todos los cambios del servidor se incluyan en serverChanges para mantener consistencia bidireccional.",
+            "status": "pending",
+            "testStrategy": "Verificar estructura de respuesta correcta, probar que serverChanges incluye todos los cambios necesarios, validar timestamp del servidor para sync incremental"
+          }
+        ]
+      },
+      {
+        "id": 64,
+        "title": "Implementar Edge Function 'handle-superwall-webhook' en Supabase para procesar webhooks de Superwall",
+        "description": "Desarrollar función Edge Function en Supabase que procese webhooks de Superwall para actualizar estado de suscripción del usuario, trackear conversiones y manejar eventos de renovación/cancelación con sincronización a tabla user_profiles.",
+        "details": "Crear archivo supabase/functions/handle-superwall-webhook/index.ts implementando la lógica definida en Backend Structure Document líneas 1148-1202. La función debe: 1) Implementar endpoint POST que reciba webhooks de Superwall con estructura SuperwallWebhook interface incluyendo event_type ('subscription_started' | 'subscription_cancelled' | 'subscription_renewed'), user_id, product_id ('monthly_premium' | 'yearly_premium') y transaction_data, 2) Validar firma de webhook usando crypto.subtle API para verificar autenticidad del request con secret compartido, 3) Actualizar tabla user_profiles con campos subscription_status, subscription_type y subscription_expires_at basado en el event_type recibido, 4) Insertar eventos en tabla analytics_events para tracking de conversiones con event_type 'subscription_converted', 'subscription_cancelled', 'subscription_renewed', 5) Implementar manejo robusto de errores con logging detallado de eventos procesados y fallos, 6) Configurar CORS headers apropiados para permitir requests desde Superwall servers, 7) Retornar respuestas HTTP adecuadas (200 para éxito, 400/401 para errores) en formato JSON, 8) Implementar rate limiting básico para prevenir abuse, 9) Usar createClient con SUPABASE_SERVICE_ROLE_KEY para operaciones administrativas en user_profiles.",
+        "testStrategy": "Crear tests unitarios para validación de firma de webhook con diferentes payloads y secrets. Probar Edge Function end-to-end con webhooks mock de Superwall simulando todos los event_types (started, cancelled, renewed). Verificar actualización correcta de user_profiles y inserción en analytics_events para cada tipo de evento. Validar manejo de errores para webhooks inválidos, firmas incorrectas y usuarios inexistentes. Probar rate limiting y CORS headers. Usar herramientas como ngrok para testing con webhooks reales de Superwall durante desarrollo.",
+        "status": "pending",
+        "dependencies": [
+          31
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura de proyecto y definir interfaces TypeScript",
+            "description": "Establecer la estructura base del Edge Function y definir todas las interfaces TypeScript necesarias para manejar webhooks de Superwall",
+            "dependencies": [],
+            "details": "Crear directorio supabase/functions/handle-superwall-webhook/ con archivo index.ts. Definir interface SuperwallWebhook con campos event_type ('subscription_started' | 'subscription_cancelled' | 'subscription_renewed'), user_id, product_id ('monthly_premium' | 'yearly_premium') y transaction_data. Configurar imports necesarios para Supabase Edge Runtime incluyendo createClient y crypto APIs. Establecer estructura básica del handler HTTP con manejo de método POST.",
+            "status": "pending",
+            "testStrategy": "Verificar que las interfaces TypeScript compilen correctamente y que la estructura del proyecto siga las convenciones de Supabase Edge Functions"
+          },
+          {
+            "id": 2,
+            "title": "Implementar validación de firma de webhook y autenticación",
+            "description": "Desarrollar el sistema de validación de firma usando crypto.subtle API para verificar la autenticidad de los webhooks de Superwall",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar función validateWebhookSignature() usando crypto.subtle.importKey() y crypto.subtle.verify() con algoritmo HMAC-SHA256. Extraer signature del header x-superwall-signature del request. Crear función para comparar firmas de forma segura usando crypto.timingSafeEqual(). Configurar manejo de errores para firmas inválidas retornando HTTP 401. Implementar logging detallado para intentos de validación fallidos.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios con payloads válidos e inválidos, diferentes secrets y firmas manipuladas para verificar robustez del sistema de validación"
+          },
+          {
+            "id": 3,
+            "title": "Procesar eventos de webhook y actualizar base de datos",
+            "description": "Implementar la lógica de procesamiento de eventos para actualizar user_profiles y registrar analytics según el tipo de evento recibido",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear función processWebhookEvent() que maneje cada event_type: subscription_started actualiza subscription_status='active', subscription_type basado en product_id, subscription_expires_at calculado desde transaction_data; subscription_cancelled establece status='cancelled' preservando expires_at; subscription_renewed actualiza expires_at y mantiene status='active'. Usar createClient con SUPABASE_SERVICE_ROLE_KEY para operaciones administrativas. Insertar eventos correspondientes en analytics_events con metadatos del webhook. Implementar transacciones para consistencia de datos.",
+            "status": "pending",
+            "testStrategy": "Probar cada tipo de evento con datos mock verificando actualizaciones correctas en user_profiles y inserción en analytics_events. Validar rollback en caso de errores durante transacciones"
+          }
+        ]
+      },
+      {
+        "id": 65,
+        "title": "Implementar Edge Function 'backup-data' en Supabase para respaldos automáticos diarios",
+        "description": "Desarrollar función Edge Function en Supabase que realice respaldos automáticos diarios de datos críticos de usuario con compresión, encriptación y retención de 30 días",
+        "details": "Crear archivo supabase/functions/backup-data/index.ts implementando la lógica definida en Backend Structure Document líneas 1114-1141. La función debe: 1) Implementar endpoint GET/POST que ejecute función PostgreSQL backup_critical_data() para extraer datos de fasting_sessions, user_profiles, hydration_logs de últimas 24 horas, 2) Comprimir datos usando gzip/deflate antes del almacenamiento para optimizar espacio, 3) Encriptar backup usando AES-256 con key derivada de BACKUP_ENCRYPTION_KEY environment variable, 4) Subir archivo encriptado a almacenamiento externo (AWS S3/Supabase Storage) con naming convention: backup_YYYYMMDD_HHMMSS.json.gz.enc, 5) Implementar política de retención automática eliminando backups >30 días, 6) Registrar evento en system_logs table con status y tamaño del backup, 7) Configurar notificación vía OneSignal/email en caso de fallos usando existing notification service, 8) Implementar rate limiting para prevenir ejecución múltiple simultánea, 9) Validar autenticación service role para security. Usar librerías: crypto-js para encriptación, node-gzip para compresión. Configurar como cron job diario via Supabase pg_cron extension.",
+        "testStrategy": "Crear tests unitarios para funciones de compresión, encriptación y upload con datos mock. Probar Edge Function end-to-end simulando backup completo con datos reales de desarrollo. Verificar política de retención elimina archivos antiguos correctamente. Probar notificaciones de fallo con scenarios de error simulados (falta storage access, encryption key inválida, timeout de conexión). Validar autenticación rechaza requests sin service role key. Performance test con datasets grandes (1000+ registros por tabla) para verificar timeout no excede 300 segundos. Probar ejecución programada via pg_cron funciona correctamente.",
+        "status": "pending",
+        "dependencies": [
+          15,
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base y endpoint Edge Function backup-data",
+            "description": "Implementar archivo base supabase/functions/backup-data/index.ts con endpoint GET/POST y configuración inicial de la función Edge Function",
+            "dependencies": [],
+            "details": "Crear directorio supabase/functions/backup-data/ con index.ts. Implementar handler Deno.serve() que responda a métodos GET/POST. Configurar validación de autenticación service role para seguridad. Implementar rate limiting básico para prevenir ejecución múltiple simultánea. Configurar imports necesarios para crypto-js y node-gzip. Establecer estructura base de respuesta JSON con status y mensajes.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para validar endpoint responde correctamente. Probar autenticación service role funciona. Verificar rate limiting previene ejecuciones simultáneas."
+          },
+          {
+            "id": 2,
+            "title": "Implementar extracción, compresión y encriptación de datos",
+            "description": "Desarrollar lógica para extraer datos críticos de PostgreSQL, comprimirlos con gzip y encriptarlos con AES-256",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar función executeBackup() que llame a backup_critical_data() PostgreSQL para extraer fasting_sessions, user_profiles, hydration_logs de últimas 24 horas. Usar node-gzip para comprimir datos JSON antes del almacenamiento. Implementar encriptación AES-256 usando crypto-js con key derivada de BACKUP_ENCRYPTION_KEY environment variable. Generar naming convention: backup_YYYYMMDD_HHMMSS.json.gz.enc.",
+            "status": "pending",
+            "testStrategy": "Probar extracción de datos con diferentes volúmenes. Verificar compresión reduce tamaño significativamente. Validar encriptación/desencriptación funciona correctamente con datos mock."
+          },
+          {
+            "id": 3,
+            "title": "Configurar almacenamiento, retención y notificaciones",
+            "description": "Implementar subida a almacenamiento externo, política de retención de 30 días y notificaciones de fallos",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar upload de archivos encriptados a Supabase Storage con estructura organizada por fechas. Implementar política de retención automática que elimine backups >30 días ejecutándose en cada backup. Registrar eventos en system_logs table con status, tamaño del backup y timestamp. Configurar notificaciones vía OneSignal/email en caso de fallos usando servicio de notificaciones existente. Configurar como cron job diario via Supabase pg_cron extension.",
+            "status": "pending",
+            "testStrategy": "Probar upload a Supabase Storage funciona correctamente. Verificar política de retención elimina archivos antiguos. Validar notificaciones de fallo se envían apropiadamente. Probar configuración de cron job ejecuta diariamente."
+          }
+        ]
+      },
+      {
+        "id": 66,
+        "title": "Implementar Edge Function 'track-analytics-event' en Supabase para registrar eventos de usuario en tabla analytics_events",
+        "description": "Desarrollar función Edge Function en Supabase que registre eventos críticos de usuario (inicio/fin ayuno, botón pánico, conversiones paywall, interacción contenido) con batching, validación de esquema y rate limiting.",
+        "details": "Crear archivo supabase/functions/track-analytics-event/index.ts implementando la lógica definida en Backend Structure Document líneas 1241-1271. La función debe: 1) Implementar endpoint POST que reciba eventos con estructura {userId, eventType, parameters, timestamp}, 2) Validar esquema de entrada usando Joi o similar validando tipos de eventos permitidos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, content_interaction, 3) Implementar rate limiting por usuario (máximo 100 eventos por minuto) usando Redis o in-memory store, 4) Implementar batching de eventos para optimizar inserts en analytics_events table - acumular eventos por 30 segundos antes de hacer batch insert, 5) Conectar con Supabase usando createClient() con SERVICE_ROLE_KEY para permisos completos, 6) Insertar eventos en tabla analytics_events con campos: user_id, event_type, event_data (JSON), timestamp, session_id (opcional), 7) Implementar manejo robusto de errores con logs específicos para debugging, 8) Agregar CORS headers para requests desde app Flutter, 9) Implementar autenticación verificando JWT token en Authorization header, 10) Opcional: integrar con Firebase Analytics usando sendToFirebaseAnalytics() helper. Estructura de respuesta: {success: boolean, message?: string, eventId?: string}. La función debe ser eficiente y manejar alta concurrencia de eventos.",
+        "testStrategy": "Crear tests unitarios para validación de esquema, rate limiting y batching con datos mock variados. Probar Edge Function end-to-end simulando eventos reales desde app Flutter con diferentes tipos de eventos críticos. Verificar rate limiting funciona correctamente bloqueando requests excesivos. Probar batching accumula eventos y hace inserts bulk optimizados. Validar manejo de errores para requests malformados, tokens inválidos y límites excedidos. Verificar CORS headers permiten requests desde dominio app. Probar performance con alta carga de eventos simultáneos. Validar datos se insertan correctamente en analytics_events con estructura esperada.",
+        "status": "pending",
+        "dependencies": [
+          52,
+          15,
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar estructura básica y validación de esquema para Edge Function track-analytics-event",
+            "description": "Crear archivo supabase/functions/track-analytics-event/index.ts con estructura básica del endpoint POST, implementar validación de esquema usando Joi para validar tipos de eventos permitidos y estructura de entrada",
+            "dependencies": [],
+            "details": "Configurar Edge Function con Deno.serve() para recibir requests POST. Implementar validación de esquema con Joi validando: userId (string requerido), eventType (enum: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, content_interaction), parameters (objeto opcional), timestamp (ISO string). Configurar CORS headers para requests desde Flutter app. Implementar manejo básico de errores y logging.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para validación de esquema con datos válidos e inválidos. Probar CORS headers funcionan correctamente. Verificar manejo de errores para payloads malformados."
+          },
+          {
+            "id": 2,
+            "title": "Implementar rate limiting y autenticación JWT para proteger la Edge Function",
+            "description": "Desarrollar sistema de rate limiting por usuario (máximo 100 eventos por minuto) y verificación de JWT token en Authorization header para autenticación segura",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar rate limiting usando Map en memoria con cleanup automático cada 60 segundos, tracking de requests por userId. Configurar verificación JWT usando supabase.auth.getUser() con token del Authorization header. Implementar middleware para verificar autenticación antes de procesar eventos. Agregar logging específico para intentos de rate limiting y autenticación fallida.",
+            "status": "pending",
+            "testStrategy": "Probar rate limiting bloqueando requests excesivos (>100/min). Verificar autenticación rechaza tokens inválidos/expirados. Testear cleanup automático de rate limit cache funciona correctamente."
+          },
+          {
+            "id": 3,
+            "title": "Implementar batching de eventos y inserción en tabla analytics_events",
+            "description": "Desarrollar sistema de batching que acumule eventos por 30 segundos antes de hacer batch insert en tabla analytics_events, con conexión Supabase usando SERVICE_ROLE_KEY",
+            "dependencies": [
+              2
+            ],
+            "details": "Configurar batch system con Map para acumular eventos por usuario durante 30 segundos. Implementar timer que ejecute batch insert cada 30s o cuando acumule 50+ eventos. Conectar con Supabase usando createClient() con SERVICE_ROLE_KEY para permisos completos. Insertar en analytics_events con campos: user_id, event_type, event_data (JSON), timestamp, session_id. Implementar retry logic para fallos de inserción y logging detallado.",
+            "status": "pending",
+            "testStrategy": "Probar batching acumula eventos correctamente durante 30s. Verificar batch insert funciona con múltiples eventos. Testear retry logic para fallos de conexión. Validar estructura de datos en analytics_events table."
+          }
+        ]
+      },
+      {
+        "id": 67,
+        "title": "Implementar Edge Function 'sentry-error-report' en Supabase para relay de errores a Sentry",
+        "description": "Desarrollar función Edge Function en Supabase que capture errores de otras Edge Functions, formatee contexto y los reenvíe a Sentry con filtrado de información sensible, rate limiting y manejo robusto de errores.",
+        "details": "Crear archivo supabase/functions/sentry-error-report/index.ts implementando la funcionalidad definida en Backend Structure Document líneas 1024-1050. La función debe: 1) Implementar endpoint POST que reciba estructura {error: string, userId: string, context: object, stackTrace?: string, functionName?: string, timestamp?: number}, 2) Validar entrada JSON y sanitizar datos sensibles eliminando campos como passwords, tokens, keys y PII usando allowlist approach, 3) Implementar rate limiting por usuario (máx 10 errores/minuto, 100 errores/hora) usando Map temporal o Redis, 4) Formatear payload para Sentry API incluyendo user.id, message, extra context, timestamp, platform: 'edge-function', environment basado en SUPABASE_ENV, 5) Enviar a Sentry vía fetch POST a https://sentry.io/api/YOUR_PROJECT_ID/store/ con headers X-Sentry-Auth correctos usando SENTRY_API_KEY, 6) Implementar circuit breaker pattern - si Sentry falla 5 veces consecutivas, pausar envíos por 5 minutos, 7) Logging structured con console.log para debugging local incluyendo error_id, user_id, sent_to_sentry boolean, 8) Manejo de errores del propio error handler retornando 500 pero sin causar loops infinitos, 9) Configurar CORS headers para permitir llamadas desde otras Edge Functions, 10) Incluir timeout de 10 segundos para requests a Sentry.",
+        "testStrategy": "Crear tests unitarios para sanitización de datos sensibles con payloads que contengan passwords, tokens y PII. Probar rate limiting simulando múltiples requests rápidos del mismo usuario. Verificar circuit breaker pausando Sentry y enviando errores. Probar Edge Function end-to-end desde otras funciones simulando errores reales de calculate-user-metrics y sync-user-data. Validar formato correcto de payload Sentry y headers de autenticación. Probar manejo de errores internos sin causar recursión infinita. Verificar timeouts y logging structured funciona correctamente.",
+        "status": "pending",
+        "dependencies": [
+          61,
+          63
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura base de Edge Function y validación de entrada",
+            "description": "Implementar la estructura inicial del archivo index.ts con endpoint POST, validación JSON y sanitización de datos sensibles",
+            "dependencies": [],
+            "details": "Crear archivo supabase/functions/sentry-error-report/index.ts con estructura Deno.serve básica. Implementar endpoint POST que valide estructura de entrada {error, userId, context, stackTrace?, functionName?, timestamp?}. Crear función sanitizeData() que elimine campos sensibles (passwords, tokens, keys, PII) usando allowlist approach. Configurar CORS headers para permitir llamadas desde otras Edge Functions.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para validación de entrada con payloads válidos e inválidos. Probar sanitización con objetos que contengan datos sensibles. Verificar CORS headers funcionan correctamente."
+          },
+          {
+            "id": 2,
+            "title": "Implementar rate limiting y circuit breaker pattern",
+            "description": "Desarrollar sistema de rate limiting por usuario y circuit breaker para pausar envíos cuando Sentry falla",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar rate limiting usando Map temporal con límites de 10 errores/minuto y 100 errores/hora por usuario. Crear circuit breaker que pause envíos por 5 minutos después de 5 fallos consecutivos a Sentry. Incluir cleanup automático de Map para evitar memory leaks. Agregar logging structured para debugging.",
+            "status": "pending",
+            "testStrategy": "Probar rate limiting simulando múltiples requests rápidos del mismo usuario. Verificar circuit breaker pausando Sentry mock y enviando errores consecutivos. Validar cleanup de memoria funciona correctamente."
+          },
+          {
+            "id": 3,
+            "title": "Integrar envío a Sentry API con manejo de errores robusto",
+            "description": "Implementar formateo de payload para Sentry y envío vía API con timeout y manejo de errores sin loops infinitos",
+            "dependencies": [
+              2
+            ],
+            "details": "Formatear payload para Sentry API incluyendo user.id, message, extra context, timestamp, platform 'edge-function', environment basado en SUPABASE_ENV. Implementar envío POST a https://sentry.io/api/YOUR_PROJECT_ID/store/ con headers X-Sentry-Auth usando SENTRY_API_KEY. Configurar timeout de 10 segundos. Manejar errores del propio error handler retornando 500 sin causar loops infinitos.",
+            "status": "pending",
+            "testStrategy": "Probar Edge Function end-to-end desde otras funciones simuladas. Verificar formateo correcto de payload Sentry. Validar timeout funciona y no hay loops infinitos en manejo de errores."
+          }
+        ]
+      },
+      {
+        "id": 68,
+        "title": "Crear tabla 'analytics_events' en Supabase con tracking de eventos de usuario",
+        "description": "Implementar tabla PostgreSQL analytics_events con campos especificados, políticas RLS por usuario, índices optimizados y particionamiento por fecha para tracking de eventos.",
+        "details": "Crear migración SQL en Supabase para tabla analytics_events con campos: event_id (UUID PRIMARY KEY con gen_random_uuid()), user_id (UUID FK a auth.users), event_type (TEXT con CHECK constraint para valores válidos: 'fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data (JSONB para datos flexibles), timestamp (TIMESTAMPTZ DEFAULT NOW()), session_id (TEXT). Implementar RLS con políticas: 'users_own_analytics_only' permitiendo solo acceso a eventos propios, 'admin_aggregate_analytics_only' para agregaciones. Crear índices: idx_analytics_events_user_type (user_id, event_type), idx_analytics_events_type_timestamp (event_type, timestamp). Implementar particionamiento por rango de fecha mensual usando PARTITION BY RANGE (timestamp) con particiones automáticas. Agregar trigger para actualización de updated_at. Configurar retention de 2 años para optimizar storage.",
+        "testStrategy": "Verificar tabla creada correctamente con DESCRIBE analytics_events. Probar RLS policies con diferentes usuarios - confirmar users solo ven sus eventos. Validar CHECK constraints rechazando event_types inválidos. Probar inserción de eventos con diferentes tipos y verificar campos JSONB. Validar performance de queries con EXPLAIN ANALYZE en índices. Verificar particionamiento funciona creando eventos en diferentes meses. Probar retention policies eliminando datos antiguos correctamente.",
+        "status": "pending",
+        "dependencies": [
+          3
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear migración SQL base para tabla analytics_events",
+            "description": "Crear la migración SQL en Supabase que defina la estructura básica de la tabla analytics_events con todos los campos especificados",
+            "dependencies": [],
+            "details": "Crear migración SQL con CREATE TABLE analytics_events incluyendo: event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE, event_type TEXT NOT NULL con CHECK constraint para valores válidos ('fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data JSONB DEFAULT '{}', timestamp TIMESTAMPTZ DEFAULT NOW(), session_id TEXT, updated_at TIMESTAMPTZ DEFAULT NOW(). Aplicar migración y verificar estructura.",
+            "status": "pending",
+            "testStrategy": "Ejecutar DESCRIBE analytics_events y verificar todos los campos. Probar inserción básica y validar CHECK constraint rechaza valores inválidos en event_type."
+          },
+          {
+            "id": 2,
+            "title": "Implementar políticas RLS y sistema de permisos",
+            "description": "Configurar Row Level Security con políticas para restringir acceso a eventos por usuario y permitir agregaciones para administradores",
+            "dependencies": [
+              1
+            ],
+            "details": "Habilitar RLS en tabla analytics_events con ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY. Crear política 'users_own_analytics_only' que permita SELECT, INSERT, UPDATE, DELETE solo para auth.uid() = user_id. Crear política 'admin_aggregate_analytics_only' para rol admin que permita SELECT para agregaciones sin acceso a datos individuales. Configurar grants apropiados para roles.",
+            "status": "pending",
+            "testStrategy": "Probar con diferentes usuarios que solo pueden acceder a sus propios eventos. Verificar que usuarios no pueden ver eventos de otros. Validar políticas admin funcionan correctamente."
+          },
+          {
+            "id": 3,
+            "title": "Configurar índices optimizados y particionamiento por fecha",
+            "description": "Implementar índices para consultas eficientes y particionamiento mensual automático con configuración de retención de 2 años",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear índices: CREATE INDEX idx_analytics_events_user_type ON analytics_events (user_id, event_type) y CREATE INDEX idx_analytics_events_type_timestamp ON analytics_events (event_type, timestamp). Implementar particionamiento con PARTITION BY RANGE (timestamp), crear particiones mensuales automáticas usando pg_partman o similar. Configurar trigger para updated_at con función update_timestamp(). Establecer política de retención de 2 años para optimizar storage.",
+            "status": "pending",
+            "testStrategy": "Verificar índices mejoran performance con EXPLAIN ANALYZE. Probar particionamiento funciona correctamente insertando eventos en diferentes meses. Validar trigger updated_at y políticas de retención."
+          }
+        ]
+      },
+      {
+        "id": 69,
+        "title": "Crear tabla 'user_content_interactions' para rastrear interacciones con contenido educativo",
+        "description": "Implementar tabla PostgreSQL/Supabase para rastrear interacciones de usuarios con contenido educativo incluyendo vistas, favoritos y contenido compartido",
+        "details": "Crear tabla 'user_content_interactions' en Supabase con campos: interaction_id (UUID PRIMARY KEY), user_id (UUID FK a auth.users), content_id (UUID FK a learning_content), interaction_type (ENUM: 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER 0-100). Implementar constraint UNIQUE(user_id, content_id, interaction_type) para evitar duplicados. Configurar RLS policy 'Users can manage own content interactions' usando auth.uid() = user_id. Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Implementar trigger 'update_content_popularity_metrics' que actualice automáticamente campos popularity_score y interaction_count en tabla learning_content cuando se inserten/actualicen interacciones. Configurar función PL/pgSQL que calcule popularity_score basado en: views * 1 + favorites * 3 + shares * 5 + completions * 2. Implementar soft delete mediante campo 'deleted_at' para mantener historial de analytics. Agregar validaciones CHECK para progress_percentage (0-100) y time_spent_seconds (>= 0).",
+        "testStrategy": "Verificar tabla se crea correctamente con todas las constraints y índices. Probar RLS policies bloquean acceso no autorizado entre usuarios diferentes. Validar trigger actualiza métricas de popularidad en learning_content automáticamente al insertar interacciones. Testear índices compuestos mejoran performance de queries por user_id y content_id. Verificar constraint UNIQUE previene duplicados de interaction_type por usuario/contenido. Probar soft delete preserva data para analytics. Validar cálculo de popularity_score es correcto con diferentes combinaciones de interacciones. Realizar load testing con 10000+ interacciones para verificar performance de índices.",
+        "status": "pending",
+        "dependencies": [
+          3,
+          48
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear estructura de tabla user_content_interactions con campos y constraints",
+            "description": "Implementar la estructura completa de la tabla user_content_interactions en Supabase con todos los campos necesarios, tipos de datos, claves primarias, foráneas y constraints de validación",
+            "dependencies": [],
+            "details": "Crear migración SQL para tabla user_content_interactions con campos: interaction_id (UUID PRIMARY KEY DEFAULT gen_random_uuid()), user_id (UUID FK REFERENCES auth.users), content_id (UUID FK REFERENCES learning_content), interaction_type (ENUM 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER). Implementar constraints: UNIQUE(user_id, content_id, interaction_type), CHECK progress_percentage BETWEEN 0 AND 100, CHECK time_spent_seconds >= 0. Agregar campo deleted_at TIMESTAMPTZ para soft delete.",
+            "status": "pending",
+            "testStrategy": "Verificar tabla se crea correctamente con todos los campos y tipos de datos. Probar constraints UNIQUE evitan duplicados. Validar CHECK constraints rechazan valores inválidos para progress_percentage y time_spent_seconds. Verificar claves foráneas funcionan correctamente."
+          },
+          {
+            "id": 2,
+            "title": "Configurar índices compuestos y políticas RLS para rendimiento y seguridad",
+            "description": "Implementar índices compuestos para optimizar consultas frecuentes y configurar políticas RLS para controlar acceso de usuarios a sus propias interacciones",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Configurar política RLS 'Users can manage own content interactions' usando condición auth.uid() = user_id para SELECT, INSERT, UPDATE, DELETE. Habilitar RLS en la tabla con ALTER TABLE user_content_interactions ENABLE ROW LEVEL SECURITY.",
+            "status": "pending",
+            "testStrategy": "Verificar índices mejoran performance de consultas frecuentes usando EXPLAIN ANALYZE. Probar políticas RLS bloquean acceso a interacciones de otros usuarios. Validar usuarios pueden crear, leer, actualizar y eliminar solo sus propias interacciones."
+          },
+          {
+            "id": 3,
+            "title": "Implementar trigger para actualizar métricas de popularidad automáticamente",
+            "description": "Crear trigger y función PL/pgSQL que actualice automáticamente los campos popularity_score e interaction_count en la tabla learning_content cuando se registren nuevas interacciones",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear función PL/pgSQL update_content_popularity_metrics() que calcule popularity_score usando fórmula: views * 1 + favorites * 3 + shares * 5 + completions * 2. Actualizar campos popularity_score e interaction_count en tabla learning_content basado en COUNT de interacciones por content_id. Implementar trigger update_content_popularity_metrics AFTER INSERT OR UPDATE OR DELETE ON user_content_interactions FOR EACH ROW que ejecute la función. Manejar casos de soft delete verificando deleted_at IS NULL.",
+            "status": "pending",
+            "testStrategy": "Verificar trigger se ejecuta correctamente al insertar, actualizar y eliminar interacciones. Validar cálculo de popularity_score con diferentes combinaciones de interacciones. Probar performance del trigger con volumen alto de datos. Verificar soft deletes no afectan métricas incorrectamente."
+          }
+        ]
+      },
+      {
+        "id": 70,
+        "title": "Crear tabla 'system_logs' en PostgreSQL/Supabase para logs de debugging del sistema",
+        "description": "Implementar tabla system_logs con campos log_id, severity, service, message, metadata (JSONB) y timestamp, incluyendo política de retención de 90 días, índices optimizados y configuración sin RLS para acceso administrativo exclusivo",
+        "details": "Crear migración SQL para tabla system_logs en Supabase con campos: log_id (UUID PRIMARY KEY con gen_random_uuid()), severity (ENUM con valores 'info', 'warning', 'error', 'critical'), service (ENUM con valores 'edge_function', 'database', 'auth'), message (TEXT NOT NULL), metadata (JSONB para datos estructurados adicionales), timestamp (TIMESTAMPTZ DEFAULT NOW()). Implementar índices: CREATE INDEX idx_system_logs_severity ON system_logs(severity), CREATE INDEX idx_system_logs_timestamp ON system_logs(timestamp), CREATE INDEX idx_system_logs_service ON system_logs(service). Configurar política de retención automática con trigger PostgreSQL que elimine logs >90 días: CREATE OR REPLACE FUNCTION cleanup_old_logs() que ejecute DELETE FROM system_logs WHERE timestamp < NOW() - INTERVAL '90 days', programado con pg_cron extension daily. NO habilitar RLS en esta tabla (acceso solo para service_role y admins). Crear función helper log_system_event(severity, service, message, metadata) para inserción consistente desde Edge Functions. Integrar con existing SupabaseConfig.from('system_logs') para queries desde Flutter app.",
+        "testStrategy": "Verificar inserción de logs con diferentes severity levels, probar consultas con índices funcionando correctamente, validar política de retención elimina logs antiguos, confirmar acceso restringido sin RLS habilitado, probar función helper log_system_event con metadata JSONB, verificar performance de queries con índices en timestamp y severity",
+        "status": "pending",
+        "dependencies": [
+          3
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear migración SQL para tabla system_logs con campos y ENUMs",
+            "description": "Crear migración SQL en Supabase para definir tabla system_logs con todos los campos requeridos incluyendo ENUMs para severity y service",
+            "dependencies": [],
+            "details": "Crear archivo de migración SQL que defina: CREATE TYPE severity_level AS ENUM ('info', 'warning', 'error', 'critical'); CREATE TYPE service_type AS ENUM ('edge_function', 'database', 'auth'); CREATE TABLE system_logs (log_id UUID PRIMARY KEY DEFAULT gen_random_uuid(), severity severity_level NOT NULL, service service_type NOT NULL, message TEXT NOT NULL, metadata JSONB, timestamp TIMESTAMPTZ DEFAULT NOW()). Aplicar migración usando herramientas Supabase CLI o interfaz web.",
+            "status": "pending",
+            "testStrategy": "Verificar que la tabla se crea correctamente ejecutando \\d system_logs en psql, validar que los ENUMs se definen correctamente con \\dT, probar inserción manual de registro con diferentes valores de severity y service"
+          },
+          {
+            "id": 2,
+            "title": "Implementar índices optimizados y política de retención automática",
+            "description": "Crear índices para mejorar performance de consultas y configurar trigger automático para eliminar logs antiguos cada 90 días",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear índices: CREATE INDEX idx_system_logs_severity ON system_logs(severity); CREATE INDEX idx_system_logs_timestamp ON system_logs(timestamp); CREATE INDEX idx_system_logs_service ON system_logs(service). Implementar función de limpieza: CREATE OR REPLACE FUNCTION cleanup_old_logs() RETURNS void AS $$ BEGIN DELETE FROM system_logs WHERE timestamp < NOW() - INTERVAL '90 days'; END; $$ LANGUAGE plpgsql. Configurar pg_cron job diario: SELECT cron.schedule('cleanup-logs', '0 2 * * *', 'SELECT cleanup_old_logs();').",
+            "status": "pending",
+            "testStrategy": "Probar performance de consultas con EXPLAIN ANALYZE antes y después de índices, verificar que función cleanup_old_logs ejecuta correctamente eliminando registros antiguos, confirmar que pg_cron job se programa correctamente consultando cron.job"
+          },
+          {
+            "id": 3,
+            "title": "Crear función helper log_system_event y configurar acceso sin RLS",
+            "description": "Implementar función helper para inserción consistente de logs y configurar permisos administrativos sin Row Level Security",
+            "dependencies": [
+              2
+            ],
+            "details": "Crear función: CREATE OR REPLACE FUNCTION log_system_event(p_severity severity_level, p_service service_type, p_message TEXT, p_metadata JSONB DEFAULT NULL) RETURNS UUID AS $$ DECLARE log_uuid UUID; BEGIN INSERT INTO system_logs (severity, service, message, metadata) VALUES (p_severity, p_service, p_message, p_metadata) RETURNING log_id INTO log_uuid; RETURN log_uuid; END; $$ LANGUAGE plpgsql SECURITY DEFINER. Configurar permisos: GRANT USAGE ON SCHEMA public TO service_role; GRANT ALL ON system_logs TO service_role; GRANT EXECUTE ON FUNCTION log_system_event TO service_role. NO habilitar RLS en esta tabla.",
+            "status": "pending",
+            "testStrategy": "Probar función log_system_event con diferentes combinaciones de parámetros desde Edge Function, verificar que retorna UUID válido, confirmar que service_role puede insertar/consultar sin restricciones RLS, validar que usuarios anónimos no pueden acceder directamente a la tabla"
+          }
+        ]
+      },
+      {
+        "id": 71,
+        "title": "Crear datos seed para tabla 'fasting_plans' en Supabase",
+        "description": "Implementar script de migración SQL que populate la tabla fasting_plans con los 6 planes predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 48h) más el plan de desintoxicación de 48h carnívoro",
+        "details": "Crear migración SQL supabase/migrations/YYYYMMDDHHMMSS_seed_fasting_plans.sql que: 1) Verifique si la tabla fasting_plans existe, si no existe crearla con esquema: id UUID PRIMARY KEY DEFAULT gen_random_uuid(), plan_name TEXT NOT NULL UNIQUE, fasting_hours INT NOT NULL, eating_hours INT NOT NULL, description TEXT, difficulty_level TEXT CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')), recommended_for TEXT, is_default BOOLEAN DEFAULT false, created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ DEFAULT NOW(). 2) Insertar los 7 planes con datos: ('12/12', 12, 12, 'Plan principiante: ayuna 12 horas, come 12 horas. Ideal para alineación del ritmo circadiano.', 'beginner', 'Alineación del ritmo circadiano', true), ('14/10', 14, 10, 'Paso intermedio: ayuna 14 horas, come 10 horas. Suave entrada a la quema de grasa.', 'beginner', 'Quema suave de grasa', false), ('16/8', 16, 8, 'Más popular: ayuna 16 horas, come 8 horas. Equilibrio perfecto entre pérdida de grasa y autofagia.', 'intermediate', 'Pérdida de grasa y autofagia', false), ('18/6', 18, 6, 'Avanzado: ayuna 18 horas, come 6 horas. Cetosis profunda y mayor autofagia.', 'advanced', 'Cetosis profunda', false), ('24h', 24, 0, 'OMAD (Una Comida Al Día): ayuno de 24 horas. Máxima autofagia y regeneración celular.', 'advanced', 'Máxima autofagia', false), ('48h', 48, 0, 'Ayuno extendido: 48 horas solo agua. Reparación celular profunda y renovación.', 'advanced', 'Reparación celular', false), ('Desintoxicación 48h', 48, 0, 'Plan carnívoro de 48h: solo carne, huevos, pescado, sal y agua. Elimina antojos de azúcar antes del ayuno intermitente.', 'beginner', 'Reducción de antojos de azúcar', false). 3) Configurar RLS con política 'Public read access' ON fasting_plans FOR SELECT USING (true). 4) Usar ON CONFLICT (plan_name) DO UPDATE para evitar duplicados en múltiples ejecuciones. 5) Agregar trigger para updated_at automático.",
+        "testStrategy": "Verificar que la migración se ejecute sin errores en Supabase Dashboard. Comprobar que los 7 planes se insertaron correctamente con SELECT * FROM fasting_plans ORDER BY difficulty_level, fasting_hours. Validar que RLS está habilitado y permite lectura pública. Probar que el plan '12/12' tiene is_default = true. Verificar que múltiples ejecuciones de la migración no crean duplicados. Confirmar que trigger de updated_at funciona al hacer UPDATE manual de un registro.",
+        "status": "pending",
+        "dependencies": [
+          3
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear archivo de migración SQL con esquema de tabla fasting_plans",
+            "description": "Generar archivo de migración SQL en supabase/migrations/ que defina la estructura completa de la tabla fasting_plans con todas las columnas necesarias",
+            "dependencies": [],
+            "details": "Crear archivo YYYYMMDDHHMMSS_seed_fasting_plans.sql que incluya: verificación de existencia de tabla, definición de esquema con id UUID PRIMARY KEY, plan_name TEXT UNIQUE, fasting_hours INT, eating_hours INT, description TEXT, difficulty_level con CHECK constraint, recommended_for TEXT, is_default BOOLEAN, timestamps created_at y updated_at con valores por defecto",
+            "status": "pending",
+            "testStrategy": "Verificar que la migración se ejecute sin errores sintácticos en Supabase Dashboard y que la tabla se cree con todas las columnas correctas"
+          },
+          {
+            "id": 2,
+            "title": "Insertar datos seed de los 7 planes de ayuno intermitente",
+            "description": "Implementar las sentencias INSERT para poblar la tabla con los planes predefinidos incluyendo manejo de duplicados",
+            "dependencies": [
+              1
+            ],
+            "details": "Agregar 7 sentencias INSERT con ON CONFLICT (plan_name) DO UPDATE para los planes: 12/12 (beginner, default), 14/10 (beginner), 16/8 (intermediate), 18/6 (advanced), 24h OMAD (advanced), 48h ayuno extendido (advanced), y Desintoxicación 48h carnívoro (beginner). Incluir descripciones completas en español y configurar correctamente difficulty_level y recommended_for",
+            "status": "pending",
+            "testStrategy": "Ejecutar SELECT * FROM fasting_plans ORDER BY difficulty_level, fasting_hours para verificar que los 7 planes se insertaron correctamente con todos los datos"
+          },
+          {
+            "id": 3,
+            "title": "Configurar RLS y trigger de updated_at para la tabla",
+            "description": "Implementar políticas de Row Level Security y trigger automático para mantener el campo updated_at actualizado",
+            "dependencies": [
+              1
+            ],
+            "details": "Habilitar RLS en la tabla fasting_plans, crear política 'Public read access' que permita SELECT a todos los usuarios usando (true). Crear función trigger update_updated_at_column() y asociarla a la tabla para actualizar automáticamente updated_at en cada UPDATE. Esto garantiza acceso público de lectura y mantenimiento automático de timestamps",
+            "status": "pending",
+            "testStrategy": "Verificar que RLS está habilitado y permite lectura pública sin autenticación, probar que el trigger updated_at funciona correctamente al hacer UPDATE en cualquier registro"
+          }
+        ]
+      },
+      {
+        "id": 72,
+        "title": "Implementar función PostgreSQL 'validate_fasting_duration' en Supabase para prevenir ayunos peligrosos",
+        "description": "Desarrollar función PostgreSQL robusta que valide duraciones de ayuno seguras, requiera confirmación explícita para ayunos >48h, analice historial de riesgo y bloquee usuarios con condiciones médicas registradas",
+        "details": "Crear archivo supabase/migrations/20250125000000_enhanced_fasting_validation.sql implementando función validate_fasting_duration() mejorada según Backend Structure Document líneas 656-707. La función debe: 1) Extender validación existente agregando parámetro opcional 'explicit_confirmation' para ayunos >48h que retorne FALSE si no se proporciona confirmación explícita, 2) Implementar análisis de historial agregando consulta a fasting_sessions para detectar patrones de riesgo como >3 interrupciones por panic_button en últimos 7 días o >5 ayunos interrumpidos en último mes, 3) Agregar tabla medical_conditions con campos: user_id UUID, condition_type TEXT (diabetes, eating_disorder, pregnancy, underweight), severity TEXT (mild, moderate, severe), created_at TIMESTAMP, 4) Implementar bloqueo automático consultando medical_conditions donde severity='severe' retorna FALSE inmediatamente, 5) Agregar logging de intentos bloqueados en tabla fasting_validation_logs para auditoría médica, 6) Mantener compatibilidad con función actual mientras extiende funcionalidad, 7) Implementar rate limiting para prevenir bypass via múltiples intentos. Función debe retornar BOOLEAN con casos: TRUE para ayunos seguros, FALSE para rechazados, y trigger exception con mensaje específico para cada tipo de bloqueo.",
+        "testStrategy": "Crear suite completa de tests en supabase/tests/validate_fasting_duration_test.sql probando: casos base de función original (ayunos 12-24h normales), límite 48h sin confirmación explícita debe fallar, ayunos >48h con explicit_confirmation=true debe pasar, detección patrones riesgo con datos mock de sesiones interrumpidas, bloqueo por condiciones médicas severity='severe', logging correcto en fasting_validation_logs, rate limiting tras múltiples intentos fallidos. Probar edge cases: usuarios sin historial, perfiles incompletos, condiciones médicas múltiples, timezone handling para cálculos de tiempo. Verificar performance con datasets grandes (>1000 sesiones por usuario). Implementar integration tests desde Edge Functions simulando validaciones reales durante creación de ayunos. Validar trigger validate_fasting_session_safety funciona con nueva función extendida.",
+        "status": "pending",
+        "dependencies": [
+          15,
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear migración y estructura de tablas de soporte para validación de ayuno",
+            "description": "Implementar archivo de migración con tabla medical_conditions, fasting_validation_logs y extender función validate_fasting_duration existente",
+            "dependencies": [],
+            "details": "Crear archivo supabase/migrations/20250125000000_enhanced_fasting_validation.sql que incluya: 1) Tabla medical_conditions con campos user_id UUID, condition_type TEXT (diabetes, eating_disorder, pregnancy, underweight), severity TEXT (mild, moderate, severe), created_at TIMESTAMP, 2) Tabla fasting_validation_logs para auditoría médica con campos user_id, attempted_duration, blocked_reason, created_at, 3) Extender función validate_fasting_duration existente agregando parámetro opcional explicit_confirmation BOOLEAN DEFAULT FALSE",
+            "status": "pending",
+            "testStrategy": "Crear tests SQL para verificar creación correcta de tablas, constraints, índices y tipos de datos. Probar inserción de datos de ejemplo en medical_conditions y validation_logs."
+          },
+          {
+            "id": 2,
+            "title": "Implementar lógica de validación avanzada en función validate_fasting_duration",
+            "description": "Desarrollar algoritmo de validación que analice historial de riesgo, condiciones médicas y requiera confirmación explícita para ayunos >48h",
+            "dependencies": [
+              1
+            ],
+            "details": "Modificar función validate_fasting_duration para incluir: 1) Validación de confirmación explícita para ayunos >48h retornando FALSE si explicit_confirmation no se proporciona, 2) Análisis de historial consultando fasting_sessions para detectar >3 interrupciones por panic_button en últimos 7 días o >5 ayunos interrumpidos en último mes, 3) Bloqueo automático para usuarios con severity='severe' en medical_conditions, 4) Rate limiting para prevenir bypass via múltiples intentos, 5) Logging de intentos bloqueados en fasting_validation_logs",
+            "status": "pending",
+            "testStrategy": "Crear suite completa de tests unitarios probando cada caso: ayunos normales 12-24h, límite 48h sin confirmación, ayunos >48h con confirmación, detección patrones riesgo, bloqueo por condiciones médicas severas."
+          },
+          {
+            "id": 3,
+            "title": "Implementar manejo de errores y compatibilidad con función existente",
+            "description": "Asegurar compatibilidad backward con función actual, implementar manejo robusto de errores y mensajes específicos para cada tipo de bloqueo",
+            "dependencies": [
+              2
+            ],
+            "details": "Finalizar implementación de validate_fasting_duration asegurando: 1) Mantener compatibilidad con llamadas existentes sin parámetro explicit_confirmation, 2) Implementar manejo de errores con RAISE EXCEPTION para cada tipo de bloqueo con mensajes específicos (condición médica, historial riesgo, falta confirmación), 3) Optimizar consultas para performance usando índices apropiados, 4) Documentar función con comentarios SQL explicando parámetros y casos de uso, 5) Crear función helper get_user_risk_score() para centralizar cálculo de riesgo",
+            "status": "pending",
+            "testStrategy": "Probar compatibilidad con código existente, verificar mensajes de error específicos para cada caso de bloqueo, probar performance con datos de gran volumen, validar que índices mejoran tiempo de consulta."
+          }
+        ]
+      },
+      {
+        "id": 73,
+        "title": "Implementar trigger PostgreSQL 'validate_fasting_limits' en Supabase sobre tabla fasting_sessions",
+        "description": "Crear trigger automático que ejecute validación de duración de ayuno en INSERT/UPDATE de fasting_sessions, registre advertencias en system_logs y opcionalmente bloquee sesiones inseguras",
+        "details": "Crear archivo supabase/migrations/20250125000001_validate_fasting_limits_trigger.sql implementando: 1) Trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions que llame automáticamente a función validate_fasting_duration(), 2) Agregar parámetro 'block_unsafe_sessions' (boolean) que determine si rechazar INSERT/UPDATE cuando validación falla o solo registrar warning, 3) Implementar función trigger validate_fasting_limits_trigger() que: extraiga planned_duration de NEW record, llame validate_fasting_duration(NEW.user_id, NEW.planned_duration, NEW.explicit_confirmation), registre resultado en system_logs con nivel WARNING/ERROR según corresponda, retorne NEW si block_unsafe_sessions=false o NULL si debe bloquear, 4) Manejar excepciones con EXCEPTION clause capturando errores de validación y registrándolos en system_logs antes de permitir/rechazar operación, 5) Agregar logging detallado incluyendo user_id, planned_duration, validation_result, timestamp en cada ejecución, 6) Configurar trigger para activarse en todas las operaciones de fasting_sessions manteniendo performance óptima",
+        "testStrategy": "Crear suite de tests en supabase/tests/validate_fasting_limits_trigger_test.sql probando: INSERT sesión 16h debe pasar sin warnings, INSERT sesión 72h sin explicit_confirmation debe registrar warning/bloquear según configuración, UPDATE aumentando duración de 24h a 60h debe disparar validación, verificar entries correctas en system_logs con niveles apropiados, probar manejo de excepciones con datos inválidos o función validate_fasting_duration unavailable, validar performance del trigger con INSERT/UPDATE batch de 100+ registros, confirmar trigger no interfiere con operaciones normales de la aplicación",
+        "status": "pending",
+        "dependencies": [
+          72
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear función trigger validate_fasting_limits_trigger() en PostgreSQL",
+            "description": "Implementar función trigger principal que validará las sesiones de ayuno automáticamente",
+            "dependencies": [],
+            "details": "Desarrollar función validate_fasting_limits_trigger() que extraiga planned_duration del NEW record, llame a validate_fasting_duration(NEW.user_id, NEW.planned_duration, NEW.explicit_confirmation), maneje el parámetro block_unsafe_sessions para determinar si rechazar o permitir operaciones inseguras, registre resultados en system_logs con niveles WARNING/ERROR apropiados, y retorne NEW o NULL según configuración de bloqueo",
+            "status": "pending",
+            "testStrategy": "Probar función con diferentes valores de planned_duration, verificar comportamiento con block_unsafe_sessions true/false, validar registro correcto en system_logs"
+          },
+          {
+            "id": 2,
+            "title": "Configurar trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions",
+            "description": "Crear trigger automático que ejecute la función de validación en operaciones de la tabla fasting_sessions",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions que llame automáticamente a validate_fasting_limits_trigger(). Configurar para activarse en todas las operaciones manteniendo performance óptima. Incluir manejo de excepciones con EXCEPTION clause para capturar errores de validación y registrarlos en system_logs antes de permitir/rechazar la operación",
+            "status": "pending",
+            "testStrategy": "Verificar trigger se ejecuta en INSERT/UPDATE, probar manejo de excepciones, validar performance con múltiples operaciones concurrentes"
+          },
+          {
+            "id": 3,
+            "title": "Crear archivo de migración con logging detallado y tests",
+            "description": "Generar migración Supabase completa con sistema de logging y suite de tests",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear archivo supabase/migrations/20250125000001_validate_fasting_limits_trigger.sql con toda la implementación. Agregar logging detallado incluyendo user_id, planned_duration, validation_result, timestamp en cada ejecución. Incluir comentarios SQL explicativos y configuración del parámetro block_unsafe_sessions. Crear tests en supabase/tests/ para validar funcionamiento completo del trigger",
+            "status": "pending",
+            "testStrategy": "Ejecutar migración en entorno de desarrollo, probar INSERT sesión 16h sin warnings, INSERT sesión 72h con warnings/bloqueo, UPDATE aumentando duración activando validación"
+          }
+        ]
+      },
+      {
+        "id": 74,
+        "title": "Implementar modales de confirmación en Flutter para acciones críticas",
+        "description": "Crear sistema de modales de confirmación para acciones críticas del ayuno usando ZendfastDialog con animaciones, botones diferenciados y feedback háptico.",
+        "details": "Crear lib/widgets/dialogs/zendfast_dialog.dart implementando widget ZendfastDialog que extienda AlertDialog con Material 3 design system siguiendo tema existente en theme.dart. Incluir propiedades: title (Widget), content (Widget), confirmButtonText (String), cancelButtonText (String), onConfirm (VoidCallback), onCancel (VoidCallback), confirmButtonColor (Color), showCloseButton (bool). Implementar animaciones de entrada/salida usando AnimatedScale y AnimatedOpacity con duration 300ms y curve Curves.easeInOut. Crear tipos específicos: StartFastingDialog, ChangePlanDialog, BreakFastingDialog, DeleteHistoryDialog con copy diferenciado y colores semánticos (error para acciones destructivas, primary para acciones normales). Agregar HapticFeedback.lightImpact() en onConfirm y HapticFeedback.selectionClick() en onCancel. Implementar método estático ZendfastDialog.show() para mostrar modales con barrier dismissible configurables. Botones deben usar FilledButton para confirmación (elevated visualmente) y TextButton para cancelación, con spacing ZendfastSpacing.m entre ellos. Usar colorScheme del contexto para consistencia visual.",
+        "testStrategy": "Crear tests unitarios para ZendfastDialog verificando renderizado correcto de props y callbacks. Crear widget tests para cada tipo específico verificando textos y colores correctos. Probar animaciones usando WidgetTester.pumpAndSettle() para completar transiciones. Verificar feedback háptico se activa correctamente con mock de HapticFeedback. Probar interaction tests con tap en botones confirmación/cancelación y verificar callbacks ejecutados. Validar barrier dismissible funciona según configuración. Probar responsividad en diferentes tamaños de pantalla y orientaciones.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          15
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear widget base ZendfastDialog con propiedades y animaciones",
+            "description": "Implementar el widget ZendfastDialog base que extienda AlertDialog con todas las propiedades requeridas y animaciones de entrada/salida",
+            "dependencies": [],
+            "details": "Crear archivo lib/widgets/dialogs/zendfast_dialog.dart implementando ZendfastDialog que extienda AlertDialog. Incluir propiedades: title (Widget), content (Widget), confirmButtonText (String), cancelButtonText (String), onConfirm (VoidCallback), onCancel (VoidCallback), confirmButtonColor (Color), showCloseButton (bool). Implementar animaciones usando AnimatedScale y AnimatedOpacity con duration 300ms y curve Curves.easeInOut. Crear método estático ZendfastDialog.show() para mostrar modales con barrier dismissible configurables. Usar Material 3 design system siguiendo tema en theme.dart.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios verificando renderizado correcto de propiedades, callbacks onConfirm/onCancel funcionan, animaciones se ejecutan con timing correcto usando WidgetTester.pumpAndSettle()"
+          },
+          {
+            "id": 2,
+            "title": "Implementar botones diferenciados con feedback háptico",
+            "description": "Configurar botones FilledButton para confirmación y TextButton para cancelación con colores semánticos y feedback háptico",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar botones usando FilledButton para confirmación (elevated visualmente) y TextButton para cancelación. Aplicar spacing ZendfastSpacing.m entre botones. Usar colorScheme del contexto para consistencia visual. Agregar HapticFeedback.lightImpact() en onConfirm y HapticFeedback.selectionClick() en onCancel. Configurar colores semánticos: error para acciones destructivas, primary para acciones normales según confirmButtonColor prop.",
+            "status": "pending",
+            "testStrategy": "Verificar tipos de botones correctos se renderizan, probar feedback háptico se ejecuta en cada acción, validar colores semánticos aplicados según tipo de acción"
+          },
+          {
+            "id": 3,
+            "title": "Crear tipos específicos de diálogos para acciones críticas",
+            "description": "Implementar diálogos especializados para cada acción crítica del ayuno con copy y colores diferenciados",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Crear tipos específicos: StartFastingDialog, ChangePlanDialog, BreakFastingDialog, DeleteHistoryDialog. Cada tipo debe tener copy diferenciado apropiado para la acción y colores semánticos correctos. StartFastingDialog y ChangePlanDialog usan color primary, BreakFastingDialog y DeleteHistoryDialog usan color error para indicar acciones destructivas. Implementar factory constructors para cada tipo que preconfiguran textos y colores apropiados.",
+            "status": "pending",
+            "testStrategy": "Crear widget tests para cada tipo específico verificando textos correctos se muestran, colores semánticos aplicados apropiadamente, comportamiento específico de cada diálogo funciona según diseño"
+          }
+        ]
+      },
+      {
+        "id": 75,
+        "title": "Implementar encuesta rápida post-interrupción de ayuno en Flutter",
+        "description": "Crear modal de encuesta que aparece cuando usuario selecciona 'Rompí el ayuno' o 'No aguanto' con 4-5 opciones predefinidas y campo de texto opcional para registrar en analytics.",
+        "details": "Crear archivo lib/widgets/dialogs/fasting_interruption_survey_dialog.dart que implemente SurveyDialog extendiendo ZendfastDialog (de task 74). El modal debe: 1) Incluir título 'Cuéntanos qué pasó' y descripción explicativa, 2) Implementar ListView con RadioListTile para opciones: 'Hambre extrema', 'Evento social', 'Malestar físico', 'Ansiedad/estrés', 'Otro motivo', 3) Agregar TextField opcional con hint 'Detalles adicionales (opcional)' que aparece cuando se selecciona cualquier opción, 4) Botones 'Omitir' (TextButton) y 'Enviar' (FilledButton con colores de theme.dart), 5) Implementar animaciones de entrada con AnimatedScale duration 300ms. Crear InterruptionSurveyData model con campos: reason (String), details (String?), timestamp (DateTime). Integrar con analytics creando método logFastingInterruption() en analytics service que registre evento 'fast_interrupted' en analytics_events table (referencia task 52) con campos: user_id, reason, details, timestamp. Usar colors.dart para consistencia visual (tertiary: panicOrange para botón enviar). Mostrar modal automáticamente cuando FastingSession.endSession() se llama con wasInterrupted=true desde botón pánico (task 11).",
+        "testStrategy": "Crear tests unitarios para SurveyDialog verificando renderizado de opciones y validación de datos. Crear widget tests usando WidgetTester para interacciones: selección de radio buttons, entrada de texto opcional, callbacks de botones. Probar integración con analytics service usando mocks para verificar eventos se logean correctamente con estructura esperada. Validar modal aparece automáticamente al interrumpir ayuno desde diferentes flujos (botón pánico, acción manual). Probar animaciones usando pumpAndSettle() para completar transiciones.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          52,
+          74
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear componente SurveyDialog y modelo de datos",
+            "description": "Implementar el widget principal FastingInterruptionSurveyDialog que extienda ZendfastDialog y crear el modelo InterruptionSurveyData para estructurar los datos de la encuesta",
+            "dependencies": [
+              74
+            ],
+            "details": "Crear archivo lib/widgets/dialogs/fasting_interruption_survey_dialog.dart implementando SurveyDialog que extienda ZendfastDialog. Incluir título 'Cuéntanos qué pasó' y descripción explicativa. Crear modelo InterruptionSurveyData en lib/models/ con campos: reason (String), details (String?), timestamp (DateTime). Implementar constructor y métodos toJson/fromJson para serialización.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para el modelo InterruptionSurveyData verificando serialización correcta. Crear widget tests para el componente SurveyDialog validando renderizado del título y descripción."
+          },
+          {
+            "id": 2,
+            "title": "Implementar interfaz de usuario con opciones y campo de texto",
+            "description": "Desarrollar la UI del modal con RadioListTile para las opciones predefinidas, TextField opcional para detalles adicionales y botones de acción con animaciones",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar ListView con RadioListTile para opciones: 'Hambre extrema', 'Evento social', 'Malestar físico', 'Ansiedad/estrés', 'Otro motivo'. Agregar TextField opcional con hint 'Detalles adicionales (opcional)' que aparece cuando se selecciona cualquier opción. Incluir botones 'Omitir' (TextButton) y 'Enviar' (FilledButton) usando colores de theme.dart (tertiary: panicOrange). Implementar animaciones de entrada con AnimatedScale duration 300ms.",
+            "status": "pending",
+            "testStrategy": "Probar interacciones con WidgetTester: selección de radio buttons, aparición del TextField al seleccionar opción, validación de callbacks de botones. Verificar animaciones funcionan correctamente."
+          },
+          {
+            "id": 3,
+            "title": "Integrar con analytics y sistema de ayuno",
+            "description": "Conectar el modal con el servicio de analytics para registrar interrupciones y configurar la activación automática desde FastingSession",
+            "dependencies": [
+              2,
+              52,
+              11
+            ],
+            "details": "Crear método logFastingInterruption() en analytics service que registre evento 'fast_interrupted' en analytics_events table con campos: user_id, reason, details, timestamp. Modificar FastingSession.endSession() para mostrar modal automáticamente cuando se llama con wasInterrupted=true desde botón pánico. Configurar integración completa entre todos los componentes del sistema.",
+            "status": "pending",
+            "testStrategy": "Crear tests de integración usando mocks para analytics service verificando que los datos se registran correctamente. Probar activación automática del modal desde el botón pánico validando el flujo completo."
+          }
+        ]
+      },
+      {
+        "id": 76,
+        "title": "Implementar sistema de micro-interacciones en Flutter usando Lottie y animaciones nativas",
+        "description": "Crear sistema completo de micro-interacciones para mejorar la UX incluyendo efectos ripple, animaciones de confetti, pulso en botón pánico, transiciones suaves y feedback háptico al registrar hidratación.",
+        "details": "Crear archivo lib/widgets/animations/micro_interactions.dart implementando: 1) RippleEffect widget para botones usando Material InkWell con customSplashFactory y ColorScheme.primary, 2) ConfettiAnimation widget usando package:confetti o Lottie para celebración al completar ayuno, integrado con FastingSession completion events, 3) PulseButton widget para botón pánico con AnimationController y ScaleTransition (scale 1.0 to 1.05, duration 1000ms, repeat infinitely), 4) SmoothPageTransition para go_router usando CustomTransitionPage con SlideTransition y easeInOut curve (250ms duration), 5) HydrationFeedback usando HapticFeedback.lightImpact() + subtle scale animation al registrar hidratación. Crear archivo lib/widgets/animations/animation_constants.dart con duraciones estándar: quickFeedback(150ms), standardTransition(250ms), slowTransition(350ms), curves: easeInOut, bounceIn. Integrar con theme.dart existente para colores consistentes. Implementar AnimationMixin para cleanup automático de AnimationControllers. Seguir guidelines no intrusivas del Tech Stack Document líneas 194-200.",
+        "testStrategy": "Crear tests unitarios para cada widget de animación verificando configuración de AnimationController y cleanup. Crear widget tests para RippleEffect probando splash color y comportamiento táctil. Probar ConfettiAnimation con mock de FastingSession completion usando WidgetTester.pumpAndSettle(). Verificar PulseButton animation loop usando WidgetTester.pump() con incrementos de tiempo. Probar transiciones de navegación con Router y MockGoRouter. Verificar HapticFeedback.lightImpact() se llama correctamente usando platform channel mocks. Probar performance con Flutter Inspector para verificar frame rate >60fps.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          15
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear archivo de constantes y mixins para animaciones",
+            "description": "Implementar archivo lib/widgets/animations/animation_constants.dart con duraciones estándar y curvas de animación, y crear AnimationMixin para cleanup automático",
+            "dependencies": [],
+            "details": "Crear animation_constants.dart definiendo duraciones: quickFeedback(150ms), standardTransition(250ms), slowTransition(350ms). Definir curvas: easeInOut, bounceIn. Implementar AnimationMixin con métodos para cleanup automático de AnimationControllers en dispose(). Integrar con theme.dart existente para colores consistentes usando ColorScheme.primary.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios verificando valores correctos de constantes de duración y curvas. Probar AnimationMixin con mock AnimationController verificando cleanup automático en dispose()."
+          },
+          {
+            "id": 2,
+            "title": "Implementar widgets de micro-interacciones básicas",
+            "description": "Desarrollar RippleEffect, PulseButton y HydrationFeedback widgets con animaciones nativas y feedback háptico",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear micro_interactions.dart implementando: RippleEffect widget usando Material InkWell con customSplashFactory y ColorScheme.primary. PulseButton widget con AnimationController y ScaleTransition (scale 1.0 a 1.05, duración 1000ms, repetir infinitamente). HydrationFeedback usando HapticFeedback.lightImpact() con sutil animación de escala al registrar hidratación. Usar AnimationMixin para cleanup automático.",
+            "status": "pending",
+            "testStrategy": "Crear widget tests para RippleEffect probando splash color y comportamiento táctil. Probar PulseButton verificando animación continua y cleanup. Validar HydrationFeedback con mock de registro de hidratación."
+          },
+          {
+            "id": 3,
+            "title": "Implementar ConfettiAnimation y transiciones de página",
+            "description": "Desarrollar widget de celebración con confetti usando Lottie y transiciones suaves para navegación con go_router",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar ConfettiAnimation widget usando package:confetti o Lottie para celebración al completar ayuno, integrado con FastingSession completion events. Crear SmoothPageTransition para go_router usando CustomTransitionPage con SlideTransition y easeInOut curve (250ms duración). Seguir guidelines no intrusivas del Tech Stack Document líneas 194-200.",
+            "status": "pending",
+            "testStrategy": "Probar ConfettiAnimation con mock de FastingSession completion usando WidgetTester.pumpAndSettle(). Validar SmoothPageTransition en go_router con diferentes rutas. Verificar performance y que animaciones no sean intrusivas."
+          }
+        ]
+      },
+      {
+        "id": 77,
+        "title": "Implementar detección y ajuste automático de zona horaria en Flutter",
+        "description": "Desarrollar sistema que detecte cambios de zona horaria del dispositivo usando plugin timezone, ajuste automáticamente timers de ayuno activos, notifique al usuario sobre los ajustes realizados y registre eventos en analytics.",
+        "details": "Crear archivo lib/services/timezone_service.dart implementando TimeZoneService con flutter_timezone plugin para detectar cambios de zona horaria del dispositivo. Implementar TimezoneChangeListener que use zone_detector para monitorear cambios automáticos y manuales. Al detectar cambio: 1) Pausar timers activos usando FastingTimerService, 2) Calcular diferencia horaria y ajustar start_time y end_time de sesiones activas en Isar database, 3) Reiniciar timers con nuevos timestamps, 4) Mostrar notification usando local_notifications explicando el ajuste realizado con detalles de zona anterior/nueva. Manejar edge cases: viajes internacionales con múltiples cambios rápidos (throttling de 5 minutos), cambios de horario de verano automáticos, sincronización con Supabase respetando UTC timestamps. Integrar con analytics service (task 52) registrando eventos timezone_change_detected y timezone_adjustment_completed con metadata de zonas y duración de ajuste. Implementar configuración en user preferences para habilitar/deshabilitar ajustes automáticos.",
+        "testStrategy": "Crear tests unitarios para TimeZoneService usando timezone mocks simulando cambios GMT-5 a GMT+2. Probar TimezoneChangeListener con diferentes scenarios: cambio manual de zona, viaje internacional, horario de verano. Crear widget tests para notification display verificando textos informativos correctos. Probar integration end-to-end con ayuno activo de 16h simulando cambio de zona a mitad del ayuno y verificando que timer se ajusta correctamente sin perder progreso. Validar que eventos analytics se registran con metadata apropiada usando analytics service mocks.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          52
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Crear TimeZoneService con flutter_timezone plugin",
+            "description": "Implementar el servicio principal para detectar cambios de zona horaria del dispositivo",
+            "dependencies": [],
+            "details": "Crear archivo lib/services/timezone_service.dart implementando TimeZoneService que utilice el plugin flutter_timezone para detectar la zona horaria actual del dispositivo. Incluir métodos getCurrentTimeZone(), detectTimeZoneChange() y registerTimeZoneListener(). Configurar el plugin en pubspec.yaml y manejar permisos necesarios para Android/iOS.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios usando mocks del plugin flutter_timezone simulando diferentes zonas horarias GMT-5, GMT+2, etc."
+          },
+          {
+            "id": 2,
+            "title": "Implementar TimezoneChangeListener para ajuste automático de timers",
+            "description": "Desarrollar el listener que monitorea cambios de zona horaria y ajusta automáticamente los timers de ayuno activos",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar TimezoneChangeListener que use zone_detector para monitorear cambios automáticos y manuales. Al detectar cambio: 1) Pausar timers activos usando FastingTimerService, 2) Calcular diferencia horaria y ajustar start_time y end_time de sesiones activas en Isar database, 3) Reiniciar timers con nuevos timestamps. Incluir throttling de 5 minutos para viajes internacionales con múltiples cambios rápidos.",
+            "status": "pending",
+            "testStrategy": "Probar scenarios de cambio manual de zona, viaje internacional, horario de verano. Verificar que los timers se ajusten correctamente sin perder progreso."
+          },
+          {
+            "id": 3,
+            "title": "Integrar notificaciones y analytics para cambios de zona horaria",
+            "description": "Implementar sistema de notificaciones al usuario y registro de eventos en analytics cuando ocurren cambios de zona horaria",
+            "dependencies": [
+              2
+            ],
+            "details": "Mostrar notification usando local_notifications explicando el ajuste realizado con detalles de zona anterior/nueva. Integrar con analytics service registrando eventos timezone_change_detected y timezone_adjustment_completed con metadata de zonas y duración de ajuste. Implementar configuración en user preferences para habilitar/deshabilitar ajustes automáticos. Manejar sincronización con Supabase respetando UTC timestamps.",
+            "status": "pending",
+            "testStrategy": "Verificar que las notificaciones se muestren correctamente con información precisa de las zonas horarias. Validar que los eventos de analytics se registren con los metadatos correctos."
+          }
+        ]
+      },
+      {
+        "id": 78,
+        "title": "Implementar manejo de conectividad en sección Learning de Flutter",
+        "description": "Desarrollar sistema completo de detección de conectividad para la sección Learning usando connectivity_plus, incluyendo empty states apropiados para offline, caché de metadatos y funcionalidad de favoritos offline con sincronización posterior.",
+        "details": "Crear archivo lib/services/connectivity_service.dart implementando ConnectivityService usando connectivity_plus para monitorear estado de conexión. Implementar lib/providers/connectivity_provider.dart usando Riverpod para exponer ConnectivityNotifier que mantenga estado de conexión actual y stream de cambios. En lib/screens/learning/, crear LearningScreen con manejo de estados offline: mostrar empty state 'Este contenido requiere conexión' cuando offline usando widget EmptyStateWidget con ícono de red y botón retry. Implementar LearningContentCache en lib/services/ para cachear metadatos de ContentItem (título, descripción, thumbnailUrl, categoría) usando Isar database local. Crear FavoritesManager para marcar favoritos offline almacenándolos en tabla local favorites_cache con flag needsSync para sincronizar posteriormente con Supabase. Agregar ConnectivityBanner widget que muestre estado de conexión en top de pantalla con animación fade y colores apropiados (rojo offline, verde online). Implementar retry logic con exponential backoff cuando conexión se restaure. Integrar con sistema de analytics existente para trackear eventos connectivity_lost y connectivity_restored.",
+        "testStrategy": "Crear tests unitarios para ConnectivityService verificando detección correcta de estados de conexión usando mocks de connectivity_plus. Probar ConnectivityNotifier con scenarios de cambio de conectividad. Crear widget tests para LearningScreen verificando renderizado de empty state cuando offline y contenido normal cuando online. Probar LearningContentCache con operaciones CRUD de metadatos y verificar persistencia correcta en Isar. Testear FavoritesManager con scenarios de marcado offline y sincronización posterior. Crear integration tests simulando pérdida/recuperación de conexión y verificando comportamiento correcto de retry button y feedback visual.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          15,
+          52
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implementar ConnectivityService y ConnectivityProvider para detección de conexión",
+            "description": "Crear el servicio principal de conectividad usando connectivity_plus y el provider con Riverpod para gestionar el estado de conexión en la aplicación",
+            "dependencies": [],
+            "details": "Crear archivo lib/services/connectivity_service.dart implementando ConnectivityService que use connectivity_plus para monitorear estado de conexión en tiempo real. Implementar métodos checkConnection(), startListening() y stopListening(). Crear lib/providers/connectivity_provider.dart usando Riverpod que exponga ConnectivityNotifier manteniendo estado booleano de conexión actual y Stream de cambios. El provider debe inicializar automáticamente el servicio y mantener estado sincronizado con cambios de red.",
+            "status": "pending",
+            "testStrategy": "Crear tests unitarios para ConnectivityService usando mocks de connectivity_plus verificando detección correcta de estados online/offline. Probar ConnectivityNotifier con scenarios de cambio de conectividad simulando pérdida y recuperación de conexión."
+          },
+          {
+            "id": 2,
+            "title": "Crear sistema de caché de metadatos y gestión de favoritos offline",
+            "description": "Implementar LearningContentCache y FavoritesManager para almacenar metadatos de contenido y favoritos cuando no hay conexión",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar LearningContentCache en lib/services/learning_content_cache.dart usando Isar database para cachear metadatos de ContentItem (título, descripción, thumbnailUrl, categoría). Crear FavoritesManager en lib/services/favorites_manager.dart para marcar favoritos offline almacenándolos en tabla local favorites_cache con campo needsSync boolean para sincronización posterior con Supabase. Implementar métodos saveFavorite(), removeFavorite() y syncPendingFavorites() que se ejecute cuando conexión se restaure.",
+            "status": "pending",
+            "testStrategy": "Probar caché funciona correctamente almacenando y recuperando metadatos. Verificar favoritos se guardan localmente cuando offline y se sincronizan correctamente cuando conexión regresa. Validar integridad de datos en Isar database."
+          },
+          {
+            "id": 3,
+            "title": "Implementar UI de estados offline y banner de conectividad en LearningScreen",
+            "description": "Crear la interfaz de usuario para manejar estados sin conexión incluyendo empty states y banner de conectividad con animaciones",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Modificar lib/screens/learning/learning_screen.dart para mostrar empty state 'Este contenido requiere conexión' cuando offline usando EmptyStateWidget con ícono de red y botón retry. Crear ConnectivityBanner widget que muestre estado de conexión en top de pantalla con animación fade y colores apropiados (rojo offline, verde online). Implementar retry logic con exponential backoff cuando conexión se restaure. Integrar con sistema de analytics existente para trackear eventos connectivity_lost y connectivity_restored. Agregar transiciones suaves entre estados online/offline.",
+            "status": "pending",
+            "testStrategy": "Crear widget tests para LearningScreen verificando renderizado correcto de empty state cuando offline y contenido normal cuando online. Probar ConnectivityBanner muestra colores y animaciones correctas. Verificar retry logic funciona con exponential backoff y analytics tracking se ejecuta correctamente."
+          }
+        ]
+      },
+      {
+        "id": 79,
+        "title": "Crear suite de unit tests para Riverpod providers críticos",
+        "description": "Implementar tests unitarios completos para TimerProvider, MetricsProvider, HydrationProvider y FastingSessionProvider usando riverpod_test y mockito para alcanzar mínimo 80% de cobertura.",
+        "details": "Crear archivo test/providers/timer_provider_test.dart implementando tests para TimerNotifier usando ProviderContainer.overrideWith() para mockear TimerService. Probar métodos: startTimer(), pauseTimer(), resumeTimer(), cancelTimer(), syncState() y getters: isRunning, progress, remainingMilliseconds, formattedTimes. Crear test/providers/metrics_provider_test.dart para MetricsProvider testeando cálculo de racha consecutiva, estadísticas totales, tasa de completación usando mocks de Isar database queries. Implementar test/providers/hydration_provider_test.dart verificando cálculo de ingesta diaria, progreso hacia meta, recordatorios, logs de hidratación con mocks de HydrationLog e Isar. Crear test/providers/fasting_session_provider_test.dart testeando inicio/fin de sesiones, validaciones de estado, persistencia usando mocks de FastingSession e Isar. Agregar dependencias dev: riverpod_test: ^2.0.0, mockito: ^5.4.4, build_runner para code generation. Usar @GenerateMocks() para TimerService, DatabaseService, Isar interfaces. Configurar tearDown() para ProviderContainer.dispose(). Implementar coverage con flutter test --coverage y genhtml para reportes HTML.",
+        "testStrategy": "Ejecutar flutter test test/providers/ verificando todos los tests pasan. Generar reporte de cobertura con flutter test --coverage --test-randomize-ordering-seed random validando ≥80% line coverage en providers/. Probar scenarios edge: network failures, timer completion events, empty data states, concurrent operations. Verificar mocks configurados correctamente usando verify() calls. Validar tearDown limpia state entre tests con ProviderContainer fresh instances.",
+        "status": "pending",
+        "dependencies": [
+          4,
+          22
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar entorno de testing y dependencias para Riverpod providers",
+            "description": "Instalar y configurar todas las dependencias necesarias para testing de providers incluyendo riverpod_test, mockito, build_runner y configurar estructura base de tests",
+            "dependencies": [],
+            "details": "Agregar a pubspec.yaml en dev_dependencies: riverpod_test: ^2.0.0, mockito: ^5.4.4, build_runner: ^2.4.6. Crear directorio test/providers/ con estructura organizada. Configurar @GenerateMocks() para TimerService, DatabaseService, Isar interfaces en test/test_helpers/mocks.dart. Ejecutar flutter packages pub run build_runner build para generar mocks. Crear test_helpers/provider_test_utils.dart con utilities comunes como createTestContainer() y tearDown helpers para ProviderContainer.dispose().",
+            "status": "pending",
+            "testStrategy": "Verificar que todas las dependencias se instalen correctamente ejecutando flutter pub get. Validar que los mocks se generen sin errores con build_runner. Probar que createTestContainer() funcione correctamente creando un container básico de prueba."
+          },
+          {
+            "id": 2,
+            "title": "Implementar tests unitarios para TimerProvider y MetricsProvider",
+            "description": "Crear suites completas de tests para TimerNotifier y MetricsProvider cubriendo todos los métodos y estados críticos con mocks apropiados",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear test/providers/timer_provider_test.dart implementando tests para TimerNotifier usando ProviderContainer.overrideWith() para mockear TimerService. Probar métodos: startTimer(), pauseTimer(), resumeTimer(), cancelTimer(), syncState() y getters: isRunning, progress, remainingMilliseconds, formattedTimes. Incluir edge cases como timer completion, state transitions. Crear test/providers/metrics_provider_test.dart para MetricsProvider testeando cálculo de racha consecutiva, estadísticas totales, tasa de completación usando mocks de Isar database queries. Probar scenarios de datos vacíos, un solo ayuno, múltiples ayunos exitosos/fallidos.",
+            "status": "pending",
+            "testStrategy": "Ejecutar flutter test test/providers/timer_provider_test.dart y metrics_provider_test.dart verificando 100% de tests pasan. Validar que todos los métodos públicos están cubiertos. Probar edge cases como datos corruptos, estados inconsistentes, transiciones de timer."
+          },
+          {
+            "id": 3,
+            "title": "Implementar tests para HydrationProvider y FastingSessionProvider con reporte de cobertura",
+            "description": "Completar la suite de tests implementando HydrationProvider y FastingSessionProvider tests, configurar coverage reporting y validar cobertura mínima del 80%",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar test/providers/hydration_provider_test.dart verificando cálculo de ingesta diaria, progreso hacia meta, recordatorios, logs de hidratación con mocks de HydrationLog e Isar. Probar scenarios de múltiples logs diarios, metas diferentes, timezone handling. Crear test/providers/fasting_session_provider_test.dart testeando inicio/fin de sesiones, validaciones de estado, persistencia usando mocks de FastingSession e Isar. Incluir tests para interrupciones, sesiones concurrentes, validaciones de duración. Configurar coverage con flutter test --coverage y genhtml para reportes HTML. Validar ≥80% line coverage.",
+            "status": "pending",
+            "testStrategy": "Ejecutar flutter test test/providers/ verificando todos los tests pasan. Generar reporte de cobertura con flutter test --coverage --test-randomize-ordering-seed random validando ≥80% line coverage en providers/. Probar scenarios edge: network failures, timer completion events, empty data states, concurrent operations."
+          }
+        ]
+      },
+      {
+        "id": 80,
+        "title": "Crear suite de widget tests para componentes UI críticos en Flutter",
+        "description": "Implementar tests de widgets completos para TimerDisplay, PanicButton, HydrationTracker y ZendfastDialog usando flutter_test y golden tests para verificación visual, alcanzando 70% de cobertura en componentes UI.",
+        "details": "Crear directorio test/widgets/ e implementar archivos: test/widgets/timer_display_test.dart verificando renderizado correcto del tiempo formateado (HH:MM:SS), actualización cada segundo usando testWidgets y FakeTimer, progress indicator actualización durante ayuno activo. test/widgets/panic_button_test.dart probando accesibilidad con semantics labels, estados habilitado/deshabilitado según fastingState, animaciones pulse usando AnimationController. test/widgets/hydration_tracker_test.dart verificando visualización de progreso usando LinearProgressIndicator, interacción táctil para logging, color changes (azul->verde al 100%). test/widgets/zendfast_dialog_test.dart testeando renderizado con showDialog, acciones de botones onPressed callbacks, dismissal con Navigator.pop(). Implementar golden tests usando flutter_test goldens comparando screenshots pixelPerfect. Configurar flutter_test_config.dart para golden file updates. Usar ProviderContainer.overrideWith() para mockear providers dependencies. Instalar coverage package y ejecutar flutter test --coverage para generar lcov.info alcanzando mínimo 70% line coverage en lib/widgets/.",
+        "testStrategy": "Ejecutar flutter test test/widgets/ verificando todos los widget tests pasan sin errores. Generar reporte de cobertura con flutter test --coverage validando ≥70% coverage en componentes UI. Probar golden tests con flutter test --update-goldens para regenerar reference images. Verificar tests en diferentes screen sizes usando MediaQuery. Probar accessibility con semantics testing y tester.binding.pipelineOwner.flushSemantics(). Validar animations usando WidgetTester.pumpAndSettle() y AnimationController state verification.",
+        "status": "pending",
+        "dependencies": [
+          11,
+          18,
+          19
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configurar estructura básica de tests y dependencias para widgets",
+            "description": "Crear directorio test/widgets/ y configurar archivos base de configuración para testing de widgets, instalando dependencias necesarias como coverage package y configurando flutter_test_config.dart",
+            "dependencies": [],
+            "details": "Crear directorio test/widgets/ en el proyecto. Instalar coverage package en pubspec.yaml dev_dependencies. Configurar flutter_test_config.dart para manejo de golden files con testExecutable que permita updates. Establecer estructura base con imports comunes para testing de widgets Flutter. Configurar ProviderContainer.overrideWith() base para mockear dependencies en todos los widget tests.",
+            "status": "pending",
+            "testStrategy": "Verificar que la estructura de directorios se crea correctamente y que flutter test puede ejecutarse sin errores de configuración"
+          },
+          {
+            "id": 2,
+            "title": "Implementar widget tests para TimerDisplay y PanicButton",
+            "description": "Crear tests completos para los componentes TimerDisplay y PanicButton verificando renderizado, estados y interacciones usando testWidgets y FakeTimer",
+            "dependencies": [
+              1
+            ],
+            "details": "Implementar test/widgets/timer_display_test.dart verificando renderizado correcto del tiempo formateado (HH:MM:SS), actualización cada segundo usando testWidgets y FakeTimer, progress indicator actualización durante ayuno activo. Crear test/widgets/panic_button_test.dart probando accesibilidad con semantics labels, estados habilitado/deshabilitado según fastingState, animaciones pulse usando AnimationController. Mockear providers necesarios con ProviderContainer.overrideWith().",
+            "status": "pending",
+            "testStrategy": "Ejecutar testWidgets verificando que todos los estados se renderizan correctamente y las interacciones funcionan como esperado"
+          },
+          {
+            "id": 3,
+            "title": "Implementar widget tests para HydrationTracker y ZendfastDialog con golden tests",
+            "description": "Crear tests para HydrationTracker y ZendfastDialog, implementar golden tests para verificación visual y generar reporte de cobertura alcanzando 70%",
+            "dependencies": [
+              2
+            ],
+            "details": "Implementar test/widgets/hydration_tracker_test.dart verificando visualización de progreso usando LinearProgressIndicator, interacción táctil para logging, color changes (azul->verde al 100%). Crear test/widgets/zendfast_dialog_test.dart testeando renderizado con showDialog, acciones de botones onPressed callbacks, dismissal con Navigator.pop(). Implementar golden tests usando flutter_test goldens comparando screenshots pixelPerfect. Ejecutar flutter test --coverage para generar lcov.info alcanzando mínimo 70% line coverage en lib/widgets/.",
+            "status": "pending",
+            "testStrategy": "Ejecutar flutter test --coverage validando ≥70% coverage en componentes UI. Probar golden tests con flutter test --update-goldens para regenerar reference images"
+          }
+        ]
+      },
+      {
+        "id": 81,
+        "title": "Crear datos seed iniciales para tabla learning_content con contenido educativo curado",
+        "description": "Desarrollar script SQL de migración que inserte 25-30 piezas curadas de contenido educativo sobre ayuno intermitente en la tabla learning_content de Supabase",
+        "details": "Crear archivo de migración SQL en supabase/migrations/ que inserte contenido educativo curado en tabla learning_content existente. Incluir 25-30 entradas con: artículos sobre beneficios del ayuno intermitente (8-10 piezas), estudios científicos sobre autofagia y metabolismo (6-8 piezas), videos de YouTube sobre técnicas de ayuno (8-10 piezas), guías sobre hidratación durante ayuno (4-5 piezas). Cada entrada debe contener: content_id (UUID), title (texto descriptivo en español), content_type (article/study/video), category (basics/science/tips/success_stories), content_url (URLs reales y funcionales), description (resumen 100-150 caracteres), difficulty_level (beginner/intermediate/advanced), estimated_read_time (minutos para artículos/estudios, duration_minutes para videos), is_premium (distribuir 70% gratuito, 30% premium). Implementar INSERT statements con datos reales verificados: artículos de sitios confiables como Healthline, estudios de PubMed, videos de canales educativos de YouTube. Incluir validaciones CHECK constraints para content_type y category según esquema existente. Agregar comentarios SQL explicando categorización y fuentes.",
+        "testStrategy": "Verificar migración se ejecuta sin errores en Supabase, confirmar que se insertan exactamente 25-30 registros, validar URLs son accesibles y funcionales, probar que políticas RLS permiten lectura pública del contenido, verificar distribución correcta de dificultad y premium/gratuito, confirmar que content_type y category respetan constraints definidos, revisar que estimated_read_time es realista para cada tipo de contenido",
+        "status": "pending",
+        "dependencies": [
+          3,
+          48
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Investigar y recopilar contenido educativo sobre ayuno intermitente",
+            "description": "Buscar y validar 25-30 piezas de contenido educativo de calidad sobre ayuno intermitente desde fuentes confiables",
+            "dependencies": [],
+            "details": "Investigar y recopilar contenido de fuentes verificadas: 8-10 artículos de Healthline/Mayo Clinic sobre beneficios del ayuno, 6-8 estudios científicos de PubMed sobre autofagia y metabolismo, 8-10 videos educativos de YouTube de canales médicos reconocidos, 4-5 guías sobre hidratación durante ayuno. Verificar que todas las URLs sean accesibles y el contenido sea actual. Categorizar por dificultad (principiante/intermedio/avanzado) y determinar distribución premium/gratuito (70%/30%).",
+            "status": "pending",
+            "testStrategy": "Verificar que todas las URLs recopiladas sean accesibles, validar que el contenido está actualizado y proviene de fuentes confiables, confirmar distribución correcta por categorías"
+          },
+          {
+            "id": 2,
+            "title": "Crear script SQL de migración con datos seed",
+            "description": "Desarrollar archivo de migración SQL que inserte todo el contenido educativo recopilado en la tabla learning_content",
+            "dependencies": [
+              1
+            ],
+            "details": "Crear archivo de migración en supabase/migrations/ con INSERT statements para las 25-30 piezas de contenido. Cada registro debe incluir: content_id (UUID generado), title en español, content_type (article/study/video), category (basics/science/tips), content_url válida, description de 100-150 caracteres, difficulty_level, estimated_read_time/duration_minutes, is_premium. Implementar validaciones CHECK constraints según esquema existente. Agregar comentarios SQL explicando categorización y fuentes de cada entrada.",
+            "status": "pending",
+            "testStrategy": "Validar sintaxis SQL es correcta, verificar que UUIDs son únicos, confirmar que constraints CHECK se respetan, probar ejecución en entorno de desarrollo"
+          },
+          {
+            "id": 3,
+            "title": "Ejecutar y validar migración en Supabase",
+            "description": "Aplicar la migración SQL en Supabase y verificar que todos los datos se insertaron correctamente",
+            "dependencies": [
+              2
+            ],
+            "details": "Ejecutar la migración SQL en Supabase usando el CLI o dashboard. Verificar que se insertan exactamente 25-30 registros sin errores. Probar que todas las URLs son accesibles mediante requests automáticos. Validar que las políticas RLS permiten lectura pública del contenido. Confirmar distribución correcta: 70% contenido gratuito, 30% premium. Verificar que los tipos de contenido y categorías coinciden con las validaciones del esquema.",
+            "status": "pending",
+            "testStrategy": "Ejecutar query COUNT para confirmar número exacto de registros insertados, probar acceso a URLs mediante script automatizado, verificar políticas RLS con usuarios de prueba, validar distribución premium/gratuito con consultas SQL"
+          }
+        ]
       }
     ],
     "metadata": {
@@ -3198,7 +4170,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-25T03:00:05.313Z"
+      "updated": "2025-10-26T16:29:54.877Z"
     }
   }
 }
