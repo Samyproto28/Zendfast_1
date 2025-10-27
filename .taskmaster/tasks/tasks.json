@@ -2489,7 +2489,7 @@
         "dependencies": [
           "3"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2497,7 +2497,7 @@
             "description": "Crear esquemas SQL para todas las tablas principales del sistema con tipos de datos, constrainsts y relaciones apropiadas",
             "dependencies": [],
             "details": "Crear esquemas SQL para user_profiles (id, user_id, weight_kg, height_cm, daily_hydration_goal, created_at, updated_at), fasting_sessions (id, user_id, start_time, end_time, duration_minutes, plan_type, completed, interrupted, created_at), hydration_logs (id, user_id, amount_ml, timestamp, created_at), learning_content (id, title, content_type, category, content_url, is_premium, order_index, created_at), motivational_phrases (id, phrase_text, category, language, created_at), analytics_events (id, user_id, event_name, event_data, timestamp, created_at), user_metrics (id, user_id, total_fasts, total_duration_hours, streak_days, last_fast_date, created_at, updated_at). Incluir primary keys, foreign keys, indexes y constraints de validación.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que todos los esquemas se crean sin errores, validar constraints funcionan correctamente, probar que las relaciones entre tablas son válidas",
             "parentId": "undefined"
           },
@@ -2509,7 +2509,7 @@
               1
             ],
             "details": "Habilitar RLS en todas las tablas. Crear políticas para user_profiles, fasting_sessions, hydration_logs, user_metrics: usuarios solo pueden acceder a sus propios datos usando auth.uid() = user_id. Para learning_content y motivational_phrases: acceso público de lectura para contenido no premium, acceso premium solo para usuarios autenticados con plan activo. Para analytics_events: solo insert permitido para propietarios. Configurar políticas de admin para operaciones de mantenimiento.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar que usuarios no pueden acceder a datos de otros usuarios, verificar que contenido público es accesible, validar que contenido premium requiere autenticación apropiada",
             "parentId": "undefined"
           },
@@ -2521,7 +2521,7 @@
               1
             ],
             "details": "Crear trigger update_user_metrics_on_fast_complete que se ejecute después de UPDATE en fasting_sessions cuando completed=true: incrementar total_fasts, sumar duration a total_duration_hours, actualizar streak_days y last_fast_date en user_metrics. Crear trigger cleanup_old_analytics que se ejecute diariamente para eliminar analytics_events más antiguos de 90 días. Crear trigger update_timestamps que actualice updated_at en user_profiles y user_metrics automáticamente.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que métricas se actualizan correctamente al completar ayunos, probar que cleanup funciona sin afectar datos recientes, validar que timestamps se actualizan automáticamente",
             "parentId": "undefined"
           },
@@ -2531,7 +2531,7 @@
             "description": "Establecer estructura de migraciones versionadas para manejo de cambios de esquema en producción",
             "dependencies": [],
             "details": "Crear directorio supabase/migrations/ con archivos numerados secuencialmente (001_initial_schema.sql, 002_add_rls_policies.sql, etc.). Configurar Supabase CLI para manejar migraciones automáticamente. Crear scripts para aplicar migraciones: up.sql para aplicar cambios, down.sql para rollback. Implementar migration_history table para tracking de versiones aplicadas. Documentar proceso de deployment de migraciones en README.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar que migraciones se aplican en orden correcto, verificar rollback funciona apropiadamente, validar que migration_history mantiene estado consistente",
             "parentId": "undefined"
           },
@@ -2544,7 +2544,7 @@
               2
             ],
             "details": "Crear seed data para learning_content: artículos sobre beneficios del ayuno intermitente, guías de hidratación, técnicas de mindfulness (mínimo 20 artículos). Poblar motivational_phrases con 100+ frases motivacionales en español categorizadas por momento (inicio, durante, finalización ayuno). Crear fasting plans predefinidos: 16:8, 18:6, 20:4, 24h con descripciones y recomendaciones. Insertar contenido premium marcado apropiadamente. Usar archivos CSV/JSON para facilitar mantenimiento.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que todos los datos se insertan correctamente, probar que contenido aparece en aplicación, validar que categorización funciona apropiadamente",
             "parentId": "undefined"
           },
@@ -2558,7 +2558,7 @@
               5
             ],
             "details": "Crear suite de tests para validar RLS policies: intentar acceso no autorizado entre usuarios, verificar escalación de privilegios no es posible, probar bypass de seguridad. Testear triggers con datos reales: completar múltiples ayunos y verificar métricas, probar edge cases como interrupciones. Realizar load testing con 1000+ registros simultáneos. Usar herramientas como pgTAP para tests automatizados de base de datos. Documentar todos los casos de prueba y resultados.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Ejecutar suite completa de tests de seguridad sin fallos, verificar performance bajo carga, validar que no hay vulnerabilidades de acceso a datos",
             "parentId": "undefined"
           }
@@ -3101,7 +3101,7 @@
         "description": "Desarrollar sistema integral de estados UI consistente con widgets reutilizables LoadingState, ErrorState y EmptyState, providers Riverpod para gestión global, y cumplimiento WCAG 2.1 AA en toda la aplicación",
         "details": "Crear archivo lib/widgets/ui_states/loading_state.dart con widget LoadingState que use CircularProgressIndicator con colores ZendfastColors.primary, animaciones ZendfastAnimations.standard, y texto descriptivo opcional. Implementar lib/widgets/ui_states/error_state.dart con ErrorState que muestre ícono de error, mensaje personalizable, botón retry opcional con PrimaryButton style, y colores semánticos ZendfastColors.error. Desarrollar lib/widgets/ui_states/empty_state.dart con EmptyState siguiendo patrón existente del Frontend Guidelines pero extendido con ilustraciones opcionales, acciones múltiples, y variantes para diferentes contextos (no data, no results, offline). Crear lib/providers/ui_state_provider.dart con Riverpod StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty con métodos setLoading(), setError(), setEmpty(), clearState(). Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine los tres estados y los muestre automáticamente basado en provider state. Asegurar cumplimiento WCAG 2.1 AA: contrastaratio mínimo 4.5:1, Semantics labels, touch targets 44dp mínimo, support para screen readers con announcements, y text scaling compatible. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography, y espaciado ZendfastSpacing existentes. Proporcionar examples de uso con diferentes servicios (auth, timer, database) y documentar patterns de implementación.",
         "testStrategy": "Verificar contraste WCAG 2.1 AA con color contrast analyzer en todos los estados, probar con TalkBack/VoiceOver para validar screen reader announcements, verificar touch targets cumplen 44dp mínimo, probar scaling de texto hasta 200% sin overflow, validar estados se muestran correctamente en diferentes tamaños de pantalla, testear transiciones entre estados son fluidas y accesibles, verificar providers actualizan UI reactivamente, probar retry actions funcionan correctamente, validar empty states muestran acciones apropiadas según contexto",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           1
         ],
@@ -3113,7 +3113,7 @@
             "description": "Implementar LoadingState, ErrorState y EmptyState widgets con contraste mínimo 4.5:1, touch targets 44dp, labels semánticos y compatibilidad con lectores de pantalla",
             "dependencies": [],
             "details": "Crear lib/widgets/ui_states/loading_state.dart con CircularProgressIndicator usando ZendfastColors.primary y animaciones ZendfastAnimations.standard. Implementar lib/widgets/ui_states/error_state.dart con ícono de error, mensaje personalizable y botón retry usando PrimaryButton. Desarrollar lib/widgets/ui_states/empty_state.dart con ilustraciones opcionales y acciones múltiples. Asegurar cumplimiento WCAG 2.1 AA con contrast ratio mínimo 4.5:1, Semantics labels apropiados, touch targets de 44dp mínimo y soporte para screen readers con announcements.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar contraste WCAG 2.1 AA con color contrast analyzer, probar con TalkBack/VoiceOver para validar announcements, verificar touch targets cumplen 44dp mínimo, probar scaling de texto hasta 200%"
           },
           {
@@ -3124,7 +3124,7 @@
               1
             ],
             "details": "Crear lib/providers/ui_state_provider.dart con StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty. Implementar métodos setLoading(), setError(), setEmpty(), clearState() para transiciones de estado. Configurar notificaciones automáticas a widgets suscritos. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography y espaciado ZendfastSpacing existentes.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar estados se actualizan correctamente entre widgets, probar transiciones de estado fluidas, validar notificaciones automáticas funcionan"
           },
           {
@@ -3136,7 +3136,7 @@
               2
             ],
             "details": "Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine LoadingState, ErrorState y EmptyState mostrándolos automáticamente basado en provider state. Crear ejemplos de uso con diferentes servicios (auth, timer, database). Documentar patterns de implementación y mejores prácticas. Asegurar integración completa con sistema de diseño existente y proporcionar guías de uso para desarrolladores.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar wrapper muestra estados correctos automáticamente, verificar ejemplos funcionan con servicios reales, validar documentación está completa"
           }
         ]
@@ -3515,7 +3515,7 @@
         "description": "Implementar tabla PostgreSQL analytics_events con campos especificados, políticas RLS por usuario, índices optimizados y particionamiento por fecha para tracking de eventos.",
         "details": "Crear migración SQL en Supabase para tabla analytics_events con campos: event_id (UUID PRIMARY KEY con gen_random_uuid()), user_id (UUID FK a auth.users), event_type (TEXT con CHECK constraint para valores válidos: 'fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data (JSONB para datos flexibles), timestamp (TIMESTAMPTZ DEFAULT NOW()), session_id (TEXT). Implementar RLS con políticas: 'users_own_analytics_only' permitiendo solo acceso a eventos propios, 'admin_aggregate_analytics_only' para agregaciones. Crear índices: idx_analytics_events_user_type (user_id, event_type), idx_analytics_events_type_timestamp (event_type, timestamp). Implementar particionamiento por rango de fecha mensual usando PARTITION BY RANGE (timestamp) con particiones automáticas. Agregar trigger para actualización de updated_at. Configurar retention de 2 años para optimizar storage.",
         "testStrategy": "Verificar tabla creada correctamente con DESCRIBE analytics_events. Probar RLS policies con diferentes usuarios - confirmar users solo ven sus eventos. Validar CHECK constraints rechazando event_types inválidos. Probar inserción de eventos con diferentes tipos y verificar campos JSONB. Validar performance de queries con EXPLAIN ANALYZE en índices. Verificar particionamiento funciona creando eventos en diferentes meses. Probar retention policies eliminando datos antiguos correctamente.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           3
         ],
@@ -3527,7 +3527,7 @@
             "description": "Crear la migración SQL en Supabase que defina la estructura básica de la tabla analytics_events con todos los campos especificados",
             "dependencies": [],
             "details": "Crear migración SQL con CREATE TABLE analytics_events incluyendo: event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE, event_type TEXT NOT NULL con CHECK constraint para valores válidos ('fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data JSONB DEFAULT '{}', timestamp TIMESTAMPTZ DEFAULT NOW(), session_id TEXT, updated_at TIMESTAMPTZ DEFAULT NOW(). Aplicar migración y verificar estructura.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Ejecutar DESCRIBE analytics_events y verificar todos los campos. Probar inserción básica y validar CHECK constraint rechaza valores inválidos en event_type."
           },
           {
@@ -3538,7 +3538,7 @@
               1
             ],
             "details": "Habilitar RLS en tabla analytics_events con ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY. Crear política 'users_own_analytics_only' que permita SELECT, INSERT, UPDATE, DELETE solo para auth.uid() = user_id. Crear política 'admin_aggregate_analytics_only' para rol admin que permita SELECT para agregaciones sin acceso a datos individuales. Configurar grants apropiados para roles.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar con diferentes usuarios que solo pueden acceder a sus propios eventos. Verificar que usuarios no pueden ver eventos de otros. Validar políticas admin funcionan correctamente."
           },
           {
@@ -3549,7 +3549,7 @@
               2
             ],
             "details": "Crear índices: CREATE INDEX idx_analytics_events_user_type ON analytics_events (user_id, event_type) y CREATE INDEX idx_analytics_events_type_timestamp ON analytics_events (event_type, timestamp). Implementar particionamiento con PARTITION BY RANGE (timestamp), crear particiones mensuales automáticas usando pg_partman o similar. Configurar trigger para updated_at con función update_timestamp(). Establecer política de retención de 2 años para optimizar storage.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar índices mejoran performance con EXPLAIN ANALYZE. Probar particionamiento funciona correctamente insertando eventos en diferentes meses. Validar trigger updated_at y políticas de retención."
           }
         ]
@@ -4170,7 +4170,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-26T20:41:23.239Z"
+      "updated": "2025-10-27T02:29:46.301Z"
     }
   }
 }
