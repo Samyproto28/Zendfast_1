@@ -1,3 +1,5 @@
+import 'fasting_state.dart';
+
 /// Represents the state of a fasting timer
 /// Used for persistence across app restarts and background service
 class TimerState {
@@ -19,6 +21,12 @@ class TimerState {
   /// ID of the fasting session in Isar (if created)
   final int? sessionId;
 
+  /// Timezone offset when timer was started (for timezone change detection)
+  final Duration timezoneOffset;
+
+  /// Fasting state enum (derived from isRunning and completion status)
+  final FastingState state;
+
   const TimerState({
     this.startTime,
     required this.durationMinutes,
@@ -26,7 +34,10 @@ class TimerState {
     required this.planType,
     required this.userId,
     this.sessionId,
-  });
+    Duration? timezoneOffset,
+    FastingState? state,
+  })  : timezoneOffset = timezoneOffset ?? Duration.zero,
+        state = state ?? FastingState.idle;
 
   /// Create an empty/default timer state
   factory TimerState.empty(String userId) {
@@ -34,7 +45,22 @@ class TimerState {
       durationMinutes: 960, // Default 16 hours
       planType: '16:8',
       userId: userId,
+      timezoneOffset: DateTime.now().timeZoneOffset,
+      state: FastingState.idle,
     );
+  }
+
+  /// Check if timezone has changed since timer started
+  bool hasTimezoneChanged() {
+    final currentOffset = DateTime.now().timeZoneOffset;
+    return currentOffset != timezoneOffset;
+  }
+
+  /// Get the timezone offset difference in hours
+  double get timezoneOffsetDifferenceHours {
+    final currentOffset = DateTime.now().timeZoneOffset;
+    final diff = currentOffset - timezoneOffset;
+    return diff.inMinutes / 60.0;
   }
 
   /// Calculate remaining time in milliseconds
@@ -58,6 +84,19 @@ class TimerState {
   /// Check if timer has completed
   bool get isCompleted {
     return isRunning && remainingMilliseconds == 0;
+  }
+
+  /// Get FastingState derived from current timer state
+  FastingState get derivedState {
+    if (isCompleted) {
+      return FastingState.completed;
+    } else if (isRunning) {
+      return FastingState.fasting;
+    } else if (startTime != null && !isCompleted) {
+      return FastingState.paused;
+    } else {
+      return FastingState.idle;
+    }
   }
 
   /// Get progress as a percentage (0.0 to 1.0)
@@ -103,6 +142,8 @@ class TimerState {
       'planType': planType,
       'userId': userId,
       'sessionId': sessionId,
+      'timezoneOffset': timezoneOffset.inMinutes,
+      'state': state.toJson(),
     };
   }
 
@@ -117,6 +158,12 @@ class TimerState {
       planType: json['planType'] as String,
       userId: json['userId'] as String,
       sessionId: json['sessionId'] as int?,
+      timezoneOffset: json['timezoneOffset'] != null
+          ? Duration(minutes: json['timezoneOffset'] as int)
+          : DateTime.now().timeZoneOffset,
+      state: json['state'] != null
+          ? FastingStateExtension.fromJson(json['state'] as String)
+          : FastingState.idle,
     );
   }
 
@@ -128,6 +175,8 @@ class TimerState {
     String? planType,
     String? userId,
     int? sessionId,
+    Duration? timezoneOffset,
+    FastingState? state,
   }) {
     return TimerState(
       startTime: startTime ?? this.startTime,
@@ -136,6 +185,8 @@ class TimerState {
       planType: planType ?? this.planType,
       userId: userId ?? this.userId,
       sessionId: sessionId ?? this.sessionId,
+      timezoneOffset: timezoneOffset ?? this.timezoneOffset,
+      state: state ?? this.state,
     );
   }
 

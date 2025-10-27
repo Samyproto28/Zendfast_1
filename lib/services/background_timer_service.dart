@@ -6,6 +6,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/timer_state.dart';
+import '../models/fasting_state.dart';
 
 /// Background service for fasting timer persistence
 /// Keeps timer running even when app is closed or in background
@@ -184,8 +185,11 @@ class BackgroundTimerService {
             }
           }
 
-          // Stop the timer
-          final completedState = state.copyWith(isRunning: false);
+          // Stop the timer with completed state
+          final completedState = state.copyWith(
+            isRunning: false,
+            state: FastingState.completed,
+          );
           await prefs.setString(
             _timerStateKey,
             jsonEncode(completedState.toJson()),
