@@ -37,7 +37,7 @@ class CompletionBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurface.withOpacity(0.2),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -65,7 +65,7 @@ class CompletionBottomSheet extends StatelessWidget {
             Text(
               'Has completado tu ayuno',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: ZendfastSpacing.xl),
@@ -74,7 +74,7 @@ class CompletionBottomSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(ZendfastSpacing.l),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -110,10 +110,10 @@ class CompletionBottomSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(ZendfastSpacing.m),
               decoration: BoxDecoration(
-                color: theme.colorScheme.tertiaryContainer.withOpacity(0.3),
+                color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: theme.colorScheme.tertiary.withOpacity(0.3),
+                  color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -129,7 +129,7 @@ class CompletionBottomSheet extends StatelessWidget {
                     child: Text(
                       '¡Excelente trabajo! Cada ayuno te acerca más a tus objetivos.',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.8),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
                       ),
                     ),
                   ),
@@ -229,7 +229,7 @@ class _StatRow extends StatelessWidget {
               Text(
                 label,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 2),

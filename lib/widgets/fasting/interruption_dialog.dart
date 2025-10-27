@@ -87,7 +87,7 @@ class _InterruptionDialogState extends State<InterruptionDialog> {
             Text(
               'Selecciona una razón (opcional):',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: ZendfastSpacing.m),
@@ -138,7 +138,7 @@ class _InterruptionDialogState extends State<InterruptionDialog> {
             Container(
               padding: const EdgeInsets.all(ZendfastSpacing.s),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -147,14 +147,14 @@ class _InterruptionDialogState extends State<InterruptionDialog> {
                   Icon(
                     Icons.info_outline,
                     size: 16,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   const SizedBox(width: ZendfastSpacing.s),
                   Expanded(
                     child: Text(
                       'Esta información nos ayuda a mejorar tu experiencia.',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ),
@@ -177,12 +177,4 @@ class _InterruptionDialogState extends State<InterruptionDialog> {
     );
   }
 
-  /// Show the interruption dialog
-  /// Returns the selected reason or null if cancelled
-  static Future<String?> show(BuildContext context) {
-    return showDialog<String>(
-      context: context,
-      builder: (context) => const InterruptionDialog(),
-    );
-  }
 }

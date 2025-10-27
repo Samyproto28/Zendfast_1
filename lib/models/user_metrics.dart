@@ -22,6 +22,9 @@ class UserMetrics {
   /// Current fasting streak in days
   late int streakDays;
 
+  /// Longest fasting streak ever achieved (in days)
+  late int longestStreak;
+
   /// Date of the most recent completed fast
   DateTime? lastFastDate;
 
@@ -32,7 +35,7 @@ class UserMetrics {
   late DateTime updatedAt;
 
   /// Sync version for Supabase conflict resolution
-  int? syncVersion;
+  late int syncVersion;
 
   /// Constructor
   UserMetrics({
@@ -41,16 +44,24 @@ class UserMetrics {
     this.totalFasts = 0,
     this.totalDurationHours = 0.0,
     this.streakDays = 0,
+    this.longestStreak = 0,
     this.lastFastDate,
-    this.syncVersion,
+    this.syncVersion = 1,
   }) {
     createdAt = DateTime.now();
     updatedAt = DateTime.now();
   }
 
-  /// Helper method to update the timestamp
+  /// Calculate average fasting duration in hours
+  double get averageFastDuration {
+    if (totalFasts == 0) return 0.0;
+    return totalDurationHours / totalFasts;
+  }
+
+  /// Helper method to update the timestamp and increment sync version
   void markUpdated() {
     updatedAt = DateTime.now();
+    syncVersion++;
   }
 
   /// Add a completed fast to metrics
@@ -76,6 +87,11 @@ class UserMetrics {
     } else {
       // First fast
       streakDays = 1;
+    }
+
+    // Update longest streak if current is higher
+    if (streakDays > longestStreak) {
+      longestStreak = streakDays;
     }
 
     lastFastDate = completedAt;
@@ -114,6 +130,7 @@ class UserMetrics {
       'total_fasts': totalFasts,
       'total_duration_hours': totalDurationHours,
       'streak_days': streakDays,
+      'longest_streak': longestStreak,
       'last_fast_date': lastFastDate?.toIso8601String(),
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
@@ -128,10 +145,11 @@ class UserMetrics {
       totalFasts: json['total_fasts'] as int? ?? 0,
       totalDurationHours: (json['total_duration_hours'] as num?)?.toDouble() ?? 0.0,
       streakDays: json['streak_days'] as int? ?? 0,
+      longestStreak: json['longest_streak'] as int? ?? 0,
       lastFastDate: json['last_fast_date'] != null
           ? DateTime.parse(json['last_fast_date'] as String)
           : null,
-      syncVersion: json['sync_version'] as int?,
+      syncVersion: json['sync_version'] as int? ?? 1,
     );
 
     // Set id if provided (from Supabase)

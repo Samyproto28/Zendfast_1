@@ -17,43 +17,53 @@ const UserMetricsSchema = CollectionSchema(
   name: r'UserMetrics',
   id: 3450439425069738250,
   properties: {
-    r'createdAt': PropertySchema(
+    r'averageFastDuration': PropertySchema(
       id: 0,
+      name: r'averageFastDuration',
+      type: IsarType.double,
+    ),
+    r'createdAt': PropertySchema(
+      id: 1,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'lastFastDate': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'lastFastDate',
       type: IsarType.dateTime,
     ),
+    r'longestStreak': PropertySchema(
+      id: 3,
+      name: r'longestStreak',
+      type: IsarType.long,
+    ),
     r'streakDays': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'streakDays',
       type: IsarType.long,
     ),
     r'syncVersion': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'syncVersion',
       type: IsarType.long,
     ),
     r'totalDurationHours': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'totalDurationHours',
       type: IsarType.double,
     ),
     r'totalFasts': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'totalFasts',
       type: IsarType.long,
     ),
     r'updatedAt': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'userId': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'userId',
       type: IsarType.string,
     )
@@ -102,14 +112,16 @@ void _userMetricsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeDateTime(offsets[1], object.lastFastDate);
-  writer.writeLong(offsets[2], object.streakDays);
-  writer.writeLong(offsets[3], object.syncVersion);
-  writer.writeDouble(offsets[4], object.totalDurationHours);
-  writer.writeLong(offsets[5], object.totalFasts);
-  writer.writeDateTime(offsets[6], object.updatedAt);
-  writer.writeString(offsets[7], object.userId);
+  writer.writeDouble(offsets[0], object.averageFastDuration);
+  writer.writeDateTime(offsets[1], object.createdAt);
+  writer.writeDateTime(offsets[2], object.lastFastDate);
+  writer.writeLong(offsets[3], object.longestStreak);
+  writer.writeLong(offsets[4], object.streakDays);
+  writer.writeLong(offsets[5], object.syncVersion);
+  writer.writeDouble(offsets[6], object.totalDurationHours);
+  writer.writeLong(offsets[7], object.totalFasts);
+  writer.writeDateTime(offsets[8], object.updatedAt);
+  writer.writeString(offsets[9], object.userId);
 }
 
 UserMetrics _userMetricsDeserialize(
@@ -120,15 +132,16 @@ UserMetrics _userMetricsDeserialize(
 ) {
   final object = UserMetrics(
     id: id,
-    lastFastDate: reader.readDateTimeOrNull(offsets[1]),
-    streakDays: reader.readLongOrNull(offsets[2]) ?? 0,
-    syncVersion: reader.readLongOrNull(offsets[3]),
-    totalDurationHours: reader.readDoubleOrNull(offsets[4]) ?? 0.0,
-    totalFasts: reader.readLongOrNull(offsets[5]) ?? 0,
-    userId: reader.readString(offsets[7]),
+    lastFastDate: reader.readDateTimeOrNull(offsets[2]),
+    longestStreak: reader.readLongOrNull(offsets[3]) ?? 0,
+    streakDays: reader.readLongOrNull(offsets[4]) ?? 0,
+    syncVersion: reader.readLongOrNull(offsets[5]) ?? 1,
+    totalDurationHours: reader.readDoubleOrNull(offsets[6]) ?? 0.0,
+    totalFasts: reader.readLongOrNull(offsets[7]) ?? 0,
+    userId: reader.readString(offsets[9]),
   );
-  object.createdAt = reader.readDateTime(offsets[0]);
-  object.updatedAt = reader.readDateTime(offsets[6]);
+  object.createdAt = reader.readDateTime(offsets[1]);
+  object.updatedAt = reader.readDateTime(offsets[8]);
   return object;
 }
 
@@ -140,20 +153,24 @@ P _userMetricsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 2:
-      return (reader.readLongOrNull(offset) ?? 0) as P;
-    case 3:
-      return (reader.readLongOrNull(offset)) as P;
-    case 4:
-      return (reader.readDoubleOrNull(offset) ?? 0.0) as P;
-    case 5:
-      return (reader.readLongOrNull(offset) ?? 0) as P;
-    case 6:
       return (reader.readDateTime(offset)) as P;
+    case 2:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 3:
+      return (reader.readLongOrNull(offset) ?? 0) as P;
+    case 4:
+      return (reader.readLongOrNull(offset) ?? 0) as P;
+    case 5:
+      return (reader.readLongOrNull(offset) ?? 1) as P;
+    case 6:
+      return (reader.readDoubleOrNull(offset) ?? 0.0) as P;
     case 7:
+      return (reader.readLongOrNull(offset) ?? 0) as P;
+    case 8:
+      return (reader.readDateTime(offset)) as P;
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -354,6 +371,72 @@ extension UserMetricsQueryWhere
 extension UserMetricsQueryFilter
     on QueryBuilder<UserMetrics, UserMetrics, QFilterCondition> {
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      averageFastDurationEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'averageFastDuration',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      averageFastDurationGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'averageFastDuration',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      averageFastDurationLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'averageFastDuration',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      averageFastDurationBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'averageFastDuration',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
       createdAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -537,6 +620,62 @@ extension UserMetricsQueryFilter
   }
 
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      longestStreakEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'longestStreak',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      longestStreakGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'longestStreak',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      longestStreakLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'longestStreak',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
+      longestStreakBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'longestStreak',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
       streakDaysEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -593,25 +732,7 @@ extension UserMetricsQueryFilter
   }
 
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
-      syncVersionIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'syncVersion',
-      ));
-    });
-  }
-
-  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
-      syncVersionIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'syncVersion',
-      ));
-    });
-  }
-
-  QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
-      syncVersionEqualTo(int? value) {
+      syncVersionEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'syncVersion',
@@ -622,7 +743,7 @@ extension UserMetricsQueryFilter
 
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
       syncVersionGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -636,7 +757,7 @@ extension UserMetricsQueryFilter
 
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
       syncVersionLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -650,8 +771,8 @@ extension UserMetricsQueryFilter
 
   QueryBuilder<UserMetrics, UserMetrics, QAfterFilterCondition>
       syncVersionBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -987,6 +1108,20 @@ extension UserMetricsQueryLinks
 
 extension UserMetricsQuerySortBy
     on QueryBuilder<UserMetrics, UserMetrics, QSortBy> {
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      sortByAverageFastDuration() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'averageFastDuration', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      sortByAverageFastDurationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'averageFastDuration', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1009,6 +1144,19 @@ extension UserMetricsQuerySortBy
       sortByLastFastDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastFastDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy> sortByLongestStreak() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'longestStreak', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      sortByLongestStreakDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'longestStreak', Sort.desc);
     });
   }
 
@@ -1089,6 +1237,20 @@ extension UserMetricsQuerySortBy
 
 extension UserMetricsQuerySortThenBy
     on QueryBuilder<UserMetrics, UserMetrics, QSortThenBy> {
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      thenByAverageFastDuration() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'averageFastDuration', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      thenByAverageFastDurationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'averageFastDuration', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1123,6 +1285,19 @@ extension UserMetricsQuerySortThenBy
       thenByLastFastDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastFastDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy> thenByLongestStreak() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'longestStreak', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QAfterSortBy>
+      thenByLongestStreakDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'longestStreak', Sort.desc);
     });
   }
 
@@ -1203,6 +1378,13 @@ extension UserMetricsQuerySortThenBy
 
 extension UserMetricsQueryWhereDistinct
     on QueryBuilder<UserMetrics, UserMetrics, QDistinct> {
+  QueryBuilder<UserMetrics, UserMetrics, QDistinct>
+      distinctByAverageFastDuration() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'averageFastDuration');
+    });
+  }
+
   QueryBuilder<UserMetrics, UserMetrics, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -1212,6 +1394,12 @@ extension UserMetricsQueryWhereDistinct
   QueryBuilder<UserMetrics, UserMetrics, QDistinct> distinctByLastFastDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastFastDate');
+    });
+  }
+
+  QueryBuilder<UserMetrics, UserMetrics, QDistinct> distinctByLongestStreak() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'longestStreak');
     });
   }
 
@@ -1262,6 +1450,13 @@ extension UserMetricsQueryProperty
     });
   }
 
+  QueryBuilder<UserMetrics, double, QQueryOperations>
+      averageFastDurationProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'averageFastDuration');
+    });
+  }
+
   QueryBuilder<UserMetrics, DateTime, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
@@ -1275,13 +1470,19 @@ extension UserMetricsQueryProperty
     });
   }
 
+  QueryBuilder<UserMetrics, int, QQueryOperations> longestStreakProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'longestStreak');
+    });
+  }
+
   QueryBuilder<UserMetrics, int, QQueryOperations> streakDaysProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'streakDays');
     });
   }
 
-  QueryBuilder<UserMetrics, int?, QQueryOperations> syncVersionProperty() {
+  QueryBuilder<UserMetrics, int, QQueryOperations> syncVersionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'syncVersion');
     });

@@ -67,7 +67,7 @@ class SupabaseSyncService {
         return null;
       }
 
-      return FastingSession.fromJson(response as Map<String, dynamic>);
+      return FastingSession.fromJson(response);
     } on AuthException catch (e) {
       final error = SupabaseErrorHandler.handleAuthError(e);
       debugPrint('Auth error fetching session: ${error.message}');
@@ -160,7 +160,7 @@ class SupabaseSyncService {
         return null;
       }
 
-      return UserMetrics.fromJson(response as Map<String, dynamic>);
+      return UserMetrics.fromJson(response);
     } on AuthException catch (e) {
       final error = SupabaseErrorHandler.handleAuthError(e);
       debugPrint('Auth error fetching metrics: ${error.message}');
@@ -220,9 +220,7 @@ class SupabaseSyncService {
 
       // Merge strategy: Trust server for authoritative data
       // But preserve local changes if sync_version is newer
-      if (localMetrics.syncVersion != null &&
-          remoteMetrics.syncVersion != null &&
-          localMetrics.syncVersion! > remoteMetrics.syncVersion!) {
+      if (localMetrics.syncVersion > remoteMetrics.syncVersion) {
         // Local is newer, keep local
         debugPrint('Local metrics are newer, keeping local version');
         return localMetrics;
