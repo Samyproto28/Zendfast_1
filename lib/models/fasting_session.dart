@@ -33,6 +33,9 @@ class FastingSession {
   @Index(caseSensitive: false)
   late String planType;
 
+  /// Reason for interruption (null if not interrupted or completed)
+  String? interruptionReason;
+
   /// When this record was created - indexed with userId for chronological queries
   @Index(composite: [CompositeIndex('userId')])
   late DateTime createdAt;
@@ -53,6 +56,7 @@ class FastingSession {
     this.completed = false,
     this.interrupted = false,
     required this.planType,
+    this.interruptionReason,
     this.syncVersion,
   }) {
     createdAt = DateTime.now();
@@ -60,10 +64,11 @@ class FastingSession {
   }
 
   /// Helper method to end the fasting session
-  void endSession({required bool wasInterrupted}) {
+  void endSession({required bool wasInterrupted, String? reason}) {
     endTime = DateTime.now();
     interrupted = wasInterrupted;
     completed = !wasInterrupted;
+    interruptionReason = reason;
 
     if (endTime != null) {
       durationMinutes = endTime!.difference(startTime).inMinutes;
@@ -118,6 +123,7 @@ class FastingSession {
       'completed': completed,
       'interrupted': interrupted,
       'plan_type': planType,
+      'interruption_reason': interruptionReason,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'sync_version': syncVersion,
@@ -136,6 +142,7 @@ class FastingSession {
       completed: json['completed'] as bool? ?? false,
       interrupted: json['interrupted'] as bool? ?? false,
       planType: json['plan_type'] as String,
+      interruptionReason: json['interruption_reason'] as String?,
       syncVersion: json['sync_version'] as int?,
     );
 

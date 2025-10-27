@@ -42,28 +42,33 @@ const FastingSessionSchema = CollectionSchema(
       name: r'interrupted',
       type: IsarType.bool,
     ),
-    r'planType': PropertySchema(
+    r'interruptionReason': PropertySchema(
       id: 5,
+      name: r'interruptionReason',
+      type: IsarType.string,
+    ),
+    r'planType': PropertySchema(
+      id: 6,
       name: r'planType',
       type: IsarType.string,
     ),
     r'startTime': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'startTime',
       type: IsarType.dateTime,
     ),
     r'syncVersion': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'syncVersion',
       type: IsarType.long,
     ),
     r'updatedAt': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'userId': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'userId',
       type: IsarType.string,
     )
@@ -146,6 +151,12 @@ int _fastingSessionEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.interruptionReason;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.planType.length * 3;
   bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
@@ -162,11 +173,12 @@ void _fastingSessionSerialize(
   writer.writeLong(offsets[2], object.durationMinutes);
   writer.writeDateTime(offsets[3], object.endTime);
   writer.writeBool(offsets[4], object.interrupted);
-  writer.writeString(offsets[5], object.planType);
-  writer.writeDateTime(offsets[6], object.startTime);
-  writer.writeLong(offsets[7], object.syncVersion);
-  writer.writeDateTime(offsets[8], object.updatedAt);
-  writer.writeString(offsets[9], object.userId);
+  writer.writeString(offsets[5], object.interruptionReason);
+  writer.writeString(offsets[6], object.planType);
+  writer.writeDateTime(offsets[7], object.startTime);
+  writer.writeLong(offsets[8], object.syncVersion);
+  writer.writeDateTime(offsets[9], object.updatedAt);
+  writer.writeString(offsets[10], object.userId);
 }
 
 FastingSession _fastingSessionDeserialize(
@@ -181,13 +193,14 @@ FastingSession _fastingSessionDeserialize(
     endTime: reader.readDateTimeOrNull(offsets[3]),
     id: id,
     interrupted: reader.readBoolOrNull(offsets[4]) ?? false,
-    planType: reader.readString(offsets[5]),
-    startTime: reader.readDateTime(offsets[6]),
-    syncVersion: reader.readLongOrNull(offsets[7]),
-    userId: reader.readString(offsets[9]),
+    interruptionReason: reader.readStringOrNull(offsets[5]),
+    planType: reader.readString(offsets[6]),
+    startTime: reader.readDateTime(offsets[7]),
+    syncVersion: reader.readLongOrNull(offsets[8]),
+    userId: reader.readString(offsets[10]),
   );
   object.createdAt = reader.readDateTime(offsets[1]);
-  object.updatedAt = reader.readDateTime(offsets[8]);
+  object.updatedAt = reader.readDateTime(offsets[9]);
   return object;
 }
 
@@ -209,14 +222,16 @@ P _fastingSessionDeserializeProp<P>(
     case 4:
       return (reader.readBoolOrNull(offset) ?? false) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
-    case 8:
       return (reader.readDateTime(offset)) as P;
+    case 8:
+      return (reader.readLongOrNull(offset)) as P;
     case 9:
+      return (reader.readDateTime(offset)) as P;
+    case 10:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -880,6 +895,160 @@ extension FastingSessionQueryFilter
   }
 
   QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'interruptionReason',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'interruptionReason',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'interruptionReason',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'interruptionReason',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'interruptionReason',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'interruptionReason',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
+      interruptionReasonIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'interruptionReason',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterFilterCondition>
       planTypeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1413,6 +1582,20 @@ extension FastingSessionQuerySortBy
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      sortByInterruptionReason() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'interruptionReason', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      sortByInterruptionReasonDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'interruptionReason', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QAfterSortBy> sortByPlanType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'planType', Sort.asc);
@@ -1561,6 +1744,20 @@ extension FastingSessionQuerySortThenBy
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      thenByInterruptionReason() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'interruptionReason', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastingSession, FastingSession, QAfterSortBy>
+      thenByInterruptionReasonDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'interruptionReason', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QAfterSortBy> thenByPlanType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'planType', Sort.asc);
@@ -1664,6 +1861,14 @@ extension FastingSessionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FastingSession, FastingSession, QDistinct>
+      distinctByInterruptionReason({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'interruptionReason',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<FastingSession, FastingSession, QDistinct> distinctByPlanType(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1736,6 +1941,13 @@ extension FastingSessionQueryProperty
   QueryBuilder<FastingSession, bool, QQueryOperations> interruptedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'interrupted');
+    });
+  }
+
+  QueryBuilder<FastingSession, String?, QQueryOperations>
+      interruptionReasonProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'interruptionReason');
     });
   }
 

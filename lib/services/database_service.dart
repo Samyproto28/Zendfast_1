@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart'; // ignore: depend_on_referenced_packages
 import '../models/fasting_session.dart';
 import '../models/user_profile.dart';
+import '../models/user_metrics.dart';
 import '../models/hydration_log.dart';
 import '../models/content_item.dart';
 
@@ -44,6 +45,7 @@ class DatabaseService {
       [
         FastingSessionSchema,
         UserProfileSchema,
+        UserMetricsSchema,
         HydrationLogSchema,
         ContentItemSchema,
       ],
@@ -140,6 +142,44 @@ class DatabaseService {
   Future<bool> deleteUserProfile(int id) async {
     return await isar.writeTxn(() async {
       return await isar.userProfiles.delete(id);
+    });
+  }
+
+  // ============================================================================
+  // UserMetrics CRUD Operations
+  // ============================================================================
+
+  /// Save or update user metrics
+  Future<int> saveUserMetrics(UserMetrics metrics) async {
+    metrics.markUpdated();
+    return await isar.writeTxn(() async {
+      return await isar.userMetrics.put(metrics);
+    });
+  }
+
+  /// Get user metrics by user ID
+  Future<UserMetrics?> getUserMetrics(String userId) async {
+    return await isar.userMetrics.filter().userIdEqualTo(userId).findFirst();
+  }
+
+  /// Get or create user metrics for a user
+  /// Returns existing metrics or creates new ones if they don't exist
+  Future<UserMetrics> getOrCreateUserMetrics(String userId) async {
+    final existing = await getUserMetrics(userId);
+    if (existing != null) {
+      return existing;
+    }
+
+    // Create new metrics
+    final newMetrics = UserMetrics(userId: userId);
+    await saveUserMetrics(newMetrics);
+    return newMetrics;
+  }
+
+  /// Delete user metrics
+  Future<bool> deleteUserMetrics(int id) async {
+    return await isar.writeTxn(() async {
+      return await isar.userMetrics.delete(id);
     });
   }
 
@@ -327,6 +367,7 @@ class DatabaseService {
     return {
       'fastingSessions': await isar.fastingSessions.count(),
       'userProfiles': await isar.userProfiles.count(),
+      'userMetrics': await isar.userMetrics.count(),
       'hydrationLogs': await isar.hydrationLogs.count(),
       'contentItems': await isar.contentItems.count(),
     };
@@ -337,6 +378,7 @@ class DatabaseService {
     await isar.writeTxn(() async {
       await isar.fastingSessions.clear();
       await isar.userProfiles.clear();
+      await isar.userMetrics.clear();
       await isar.hydrationLogs.clear();
       await isar.contentItems.clear();
     });
