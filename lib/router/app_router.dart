@@ -8,6 +8,9 @@ import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
 import '../screens/onboarding/onboarding_coordinator.dart';
+import '../screens/privacy/privacy_policy_screen.dart';
+import '../screens/privacy/data_rights_screen.dart';
+import '../screens/privacy/consent_management_screen.dart';
 import '../services/database_service.dart';
 
 /// GoRouter configuration provider
@@ -96,6 +99,23 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/home',
         name: 'home',
         builder: (context, state) => const MyHomePage(title: 'Zendfast'),
+      ),
+
+      // Privacy routes (protected)
+      GoRoute(
+        path: '/privacy-policy',
+        name: 'privacy-policy',
+        builder: (context, state) => const PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: '/data-rights',
+        name: 'data-rights',
+        builder: (context, state) => const DataRightsScreen(),
+      ),
+      GoRoute(
+        path: '/consent-management',
+        name: 'consent-management',
+        builder: (context, state) => const ConsentManagementScreen(),
       ),
     ],
   );

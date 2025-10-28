@@ -73,6 +73,13 @@ dependencies:
   # Deep link handling for Superwall
   uni_links: ^0.5.1
 
+  # GDPR/Privacy compliance dependencies
+  csv: ^6.0.0                        # CSV file generation for data export
+  archive: ^3.6.1                    # ZIP compression for data export
+  path_provider: ^2.1.4              # File system access
+  file_saver: ^0.2.14                # Cross-platform file downloads
+  intl: ^0.19.0                      # Date formatting and internationalization
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

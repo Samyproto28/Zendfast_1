@@ -5,6 +5,8 @@ import '../models/user_profile.dart';
 import '../models/user_metrics.dart';
 import '../models/hydration_log.dart';
 import '../models/content_item.dart';
+import '../models/user_consent.dart';
+import '../models/privacy_policy.dart';
 
 /// Singleton service for managing Isar database operations
 /// Provides CRUD methods for all collections
@@ -48,6 +50,8 @@ class DatabaseService {
         UserMetricsSchema,
         HydrationLogSchema,
         ContentItemSchema,
+        UserConsentSchema,
+        PrivacyPolicySchema,
       ],
       directory: dir.path,
       inspector: true, // Enable Isar Inspector in debug mode
@@ -381,6 +385,61 @@ class DatabaseService {
       await isar.userMetrics.clear();
       await isar.hydrationLogs.clear();
       await isar.contentItems.clear();
+      await isar.userConsents.clear();
+      await isar.privacyPolicys.clear();
+    });
+  }
+
+  // ============================================================================
+  // UserConsent CRUD Operations
+  // ============================================================================
+
+  /// Save or update user consent
+  Future<int> saveUserConsent(UserConsent consent) async {
+    consent.markUpdated();
+    return await isar.writeTxn(() async {
+      return await isar.userConsents.put(consent);
+    });
+  }
+
+  /// Get user consents by user ID
+  Future<List<UserConsent>> getUserConsents(String userId) async {
+    return await isar.userConsents.filter().userIdEqualTo(userId).findAll();
+  }
+
+  /// Delete user consent
+  Future<bool> deleteUserConsent(int id) async {
+    return await isar.writeTxn(() async {
+      return await isar.userConsents.delete(id);
+    });
+  }
+
+  // ============================================================================
+  // PrivacyPolicy CRUD Operations
+  // ============================================================================
+
+  /// Save or update privacy policy
+  Future<int> savePrivacyPolicy(PrivacyPolicy policy) async {
+    policy.markUpdated();
+    return await isar.writeTxn(() async {
+      return await isar.privacyPolicys.put(policy);
+    });
+  }
+
+  /// Get active privacy policy
+  Future<PrivacyPolicy?> getActivePrivacyPolicy() async {
+    return await isar.privacyPolicys.filter().isActiveEqualTo(true).findFirst();
+  }
+
+  /// Get privacy policy by version
+  Future<PrivacyPolicy?> getPrivacyPolicyByVersion(int version) async {
+    return await isar.privacyPolicys.filter().versionEqualTo(version).findFirst();
+  }
+
+  /// Delete privacy policy
+  Future<bool> deletePrivacyPolicy(int id) async {
+    return await isar.writeTxn(() async {
+      return await isar.privacyPolicys.delete(id);
     });
   }
 }
