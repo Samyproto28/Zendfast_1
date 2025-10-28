@@ -1,0 +1,31 @@
+# Task ID: 49
+# Title: Implementar sistema de migración de datos
+# Status: pending
+# Dependencies: 2, 48
+# Priority: low
+# Description: Desarrollar estrategia para migrar esquemas Isar y Supabase sin pérdida de datos de usuarios
+# Details:
+Crear DatabaseMigrationService para Isar schema changes con version tracking en SharedPreferences. Implement migration scripts para add/rename fields manteniendo data integrity. Para Supabase: crear SQL migrations files con timestamps, usar Supabase CLI para apply. Implement rollback procedures y testing en development. Create data export/import functionality para user portability (GDPR).
+
+# Test Strategy:
+Probar migrations no pierden data, verificar rollbacks funcionan, validar export/import data integrity
+
+# Subtasks:
+## 1. Crear DatabaseMigrationService para Isar [pending]
+### Dependencies: None
+### Description: Implementar servicio de migración para manejar cambios de esquema en base de datos Isar con versionado
+### Details:
+Crear DatabaseMigrationService con version tracking en SharedPreferences. Implementar métodos para detectar cambios de esquema, aplicar migrations step-by-step, y mantener backward compatibility. Incluir logging detallado de migration process y error handling robusto para fallos durante migración.
+
+## 2. Implementar sistema de migraciones SQL para Supabase [pending]
+### Dependencies: 49.1
+### Description: Desarrollar infraestructura para manejar migraciones de base de datos Supabase con timestamping y rollbacks
+### Details:
+Crear SQL migration files con timestamps únicos. Configurar Supabase CLI integration para aplicar migrations automáticamente. Implementar rollback procedures con scripts de reversión. Crear migration tracking table en Supabase para monitorear estado de migrations aplicadas.
+
+## 3. Desarrollar funcionalidad de export/import de datos de usuario [pending]
+### Dependencies: 49.1, 49.2
+### Description: Crear sistema para exportar e importar datos de usuario completos para portabilidad y cumplimiento GDPR
+### Details:
+Implementar DataExportService que genere JSON completo de user data desde Isar y Supabase. Crear DataImportService para restaurar datos en nueva instalación o después de migration. Incluir validación de data integrity, encriptación de exports sensibles, y UI para gestionar export/import process.
+

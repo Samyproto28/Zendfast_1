@@ -1,0 +1,37 @@
+# Task ID: 58
+# Title: Implementar features de GDPR compliance incluyendo exportación de datos del usuario, eliminación completa de cuenta con cascada en todas las tablas relacionadas, gestión de consentimientos explícitos, política de privacidad accesible, y cumplimiento con CCPA
+# Status: pending
+# Dependencies: 2, 3, 48
+# Priority: high
+# Description: Desarrollar sistema completo de cumplimiento GDPR/CCPA con exportación de datos, eliminación en cascada, gestión de consentimientos y política de privacidad para ejercer derechos de privacidad desde el perfil del usuario
+# Details:
+Implementar DataPrivacyService con exportUserData() que genere JSON/CSV de FastingSession, UserProfile, HydrationLog y ContentItem favoritos. Crear AccountDeletionService con deleteUserAccount() que ejecute cascada en Supabase (user_profiles, fasting_sessions, hydration_logs, analytics_events) y Isar local. Desarrollar ConsentManager con toggles para analytics tracking, marketing communications, data processing con storage en user_consents table. Crear PrivacyPolicyScreen accesible desde Settings con texto actualizable desde Supabase. Implementar DataRightsScreen en UserProfile con botones: 'Exportar mis datos', 'Eliminar cuenta permanentemente', 'Gestionar consentimientos'. Para CCPA: agregar 'Do Not Sell My Data' toggle. Usar flutter_file_saver para export downloads. Implementar confirmación multi-step para account deletion con password verification. Asegurar compliance con retention periods y audit logging.
+
+# Test Strategy:
+Verificar exportación genera archivo completo con todos los datos del usuario, probar eliminación en cascada no deja datos huérfanos en ninguna tabla, validar consentimientos se persisten correctamente y afectan funcionalidad, confirmar política de privacidad se actualiza dinámicamente, testear flujo completo de eliminación de cuenta requiere confirmación de contraseña
+
+# Subtasks:
+## 1. Implementar DataPrivacyService con exportación completa de datos del usuario [pending]
+### Dependencies: None
+### Description: Desarrollar servicio para exportar todos los datos del usuario en formatos JSON/CSV incluyendo sesiones de ayuno, perfil, logs de hidratación y contenido favorito
+### Details:
+Crear DataPrivacyService con método exportUserData() que consulte todas las tablas relacionadas (FastingSession, UserProfile, HydrationLog, ContentItem favoritos) tanto de Supabase como Isar local. Generar archivos JSON estructurado y CSV para facilitar lectura. Usar flutter_file_saver para permitir descarga. Incluir metadatos como fecha de exportación y versión de datos. Implementar compresión ZIP si el archivo es grande.
+
+## 2. Desarrollar AccountDeletionService con eliminación en cascada completa [pending]
+### Dependencies: 58.1
+### Description: Implementar servicio de eliminación de cuenta que ejecute cascada segura en todas las tablas relacionadas tanto en Supabase como almacenamiento local
+### Details:
+Crear AccountDeletionService con deleteUserAccount() que elimine datos en orden correcto: primero tablas dependientes (fasting_sessions, hydration_logs, analytics_events) luego user_profiles en Supabase. Limpiar datos locales en Isar. Implementar transacciones para asegurar atomicidad. Agregar logs de auditoría antes de eliminación. Implementar verificación multi-step con confirmación de contraseña y período de gracia de 30 días.
+
+## 3. Crear ConsentManager con gestión granular de consentimientos GDPR/CCPA [pending]
+### Dependencies: None
+### Description: Desarrollar sistema de gestión de consentimientos con toggles granulares para diferentes tipos de procesamiento de datos y cumplimiento legal
+### Details:
+Implementar ConsentManager con storage en tabla user_consents. Crear toggles para: analytics tracking, marketing communications, data processing, cookies no esenciales. Para CCPA agregar 'Do Not Sell My Data' toggle. Implementar versioning de consentimientos para trackear cambios. Crear ConsentScreen con explicaciones claras de cada permiso. Integrar con analytics providers para respetar preferencias. Asegurar defaults cumplen con GDPR (opt-in required).
+
+## 4. Implementar PrivacyPolicyScreen y DataRightsScreen con flujos completos [pending]
+### Dependencies: 58.2, 58.3
+### Description: Crear pantallas de política de privacidad dinámica y ejercicio de derechos de datos con todos los flujos de confirmación requeridos
+### Details:
+Crear PrivacyPolicyScreen que cargue contenido desde Supabase (tabla privacy_policy) para actualizaciones dinámicas. Implementar DataRightsScreen accesible desde UserProfile con botones: 'Exportar mis datos', 'Eliminar cuenta permanentemente', 'Gestionar consentimientos'. Crear flujos de confirmación multi-step para eliminación de cuenta. Agregar enlaces a políticas desde Settings. Implementar notificaciones cuando políticas cambien. Asegurar accesibilidad y claridad legal.
+

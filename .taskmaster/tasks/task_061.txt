@@ -1,0 +1,31 @@
+# Task ID: 61
+# Title: Implementar Edge Function 'calculate-user-metrics' en Supabase
+# Status: pending
+# Dependencies: 15, 11
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que calcule métricas de usuario incluyendo racha actual, horas totales de ayuno, tasa de éxito y efectividad del botón de pánico
+# Details:
+Crear archivo supabase/functions/calculate-user-metrics/index.ts implementando la lógica definida en Backend Structure Document líneas 320-434. Incluir funciones utilitarias: calculateTotalHours() para sumar horas de ayunos completados, calculateCurrentStreak() para racha consecutiva de días, calculateSuccessRate() para porcentaje de ayunos exitosos, calculatePanicUsage() para efectividad del botón pánico cuando es usado. La función debe: 1) Validar entrada JSON con userId, 2) Conectar con Supabase usando SERVICE_ROLE_KEY, 3) Consultar fasting_sessions y hydration_logs del usuario, 4) Calcular todas las métricas usando las funciones helper, 5) Actualizar tabla user_metrics con resultados, 6) Implementar manejo de errores robusto con logging detallado, 7) Retornar respuesta JSON con métricas calculadas. Configurar deployment automático y testing con datos mock. Implementar rate limiting y validación de permisos para seguridad.
+
+# Test Strategy:
+Crear tests unitarios para cada función de cálculo con datos mock variados. Probar Edge Function end-to-end con usuarios reales y datos de diferentes escenarios (sin datos, pocos ayunos, usuarios activos). Verificar manejo de errores para datos corruptos o faltantes. Validar performance con datasets grandes. Probar deployment y invocar desde Flutter app usando SupabaseConfig.functions. Confirmar actualización correcta de user_metrics table
+
+# Subtasks:
+## 1. Crear estructura base del Edge Function calculate-user-metrics [pending]
+### Dependencies: None
+### Description: Establecer la estructura inicial del Edge Function con configuración básica, validación de entrada y conexión a Supabase
+### Details:
+Crear archivo supabase/functions/calculate-user-metrics/index.ts con estructura básica de Deno.serve(). Implementar validación de entrada JSON para userId requerido. Configurar conexión a Supabase usando createClient con SERVICE_ROLE_KEY. Implementar manejo básico de errores con try-catch y logging. Agregar headers CORS apropiados para respuestas. Configurar tipos TypeScript para request/response.
+
+## 2. Implementar funciones utilitarias de cálculo de métricas [pending]
+### Dependencies: 61.1
+### Description: Desarrollar las funciones helper para calcular todas las métricas de usuario: horas totales, racha actual, tasa de éxito y uso del pánico
+### Details:
+Implementar calculateTotalHours() que sume duration de fasting_sessions completadas. Crear calculateCurrentStreak() que calcule días consecutivos de ayunos exitosos desde la fecha más reciente. Desarrollar calculateSuccessRate() que calcule porcentaje de ayunos completados vs iniciados. Implementar calculatePanicUsage() que analice efectividad del botón pánico correlacionando panic_button_used con session_completed. Incluir manejo de casos edge como usuarios sin datos o datos incompletos.
+
+## 3. Integrar cálculos con base de datos y deployment [pending]
+### Dependencies: 61.2
+### Description: Conectar las funciones de cálculo con consultas a Supabase, actualizar tabla user_metrics y configurar deployment automático
+### Details:
+Implementar consultas SQL para obtener fasting_sessions y hydration_logs del usuario especificado. Integrar las funciones de cálculo con los datos obtenidos. Crear/actualizar registros en tabla user_metrics con las métricas calculadas usando upsert. Implementar rate limiting para prevenir abuse. Agregar validación de permisos verificando que el usuario solo puede consultar sus propias métricas. Configurar deployment automático via Supabase CLI. Crear documentación de API con ejemplos de uso.
+

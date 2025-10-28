@@ -1,0 +1,31 @@
+# Task ID: 76
+# Title: Implementar sistema de micro-interacciones en Flutter usando Lottie y animaciones nativas
+# Status: pending
+# Dependencies: 11, 15
+# Priority: medium
+# Description: Crear sistema completo de micro-interacciones para mejorar la UX incluyendo efectos ripple, animaciones de confetti, pulso en botón pánico, transiciones suaves y feedback háptico al registrar hidratación.
+# Details:
+Crear archivo lib/widgets/animations/micro_interactions.dart implementando: 1) RippleEffect widget para botones usando Material InkWell con customSplashFactory y ColorScheme.primary, 2) ConfettiAnimation widget usando package:confetti o Lottie para celebración al completar ayuno, integrado con FastingSession completion events, 3) PulseButton widget para botón pánico con AnimationController y ScaleTransition (scale 1.0 to 1.05, duration 1000ms, repeat infinitely), 4) SmoothPageTransition para go_router usando CustomTransitionPage con SlideTransition y easeInOut curve (250ms duration), 5) HydrationFeedback usando HapticFeedback.lightImpact() + subtle scale animation al registrar hidratación. Crear archivo lib/widgets/animations/animation_constants.dart con duraciones estándar: quickFeedback(150ms), standardTransition(250ms), slowTransition(350ms), curves: easeInOut, bounceIn. Integrar con theme.dart existente para colores consistentes. Implementar AnimationMixin para cleanup automático de AnimationControllers. Seguir guidelines no intrusivas del Tech Stack Document líneas 194-200.
+
+# Test Strategy:
+Crear tests unitarios para cada widget de animación verificando configuración de AnimationController y cleanup. Crear widget tests para RippleEffect probando splash color y comportamiento táctil. Probar ConfettiAnimation con mock de FastingSession completion usando WidgetTester.pumpAndSettle(). Verificar PulseButton animation loop usando WidgetTester.pump() con incrementos de tiempo. Probar transiciones de navegación con Router y MockGoRouter. Verificar HapticFeedback.lightImpact() se llama correctamente usando platform channel mocks. Probar performance con Flutter Inspector para verificar frame rate >60fps.
+
+# Subtasks:
+## 1. Crear archivo de constantes y mixins para animaciones [pending]
+### Dependencies: None
+### Description: Implementar archivo lib/widgets/animations/animation_constants.dart con duraciones estándar y curvas de animación, y crear AnimationMixin para cleanup automático
+### Details:
+Crear animation_constants.dart definiendo duraciones: quickFeedback(150ms), standardTransition(250ms), slowTransition(350ms). Definir curvas: easeInOut, bounceIn. Implementar AnimationMixin con métodos para cleanup automático de AnimationControllers en dispose(). Integrar con theme.dart existente para colores consistentes usando ColorScheme.primary.
+
+## 2. Implementar widgets de micro-interacciones básicas [pending]
+### Dependencies: 76.1
+### Description: Desarrollar RippleEffect, PulseButton y HydrationFeedback widgets con animaciones nativas y feedback háptico
+### Details:
+Crear micro_interactions.dart implementando: RippleEffect widget usando Material InkWell con customSplashFactory y ColorScheme.primary. PulseButton widget con AnimationController y ScaleTransition (scale 1.0 a 1.05, duración 1000ms, repetir infinitamente). HydrationFeedback usando HapticFeedback.lightImpact() con sutil animación de escala al registrar hidratación. Usar AnimationMixin para cleanup automático.
+
+## 3. Implementar ConfettiAnimation y transiciones de página [pending]
+### Dependencies: 76.1
+### Description: Desarrollar widget de celebración con confetti usando Lottie y transiciones suaves para navegación con go_router
+### Details:
+Implementar ConfettiAnimation widget usando package:confetti o Lottie para celebración al completar ayuno, integrado con FastingSession completion events. Crear SmoothPageTransition para go_router usando CustomTransitionPage con SlideTransition y easeInOut curve (250ms duración). Seguir guidelines no intrusivas del Tech Stack Document líneas 194-200.
+

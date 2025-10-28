@@ -1,0 +1,37 @@
+# Task ID: 33
+# Title: Configurar programación de notificaciones con OneSignal
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: Implementar sistema para programar notificaciones automáticas de ayuno, hidratación y engagement
+# Details:
+Crear NotificationScheduler service con métodos: scheduleFastingNotifications(), scheduleHydrationReminders(), scheduleEngagementNotifications(). Trigger notifications en: fast start, milestones (4h, 8h, 12h, 16h), completion, water reminders cada 2h, re-engagement si inactive >24h. Usar OneSignal scheduled notifications API. Implementar user preferences para disable specific types. Handle timezone changes.
+
+# Test Strategy:
+Verificar notifications llegan en tiempos correctos, probar user preferences respetadas, validar timezone handling
+
+# Subtasks:
+## 1. Crear servicio base NotificationScheduler [pending]
+### Dependencies: None
+### Description: Implementar la clase NotificationScheduler con la estructura básica y métodos principales para programación de notificaciones
+### Details:
+Crear NotificationScheduler service class con métodos scheduleFastingNotifications(), scheduleHydrationReminders(), scheduleEngagementNotifications(). Implementar manejo de OneSignal scheduled notifications API. Configurar estructura base para scheduling con validaciones de tiempo y parámetros.
+
+## 2. Implementar templates y programación de notificaciones de ayuno [pending]
+### Dependencies: 33.1
+### Description: Crear templates de notificaciones para eventos de ayuno y programar automáticamente según milestone
+### Details:
+Implementar scheduleFastingNotifications() con templates para fast start, milestones (4h, 8h, 12h, 16h) y completion. Configurar OneSignal scheduled send times basado en user fast schedule. Implementar lógica para cancelar notifications si fast es interrumpido.
+
+## 3. Configurar sistema de preferencias de usuario para notificaciones [pending]
+### Dependencies: 33.1
+### Description: Implementar gestión de preferencias para permitir al usuario deshabilitar tipos específicos de notificaciones
+### Details:
+Crear UserNotificationPreferences model con flags para fasting, hydration, engagement notifications. Implementar storage en SharedPreferences/UserDefaults. Modificar NotificationScheduler para respetar user preferences antes de schedule. Crear UI settings para toggle preferences.
+
+## 4. Implementar manejo de cambios de zona horaria y notificaciones de hidratación [pending]
+### Dependencies: 33.2, 33.3
+### Description: Gestionar cambios de timezone y implementar recordatorios automáticos de hidratación cada 2 horas
+### Details:
+Implementar timezone change detection y re-scheduling de notifications existentes. Crear scheduleHydrationReminders() con intervals de 2 horas durante horas activas. Implementar scheduleEngagementNotifications() para re-engagement después 24h inactividad. Manejar timezone conversions para OneSignal API.
+

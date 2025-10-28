@@ -1,0 +1,31 @@
+# Task ID: 62
+# Title: Implementar Edge Function 'schedule-notifications' en Supabase para integración con OneSignal
+# Status: pending
+# Dependencies: 5, 47
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que programe notificaciones push personalizadas según el tipo de plan de ayuno del usuario y sus preferencias
+# Details:
+Crear archivo supabase/functions/schedule-notifications/index.ts implementando la estructura definida en Backend Structure Document líneas 436-543. La función debe: 1) Recibir parámetros userId, sessionId, planType via POST request, 2) Validar entrada JSON y autenticación, 3) Consultar user_profiles para obtener notification_preferences y timezone, 4) Generar schedule de notificaciones basado en planType: inicio/fin de ayuno, recordatorios de hidratación cada 2-3h, mensajes motivacionales cada 4-6h, contenido educativo personalizado, 5) Integrar con OneSignal REST API v1 usando include_external_user_ids para targeting, 6) Programar notificaciones con send_after timestamp respetando user timezone, 7) Implementar lógica para cancelar notificaciones existentes si fast es interrumpido, 8) Manejar diferentes templates según planType (16:8, 18:6, OMAD, 24h), 9) Incluir data payload para deep linking (type: fasting_start/end/hydration/motivation), 10) Error handling robusto con logs structured y response codes apropiados
+
+# Test Strategy:
+Crear tests unitarios para generateNotificationSchedule() con diferentes planTypes y user preferences. Probar Edge Function end-to-end con usuarios mock y verificar llamadas OneSignal API correctas. Validar timezone handling para diferentes regiones. Probar error scenarios: user sin notificaciones habilitadas, OneSignal API down, invalid input data. Verificar que notifications se cancelan correctamente cuando fast es interrumpido. Test integration con user_profiles table y RLS policies. Validar deep link data estructura es correcta para routing
+
+# Subtasks:
+## 1. Crear estructura base de la Edge Function schedule-notifications [pending]
+### Dependencies: None
+### Description: Implementar la estructura básica del archivo index.ts con validación de entrada, autenticación y manejo de errores inicial
+### Details:
+Crear archivo supabase/functions/schedule-notifications/index.ts con estructura base: importar dependencias necesarias (Supabase client, OneSignal), implementar función principal serve() que maneje POST requests, validar parámetros de entrada (userId, sessionId, planType), implementar autenticación JWT, configurar manejo básico de errores con response codes apropiados y logging estructurado
+
+## 2. Implementar lógica de generación de schedules de notificaciones [pending]
+### Dependencies: 62.1
+### Description: Desarrollar la lógica central que genera schedules personalizados de notificaciones basados en planType y preferencias del usuario
+### Details:
+Implementar función generateNotificationSchedule() que: consulte user_profiles para obtener notification_preferences y timezone, genere schedules específicos por planType (16:8, 18:6, OMAD, 24h) incluyendo notificaciones de inicio/fin de ayuno, recordatorios de hidratación cada 2-3h, mensajes motivacionales cada 4-6h, contenido educativo personalizado, calcule timestamps usando timezone del usuario y respete las preferencias de notificación
+
+## 3. Integrar con OneSignal API y programar notificaciones [pending]
+### Dependencies: 62.2
+### Description: Implementar la integración completa con OneSignal REST API v1 para envío y programación de notificaciones push
+### Details:
+Implementar integración con OneSignal REST API v1: configurar autenticación con API key, usar include_external_user_ids para targeting específico, programar notificaciones con send_after timestamp, incluir templates diferenciados por planType, agregar data payload para deep linking (type: fasting_start/end/hydration/motivation), implementar lógica para cancelar notificaciones existentes si ayuno es interrumpido, manejar respuestas de API y errores de red apropiadamente
+

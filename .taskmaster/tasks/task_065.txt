@@ -1,0 +1,31 @@
+# Task ID: 65
+# Title: Implementar Edge Function 'backup-data' en Supabase para respaldos automáticos diarios
+# Status: pending
+# Dependencies: 15, 11
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que realice respaldos automáticos diarios de datos críticos de usuario con compresión, encriptación y retención de 30 días
+# Details:
+Crear archivo supabase/functions/backup-data/index.ts implementando la lógica definida en Backend Structure Document líneas 1114-1141. La función debe: 1) Implementar endpoint GET/POST que ejecute función PostgreSQL backup_critical_data() para extraer datos de fasting_sessions, user_profiles, hydration_logs de últimas 24 horas, 2) Comprimir datos usando gzip/deflate antes del almacenamiento para optimizar espacio, 3) Encriptar backup usando AES-256 con key derivada de BACKUP_ENCRYPTION_KEY environment variable, 4) Subir archivo encriptado a almacenamiento externo (AWS S3/Supabase Storage) con naming convention: backup_YYYYMMDD_HHMMSS.json.gz.enc, 5) Implementar política de retención automática eliminando backups >30 días, 6) Registrar evento en system_logs table con status y tamaño del backup, 7) Configurar notificación vía OneSignal/email en caso de fallos usando existing notification service, 8) Implementar rate limiting para prevenir ejecución múltiple simultánea, 9) Validar autenticación service role para security. Usar librerías: crypto-js para encriptación, node-gzip para compresión. Configurar como cron job diario via Supabase pg_cron extension.
+
+# Test Strategy:
+Crear tests unitarios para funciones de compresión, encriptación y upload con datos mock. Probar Edge Function end-to-end simulando backup completo con datos reales de desarrollo. Verificar política de retención elimina archivos antiguos correctamente. Probar notificaciones de fallo con scenarios de error simulados (falta storage access, encryption key inválida, timeout de conexión). Validar autenticación rechaza requests sin service role key. Performance test con datasets grandes (1000+ registros por tabla) para verificar timeout no excede 300 segundos. Probar ejecución programada via pg_cron funciona correctamente.
+
+# Subtasks:
+## 1. Crear estructura base y endpoint Edge Function backup-data [pending]
+### Dependencies: None
+### Description: Implementar archivo base supabase/functions/backup-data/index.ts con endpoint GET/POST y configuración inicial de la función Edge Function
+### Details:
+Crear directorio supabase/functions/backup-data/ con index.ts. Implementar handler Deno.serve() que responda a métodos GET/POST. Configurar validación de autenticación service role para seguridad. Implementar rate limiting básico para prevenir ejecución múltiple simultánea. Configurar imports necesarios para crypto-js y node-gzip. Establecer estructura base de respuesta JSON con status y mensajes.
+
+## 2. Implementar extracción, compresión y encriptación de datos [pending]
+### Dependencies: 65.1
+### Description: Desarrollar lógica para extraer datos críticos de PostgreSQL, comprimirlos con gzip y encriptarlos con AES-256
+### Details:
+Implementar función executeBackup() que llame a backup_critical_data() PostgreSQL para extraer fasting_sessions, user_profiles, hydration_logs de últimas 24 horas. Usar node-gzip para comprimir datos JSON antes del almacenamiento. Implementar encriptación AES-256 usando crypto-js con key derivada de BACKUP_ENCRYPTION_KEY environment variable. Generar naming convention: backup_YYYYMMDD_HHMMSS.json.gz.enc.
+
+## 3. Configurar almacenamiento, retención y notificaciones [pending]
+### Dependencies: 65.2
+### Description: Implementar subida a almacenamiento externo, política de retención de 30 días y notificaciones de fallos
+### Details:
+Configurar upload de archivos encriptados a Supabase Storage con estructura organizada por fechas. Implementar política de retención automática que elimine backups >30 días ejecutándose en cada backup. Registrar eventos en system_logs table con status, tamaño del backup y timestamp. Configurar notificaciones vía OneSignal/email en caso de fallos usando servicio de notificaciones existente. Configurar como cron job diario via Supabase pg_cron extension.
+

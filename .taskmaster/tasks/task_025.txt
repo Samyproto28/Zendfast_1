@@ -1,0 +1,31 @@
+# Task ID: 25
+# Title: Crear modelo ContentItem para biblioteca de aprendizaje
+# Status: pending
+# Dependencies: 2, 3
+# Priority: medium
+# Description: Implementar esquema para artículos, videos y estudios educativos sobre ayuno intermitente
+# Details:
+Crear @collection ContentItem con fields: String id, String title, ContentType type (article/video/study), Category category (basics/science/tips/success_stories), String contentUrl, String? thumbnailUrl, String description, int? durationMinutes, bool isPremium, DateTime createdAt. Implementar enums para type y category. Agregar métodos helper para isVideo, isArticle. Sync con Supabase learning_content table.
+
+# Test Strategy:
+Verificar schema correctamente definido, probar serialization para sync, validar queries por category y type
+
+# Subtasks:
+## 1. Crear enums ContentType y Category para clasificación [pending]
+### Dependencies: None
+### Description: Implementar los enums necesarios para clasificar el contenido educativo por tipo y categoría
+### Details:
+Crear enum ContentType con valores article, video, study. Crear enum Category con valores basics, science, tips, success_stories. Asegurar que ambos enums sean serializables para JSON y compatibles con Isar database. Documentar cada valor del enum con comentarios explicativos.
+
+## 2. Implementar clase ContentItem con decoradores Isar [pending]
+### Dependencies: 25.1
+### Description: Crear la clase principal ContentItem con todos los campos requeridos y anotaciones de Isar
+### Details:
+Crear @collection class ContentItem con campos: String id, String title, ContentType type, Category category, String contentUrl, String? thumbnailUrl, String description, int? durationMinutes, bool isPremium, DateTime createdAt. Agregar métodos helper isVideo() e isArticle(). Implementar toJson() y fromJson() para sincronización con Supabase.
+
+## 3. Configurar sincronización con tabla learning_content de Supabase [pending]
+### Dependencies: 25.2
+### Description: Establecer la conexión y sincronización bidireccional entre ContentItem local y la tabla learning_content remota
+### Details:
+Crear ContentItemRepository con métodos sync, fetchFromSupabase, uploadToSupabase. Implementar mapping entre campos locales de Isar y columnas de Supabase. Manejar conflictos de sincronización y estrategia de merge. Configurar listeners para cambios remotos y locales.
+

@@ -1,0 +1,31 @@
+# Task ID: 4
+# Title: Implementar servicio de fondo para persistencia del timer
+# Status: done
+# Dependencies: None
+# Priority: high
+# Description: Configurar flutter_background_service para mantener timer activo cuando app está cerrada o en background
+# Details:
+Instalar flutter_background_service ^3.0.0. Configurar permisos Android (FOREGROUND_SERVICE, WAKE_LOCK) e iOS (background modes). Crear BackgroundTimerService que mantenga estado del ayuno en SharedPreferences. Implementar notificación persistente mostrando tiempo restante. Manejar reinicio del dispositivo y auto-start del servicio. Sincronizar estado con UI principal cuando app vuelve a foreground.
+
+# Test Strategy:
+Probar timer continúa tras force-quit, verificar precisión ±5 segundos después de 16 horas, validar consumo batería <5% en 16h
+
+# Subtasks:
+## 1. Configurar dependencias y permisos del servicio de fondo [done]
+### Dependencies: None
+### Description: Instalar flutter_background_service y configurar todos los permisos necesarios para Android e iOS
+### Details:
+Instalar flutter_background_service ^3.0.0 en pubspec.yaml. Configurar permisos Android: FOREGROUND_SERVICE, WAKE_LOCK, SYSTEM_ALERT_WINDOW en AndroidManifest.xml. Configurar iOS background modes en Info.plist: background-processing, background-fetch. Configurar workmanager para tareas periódicas. Agregar permisos de notificación local.
+
+## 2. Implementar BackgroundTimerService con persistencia [done]
+### Dependencies: 4.1
+### Description: Crear servicio que mantenga el estado del timer activo usando SharedPreferences y notificaciones
+### Details:
+Crear BackgroundTimerService class que implemente flutter_background_service. Usar SharedPreferences para persistir: start_time, duration, fasting_state. Implementar timer que actualice cada minuto en background. Crear notificación persistente mostrando tiempo restante formateado. Implementar auto-start del servicio tras reinicio del dispositivo usando boot receiver (Android) y background app refresh (iOS).
+
+## 3. Sincronizar estado entre servicio de fondo y UI principal [done]
+### Dependencies: 4.2
+### Description: Implementar comunicación bidireccional entre el servicio de fondo y la interfaz de usuario
+### Details:
+Crear TimerSyncService para manejar comunicación entre background service y UI. Implementar stream listeners para detectar cuando app vuelve a foreground. Sincronizar estado desde SharedPreferences al TimerProvider de Riverpod. Manejar casos edge: diferencias de tiempo, estados inconsistentes, recovery automático. Implementar heartbeat mechanism para validar que background service está activo.
+

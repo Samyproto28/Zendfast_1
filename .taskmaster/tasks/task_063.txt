@@ -1,0 +1,31 @@
+# Task ID: 63
+# Title: Implementar Edge Function 'sync-user-data' en Supabase para sincronización bidireccional
+# Status: pending
+# Dependencies: 15, 11
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que sincronice bidireccionalmente datos entre base de datos local Isar y Supabase con resolución de conflictos, batch sync y manejo de errores de red.
+# Details:
+Crear archivo supabase/functions/sync-user-data/index.ts implementando la lógica definida en Backend Structure Document líneas 547-618. La función debe: 1) Implementar endpoint POST que reciba array de cambios locales con estructura {table: string, action: 'insert'|'update'|'delete', data: object, localTimestamp: string}, 2) Implementar resolución de conflictos usando timestamp más reciente (last-write-wins) comparando createdAt/updatedAt entre datos locales y remotos, 3) Sincronizar tablas: fasting_sessions (startTime, endTime, completed, interrupted, planType), hydration_logs (amountMl, timestamp), user_metrics (streak, totalHours, successRate), 4) Implementar batch processing para procesar hasta 100 registros por request, 5) Retornar estructura {success: boolean, conflicts: array, serverChanges: array, errors: array} con cambios del servidor que el cliente debe aplicar, 6) Manejar errores de red con retry exponential backoff, timeouts de 30 segundos, y logging detallado, 7) Validar autenticación usando JWT del header Authorization, 8) Implementar rate limiting (100 requests/minuto por usuario), 9) Usar transacciones de base de datos para operaciones atómicas. Estructura de respuesta debe incluir timestamp del servidor para próximas sincronizaciones incrementales.
+
+# Test Strategy:
+Crear tests unitarios para resolución de conflictos con diferentes scenarios de timestamp. Probar Edge Function end-to-end con datos de FastingSession, HydrationLog y user_metrics simulando casos de conflicto, batch sync de 50+ registros, errores de red y timeouts. Verificar autenticación correcta con tokens JWT válidos/inválidos. Validar rate limiting funciona correctamente. Probar transacciones rollback en caso de errores. Verificar sincronización bidireccional completa con cliente Flutter usando SupabaseConfig.functions.
+
+# Subtasks:
+## 1. Crear estructura base y configuración de Edge Function sync-user-data [pending]
+### Dependencies: None
+### Description: Establecer la estructura inicial del archivo index.ts y configurar el endpoint POST para recibir datos de sincronización
+### Details:
+Crear archivo supabase/functions/sync-user-data/index.ts con estructura base de Deno Edge Function. Configurar endpoint POST que valide JWT del header Authorization, implemente rate limiting (100 requests/minuto por usuario), y establezca estructura de entrada para array de cambios locales con formato {table: string, action: 'insert'|'update'|'delete', data: object, localTimestamp: string}. Configurar timeouts de 30 segundos y logging detallado para debugging.
+
+## 2. Implementar lógica de resolución de conflictos y procesamiento por lotes [pending]
+### Dependencies: 63.1
+### Description: Desarrollar algoritmo de resolución de conflictos usando timestamps y sistema de batch processing para hasta 100 registros
+### Details:
+Implementar resolución de conflictos usando estrategia last-write-wins comparando createdAt/updatedAt entre datos locales y remotos. Crear sistema de batch processing que procese hasta 100 registros por request con transacciones atómicas de base de datos. Manejar sincronización para tablas fasting_sessions, hydration_logs y user_metrics con sus campos específicos. Implementar retry con exponential backoff para errores de red.
+
+## 3. Implementar respuesta estructurada y cambios del servidor [pending]
+### Dependencies: 63.2
+### Description: Desarrollar sistema de respuesta que incluya conflictos detectados, cambios del servidor y timestamp para sincronizaciones incrementales
+### Details:
+Implementar estructura de respuesta {success: boolean, conflicts: array, serverChanges: array, errors: array} que incluya cambios del servidor que el cliente debe aplicar localmente. Agregar timestamp del servidor para facilitar sincronizaciones incrementales futuras. Manejar y reportar errores detalladamente en el array de errors. Asegurar que todos los cambios del servidor se incluyan en serverChanges para mantener consistencia bidireccional.
+

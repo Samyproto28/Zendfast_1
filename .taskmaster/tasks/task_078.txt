@@ -1,0 +1,31 @@
+# Task ID: 78
+# Title: Implementar manejo de conectividad en sección Learning de Flutter
+# Status: pending
+# Dependencies: 11, 15, 52
+# Priority: medium
+# Description: Desarrollar sistema completo de detección de conectividad para la sección Learning usando connectivity_plus, incluyendo empty states apropiados para offline, caché de metadatos y funcionalidad de favoritos offline con sincronización posterior.
+# Details:
+Crear archivo lib/services/connectivity_service.dart implementando ConnectivityService usando connectivity_plus para monitorear estado de conexión. Implementar lib/providers/connectivity_provider.dart usando Riverpod para exponer ConnectivityNotifier que mantenga estado de conexión actual y stream de cambios. En lib/screens/learning/, crear LearningScreen con manejo de estados offline: mostrar empty state 'Este contenido requiere conexión' cuando offline usando widget EmptyStateWidget con ícono de red y botón retry. Implementar LearningContentCache en lib/services/ para cachear metadatos de ContentItem (título, descripción, thumbnailUrl, categoría) usando Isar database local. Crear FavoritesManager para marcar favoritos offline almacenándolos en tabla local favorites_cache con flag needsSync para sincronizar posteriormente con Supabase. Agregar ConnectivityBanner widget que muestre estado de conexión en top de pantalla con animación fade y colores apropiados (rojo offline, verde online). Implementar retry logic con exponential backoff cuando conexión se restaure. Integrar con sistema de analytics existente para trackear eventos connectivity_lost y connectivity_restored.
+
+# Test Strategy:
+Crear tests unitarios para ConnectivityService verificando detección correcta de estados de conexión usando mocks de connectivity_plus. Probar ConnectivityNotifier con scenarios de cambio de conectividad. Crear widget tests para LearningScreen verificando renderizado de empty state cuando offline y contenido normal cuando online. Probar LearningContentCache con operaciones CRUD de metadatos y verificar persistencia correcta en Isar. Testear FavoritesManager con scenarios de marcado offline y sincronización posterior. Crear integration tests simulando pérdida/recuperación de conexión y verificando comportamiento correcto de retry button y feedback visual.
+
+# Subtasks:
+## 1. Implementar ConnectivityService y ConnectivityProvider para detección de conexión [pending]
+### Dependencies: None
+### Description: Crear el servicio principal de conectividad usando connectivity_plus y el provider con Riverpod para gestionar el estado de conexión en la aplicación
+### Details:
+Crear archivo lib/services/connectivity_service.dart implementando ConnectivityService que use connectivity_plus para monitorear estado de conexión en tiempo real. Implementar métodos checkConnection(), startListening() y stopListening(). Crear lib/providers/connectivity_provider.dart usando Riverpod que exponga ConnectivityNotifier manteniendo estado booleano de conexión actual y Stream de cambios. El provider debe inicializar automáticamente el servicio y mantener estado sincronizado con cambios de red.
+
+## 2. Crear sistema de caché de metadatos y gestión de favoritos offline [pending]
+### Dependencies: 78.1
+### Description: Implementar LearningContentCache y FavoritesManager para almacenar metadatos de contenido y favoritos cuando no hay conexión
+### Details:
+Implementar LearningContentCache en lib/services/learning_content_cache.dart usando Isar database para cachear metadatos de ContentItem (título, descripción, thumbnailUrl, categoría). Crear FavoritesManager en lib/services/favorites_manager.dart para marcar favoritos offline almacenándolos en tabla local favorites_cache con campo needsSync boolean para sincronización posterior con Supabase. Implementar métodos saveFavorite(), removeFavorite() y syncPendingFavorites() que se ejecute cuando conexión se restaure.
+
+## 3. Implementar UI de estados offline y banner de conectividad en LearningScreen [pending]
+### Dependencies: 78.1, 78.2
+### Description: Crear la interfaz de usuario para manejar estados sin conexión incluyendo empty states y banner de conectividad con animaciones
+### Details:
+Modificar lib/screens/learning/learning_screen.dart para mostrar empty state 'Este contenido requiere conexión' cuando offline usando EmptyStateWidget con ícono de red y botón retry. Crear ConnectivityBanner widget que muestre estado de conexión en top de pantalla con animación fade y colores apropiados (rojo offline, verde online). Implementar retry logic con exponential backoff cuando conexión se restaure. Integrar con sistema de analytics existente para trackear eventos connectivity_lost y connectivity_restored. Agregar transiciones suaves entre estados online/offline.
+

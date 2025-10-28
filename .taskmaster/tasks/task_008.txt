@@ -1,0 +1,31 @@
+# Task ID: 8
+# Title: Desarrollar TimerService con lógica de ayuno
+# Status: done
+# Dependencies: 4, 7
+# Priority: high
+# Description: Implementar servicio central para gestionar estado del timer, inicio/pausa/finalización de ayunos con persistencia
+# Details:
+Crear TimerService como singleton con Stream<FastingState> para reactive updates. Implementar métodos: startFast(planType), pauseFast(), resumeFast(), completeFast(), interruptFast(). Usar Timer.periodic para updates cada segundo. Persistir estado en Isar y background service. Manejar edge cases: cambio de timezone, reinicio de dispositivo. Implementar FastingState enum (idle, fasting, paused, completed).
+
+# Test Strategy:
+Probar precisión de timer, verificar estado persiste tras app kill, validar transiciones de estado correctas
+
+# Subtasks:
+## 1. Implementar FastingState enum y TimerService singleton base [done]
+### Dependencies: None
+### Description: Crear la estructura fundamental del TimerService incluyendo el enum FastingState y la configuración básica del singleton
+### Details:
+Crear FastingState enum con valores (idle, fasting, paused, completed). Implementar TimerService como singleton con Stream<FastingState> para reactive updates. Configurar estructura básica de la clase con propiedades necesarias: currentState, startTime, duration, planType. Establecer constructor privado y getInstance() method para singleton pattern.
+
+## 2. Desarrollar métodos de control del timer y Timer.periodic [done]
+### Dependencies: 8.1
+### Description: Implementar todos los métodos de control del ayuno y el sistema de actualización automática cada segundo
+### Details:
+Implementar métodos: startFast(planType), pauseFast(), resumeFast(), completeFast(), interruptFast(). Crear Timer.periodic que actualiza cada segundo y emite nuevos estados. Manejar lógica de transiciones entre estados válidos. Calcular tiempo transcurrido y restante. Implementar auto-completion cuando timer llega a cero.
+
+## 3. Integrar persistencia con Isar y manejo de edge cases [done]
+### Dependencies: 8.2
+### Description: Implementar persistencia del estado en Isar y manejar casos especiales como cambios de timezone y reinicios
+### Details:
+Integrar TimerService con Isar para persistir estado del timer y FastingSession. Implementar saveState() y loadState() methods. Manejar edge cases: cambio de timezone (recalcular times), reinicio de dispositivo (restaurar estado desde DB), background service integration. Implementar recovery logic para estados inconsistentes.
+

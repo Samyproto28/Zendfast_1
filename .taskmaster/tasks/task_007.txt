@@ -1,0 +1,31 @@
+# Task ID: 7
+# Title: Crear modelo FastingSession en Isar
+# Status: done
+# Dependencies: 2
+# Priority: high
+# Description: Definir esquema completo para sesiones de ayuno con campos para tracking, estado y sincronización
+# Details:
+Crear @collection class FastingSession con campos: Id id (auto-increment), String userId, DateTime startTime, DateTime? endTime, int durationMinutes, bool completed, bool interrupted, String? planType, DateTime createdAt, DateTime updatedAt, int? syncVersion. Agregar métodos helper para calcular elapsed time, progress percentage, isActive. Implementar toJson/fromJson para sync con Supabase.
+
+# Test Strategy:
+Pruebas unitarias para cálculos de tiempo, verificar serialización JSON correcta, probar queries por userId y dateRange
+
+# Subtasks:
+## 1. Definir esquema y anotaciones de la clase FastingSession [done]
+### Dependencies: None
+### Description: Crear la estructura básica de la clase FastingSession con todas las anotaciones Isar requeridas y campos principales
+### Details:
+Crear archivo fasting_session.dart con @collection class FastingSession. Definir campos: Id id (auto-increment), String userId, DateTime startTime, DateTime? endTime, int durationMinutes, bool completed, bool interrupted, String? planType, DateTime createdAt, DateTime updatedAt, int? syncVersion. Agregar imports necesarios de Isar y anotaciones @Index para userId y timestamp.
+
+## 2. Implementar métodos helper para cálculos de tiempo [done]
+### Dependencies: 7.1
+### Description: Agregar métodos de utilidad para calcular tiempo transcurrido, porcentaje de progreso y estado activo de la sesión
+### Details:
+Implementar getters y métodos: Duration get elapsedTime (calcula tiempo desde startTime), double get progressPercentage (elapsed/duration * 100), bool get isActive (startTime != null && endTime == null), bool get isCompleted (completed == true). Manejar casos edge como sesiones interrumpidas y cálculos con endTime null.
+
+## 3. Implementar serialización JSON para sincronización con Supabase [done]
+### Dependencies: 7.1
+### Description: Crear métodos toJson y fromJson para permitir sincronización bidireccional con la base de datos Supabase
+### Details:
+Implementar Map<String, dynamic> toJson() convirtiendo todos los campos a formato JSON compatible con Supabase. Crear factory FastingSession.fromJson(Map<String, dynamic> json) manejando conversiones de DateTime y campos nullable. Asegurar compatibilidad con campos syncVersion para control de versiones.
+

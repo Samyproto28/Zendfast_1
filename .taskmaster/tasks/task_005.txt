@@ -1,0 +1,37 @@
+# Task ID: 5
+# Title: Configurar OneSignal para notificaciones push
+# Status: pending
+# Dependencies: None
+# Priority: medium
+# Description: Integrar OneSignal para envío de notificaciones de ayuno, hidratación y engagement con segmentación de usuarios
+# Details:
+Instalar onesignal_flutter ^5.0.0. Configurar OneSignal app ID y REST API key. Implementar NotificationService wrapper para OneSignal. Configurar permisos iOS (notification, remote-notification) y Android. Implementar manejo de deep links desde notificaciones. Crear templates para: inicio ayuno, hitos (4h, 8h, 12h, 16h), finalización, recordatorios hidratación, re-engagement.
+
+# Test Strategy:
+Verificar notificaciones llegan en iOS y Android, probar deep linking funciona, validar entrega en background
+
+# Subtasks:
+## 1. Configurar SDK de OneSignal en el proyecto Flutter [pending]
+### Dependencies: None
+### Description: Instalar y configurar el SDK de OneSignal en el proyecto Flutter con las dependencias necesarias
+### Details:
+Añadir onesignal_flutter ^5.0.0 al pubspec.yaml. Configurar OneSignal app ID en las variables de entorno. Añadir REST API key para comunicación con OneSignal. Inicializar OneSignal en main.dart con la configuración básica. Verificar que la instalación sea correcta con logs de debug.
+
+## 2. Configurar permisos de notificaciones por plataforma [pending]
+### Dependencies: 5.1
+### Description: Establecer permisos necesarios para notificaciones push en iOS y Android
+### Details:
+Para iOS: añadir capabilities de notification y remote-notification en Runner.xcodeproj. Configurar Background Modes para notificaciones remotas. Para Android: añadir permisos INTERNET, VIBRATE y WAKE_LOCK en AndroidManifest.xml. Configurar notification channels para Android 8+. Implementar solicitud de permisos en tiempo de ejecución.
+
+## 3. Implementar templates de notificaciones para ayuno e hidratación [pending]
+### Dependencies: 5.2
+### Description: Crear templates predefinidos para diferentes tipos de notificaciones del ayuno y recordatorios
+### Details:
+Crear NotificationService wrapper para OneSignal con métodos específicos. Implementar templates para: inicio de ayuno, hitos de progreso (4h, 8h, 12h, 16h), finalización de ayuno, recordatorios de hidratación, y mensajes de re-engagement. Configurar segmentación de usuarios basada en tipo de plan de ayuno. Personalizar mensajes según el progreso del usuario.
+
+## 4. Implementar manejo de deep links desde notificaciones [pending]
+### Dependencies: 5.3
+### Description: Configurar navegación automática a pantallas específicas cuando el usuario toca una notificación
+### Details:
+Configurar deep linking scheme en iOS (Info.plist) y Android (AndroidManifest.xml). Implementar handler de notificaciones que detecte cuando la app se abre desde una notificación. Crear routing automático a pantallas específicas: dashboard de ayuno, pantalla de hidratación, configuración, etc. Manejar casos cuando la app está cerrada, en background o en foreground. Pasar datos adicionales a través de la notificación.
+

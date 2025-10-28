@@ -1,0 +1,31 @@
+# Task ID: 75
+# Title: Implementar encuesta rápida post-interrupción de ayuno en Flutter
+# Status: pending
+# Dependencies: 11, 52, 74
+# Priority: medium
+# Description: Crear modal de encuesta que aparece cuando usuario selecciona 'Rompí el ayuno' o 'No aguanto' con 4-5 opciones predefinidas y campo de texto opcional para registrar en analytics.
+# Details:
+Crear archivo lib/widgets/dialogs/fasting_interruption_survey_dialog.dart que implemente SurveyDialog extendiendo ZendfastDialog (de task 74). El modal debe: 1) Incluir título 'Cuéntanos qué pasó' y descripción explicativa, 2) Implementar ListView con RadioListTile para opciones: 'Hambre extrema', 'Evento social', 'Malestar físico', 'Ansiedad/estrés', 'Otro motivo', 3) Agregar TextField opcional con hint 'Detalles adicionales (opcional)' que aparece cuando se selecciona cualquier opción, 4) Botones 'Omitir' (TextButton) y 'Enviar' (FilledButton con colores de theme.dart), 5) Implementar animaciones de entrada con AnimatedScale duration 300ms. Crear InterruptionSurveyData model con campos: reason (String), details (String?), timestamp (DateTime). Integrar con analytics creando método logFastingInterruption() en analytics service que registre evento 'fast_interrupted' en analytics_events table (referencia task 52) con campos: user_id, reason, details, timestamp. Usar colors.dart para consistencia visual (tertiary: panicOrange para botón enviar). Mostrar modal automáticamente cuando FastingSession.endSession() se llama con wasInterrupted=true desde botón pánico (task 11).
+
+# Test Strategy:
+Crear tests unitarios para SurveyDialog verificando renderizado de opciones y validación de datos. Crear widget tests usando WidgetTester para interacciones: selección de radio buttons, entrada de texto opcional, callbacks de botones. Probar integración con analytics service usando mocks para verificar eventos se logean correctamente con estructura esperada. Validar modal aparece automáticamente al interrumpir ayuno desde diferentes flujos (botón pánico, acción manual). Probar animaciones usando pumpAndSettle() para completar transiciones.
+
+# Subtasks:
+## 1. Crear componente SurveyDialog y modelo de datos [pending]
+### Dependencies: 75.74
+### Description: Implementar el widget principal FastingInterruptionSurveyDialog que extienda ZendfastDialog y crear el modelo InterruptionSurveyData para estructurar los datos de la encuesta
+### Details:
+Crear archivo lib/widgets/dialogs/fasting_interruption_survey_dialog.dart implementando SurveyDialog que extienda ZendfastDialog. Incluir título 'Cuéntanos qué pasó' y descripción explicativa. Crear modelo InterruptionSurveyData en lib/models/ con campos: reason (String), details (String?), timestamp (DateTime). Implementar constructor y métodos toJson/fromJson para serialización.
+
+## 2. Implementar interfaz de usuario con opciones y campo de texto [pending]
+### Dependencies: 75.1
+### Description: Desarrollar la UI del modal con RadioListTile para las opciones predefinidas, TextField opcional para detalles adicionales y botones de acción con animaciones
+### Details:
+Implementar ListView con RadioListTile para opciones: 'Hambre extrema', 'Evento social', 'Malestar físico', 'Ansiedad/estrés', 'Otro motivo'. Agregar TextField opcional con hint 'Detalles adicionales (opcional)' que aparece cuando se selecciona cualquier opción. Incluir botones 'Omitir' (TextButton) y 'Enviar' (FilledButton) usando colores de theme.dart (tertiary: panicOrange). Implementar animaciones de entrada con AnimatedScale duration 300ms.
+
+## 3. Integrar con analytics y sistema de ayuno [pending]
+### Dependencies: 75.2, 75.52, 75.11
+### Description: Conectar el modal con el servicio de analytics para registrar interrupciones y configurar la activación automática desde FastingSession
+### Details:
+Crear método logFastingInterruption() en analytics service que registre evento 'fast_interrupted' en analytics_events table con campos: user_id, reason, details, timestamp. Modificar FastingSession.endSession() para mostrar modal automáticamente cuando se llama con wasInterrupted=true desde botón pánico. Configurar integración completa entre todos los componentes del sistema.
+

@@ -1,0 +1,31 @@
+# Task ID: 79
+# Title: Crear suite de unit tests para Riverpod providers críticos
+# Status: pending
+# Dependencies: 4, 22
+# Priority: high
+# Description: Implementar tests unitarios completos para TimerProvider, MetricsProvider, HydrationProvider y FastingSessionProvider usando riverpod_test y mockito para alcanzar mínimo 80% de cobertura.
+# Details:
+Crear archivo test/providers/timer_provider_test.dart implementando tests para TimerNotifier usando ProviderContainer.overrideWith() para mockear TimerService. Probar métodos: startTimer(), pauseTimer(), resumeTimer(), cancelTimer(), syncState() y getters: isRunning, progress, remainingMilliseconds, formattedTimes. Crear test/providers/metrics_provider_test.dart para MetricsProvider testeando cálculo de racha consecutiva, estadísticas totales, tasa de completación usando mocks de Isar database queries. Implementar test/providers/hydration_provider_test.dart verificando cálculo de ingesta diaria, progreso hacia meta, recordatorios, logs de hidratación con mocks de HydrationLog e Isar. Crear test/providers/fasting_session_provider_test.dart testeando inicio/fin de sesiones, validaciones de estado, persistencia usando mocks de FastingSession e Isar. Agregar dependencias dev: riverpod_test: ^2.0.0, mockito: ^5.4.4, build_runner para code generation. Usar @GenerateMocks() para TimerService, DatabaseService, Isar interfaces. Configurar tearDown() para ProviderContainer.dispose(). Implementar coverage con flutter test --coverage y genhtml para reportes HTML.
+
+# Test Strategy:
+Ejecutar flutter test test/providers/ verificando todos los tests pasan. Generar reporte de cobertura con flutter test --coverage --test-randomize-ordering-seed random validando ≥80% line coverage en providers/. Probar scenarios edge: network failures, timer completion events, empty data states, concurrent operations. Verificar mocks configurados correctamente usando verify() calls. Validar tearDown limpia state entre tests con ProviderContainer fresh instances.
+
+# Subtasks:
+## 1. Configurar entorno de testing y dependencias para Riverpod providers [pending]
+### Dependencies: None
+### Description: Instalar y configurar todas las dependencias necesarias para testing de providers incluyendo riverpod_test, mockito, build_runner y configurar estructura base de tests
+### Details:
+Agregar a pubspec.yaml en dev_dependencies: riverpod_test: ^2.0.0, mockito: ^5.4.4, build_runner: ^2.4.6. Crear directorio test/providers/ con estructura organizada. Configurar @GenerateMocks() para TimerService, DatabaseService, Isar interfaces en test/test_helpers/mocks.dart. Ejecutar flutter packages pub run build_runner build para generar mocks. Crear test_helpers/provider_test_utils.dart con utilities comunes como createTestContainer() y tearDown helpers para ProviderContainer.dispose().
+
+## 2. Implementar tests unitarios para TimerProvider y MetricsProvider [pending]
+### Dependencies: 79.1
+### Description: Crear suites completas de tests para TimerNotifier y MetricsProvider cubriendo todos los métodos y estados críticos con mocks apropiados
+### Details:
+Crear test/providers/timer_provider_test.dart implementando tests para TimerNotifier usando ProviderContainer.overrideWith() para mockear TimerService. Probar métodos: startTimer(), pauseTimer(), resumeTimer(), cancelTimer(), syncState() y getters: isRunning, progress, remainingMilliseconds, formattedTimes. Incluir edge cases como timer completion, state transitions. Crear test/providers/metrics_provider_test.dart para MetricsProvider testeando cálculo de racha consecutiva, estadísticas totales, tasa de completación usando mocks de Isar database queries. Probar scenarios de datos vacíos, un solo ayuno, múltiples ayunos exitosos/fallidos.
+
+## 3. Implementar tests para HydrationProvider y FastingSessionProvider con reporte de cobertura [pending]
+### Dependencies: 79.2
+### Description: Completar la suite de tests implementando HydrationProvider y FastingSessionProvider tests, configurar coverage reporting y validar cobertura mínima del 80%
+### Details:
+Implementar test/providers/hydration_provider_test.dart verificando cálculo de ingesta diaria, progreso hacia meta, recordatorios, logs de hidratación con mocks de HydrationLog e Isar. Probar scenarios de múltiples logs diarios, metas diferentes, timezone handling. Crear test/providers/fasting_session_provider_test.dart testeando inicio/fin de sesiones, validaciones de estado, persistencia usando mocks de FastingSession e Isar. Incluir tests para interrupciones, sesiones concurrentes, validaciones de duración. Configurar coverage con flutter test --coverage y genhtml para reportes HTML. Validar ≥80% line coverage.
+

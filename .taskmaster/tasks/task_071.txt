@@ -1,0 +1,65 @@
+# Task ID: 71
+# Title: Crear datos seed para tabla 'fasting_plans' en Supabase
+# Status: done
+# Dependencies: 3
+# Priority: high
+# Description: Implementar script de migración SQL que populate la tabla fasting_plans con los 6 planes predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 48h) más el plan de desintoxicación de 48h carnívoro
+# Details:
+Crear migración SQL supabase/migrations/YYYYMMDDHHMMSS_seed_fasting_plans.sql que: 1) Verifique si la tabla fasting_plans existe, si no existe crearla con esquema: id UUID PRIMARY KEY DEFAULT gen_random_uuid(), plan_name TEXT NOT NULL UNIQUE, fasting_hours INT NOT NULL, eating_hours INT NOT NULL, description TEXT, difficulty_level TEXT CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')), recommended_for TEXT, is_default BOOLEAN DEFAULT false, created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ DEFAULT NOW(). 2) Insertar los 7 planes con datos: ('12/12', 12, 12, 'Plan principiante: ayuna 12 horas, come 12 horas. Ideal para alineación del ritmo circadiano.', 'beginner', 'Alineación del ritmo circadiano', true), ('14/10', 14, 10, 'Paso intermedio: ayuna 14 horas, come 10 horas. Suave entrada a la quema de grasa.', 'beginner', 'Quema suave de grasa', false), ('16/8', 16, 8, 'Más popular: ayuna 16 horas, come 8 horas. Equilibrio perfecto entre pérdida de grasa y autofagia.', 'intermediate', 'Pérdida de grasa y autofagia', false), ('18/6', 18, 6, 'Avanzado: ayuna 18 horas, come 6 horas. Cetosis profunda y mayor autofagia.', 'advanced', 'Cetosis profunda', false), ('24h', 24, 0, 'OMAD (Una Comida Al Día): ayuno de 24 horas. Máxima autofagia y regeneración celular.', 'advanced', 'Máxima autofagia', false), ('48h', 48, 0, 'Ayuno extendido: 48 horas solo agua. Reparación celular profunda y renovación.', 'advanced', 'Reparación celular', false), ('Desintoxicación 48h', 48, 0, 'Plan carnívoro de 48h: solo carne, huevos, pescado, sal y agua. Elimina antojos de azúcar antes del ayuno intermitente.', 'beginner', 'Reducción de antojos de azúcar', false). 3) Configurar RLS con política 'Public read access' ON fasting_plans FOR SELECT USING (true). 4) Usar ON CONFLICT (plan_name) DO UPDATE para evitar duplicados en múltiples ejecuciones. 5) Agregar trigger para updated_at automático.
+<info added on 2025-10-27T12:41:55.863Z>
+ACTUALIZACIÓN COMPLETADA (27 de octubre de 2025)
+
+La migración SQL ha sido implementada y aplicada exitosamente con todas las funcionalidades requeridas:
+
+ARCHIVO CREADO: supabase/migrations/20251027122709_seed_fasting_plans.sql
+
+IMPLEMENTACIÓN VERIFICADA:
+- Tabla fasting_plans creada con esquema completo incluyendo UUID, columnas requeridas, constraints CHECK y índices de rendimiento
+- 7 planes de ayuno insertados con descripciones en español y datos correctos
+- Configuración RLS habilitada con políticas de acceso público para lectura y gestión por service_role
+- Trigger automático para updated_at funcionando correctamente
+- Manejo ON CONFLICT implementado para prevenir duplicados en re-ejecuciones
+- Comentarios documentativos agregados para mantenibilidad
+
+PLANES CONFIRMADOS EN BASE DE DATOS:
+1. 12/12 (Principiante, Plan por defecto) - Alineación circadiana
+2. 14/10 (Principiante) - Quema suave de grasa  
+3. 16/8 (Intermedio) - Pérdida de grasa y autofagia
+4. 18/6 (Avanzado) - Cetosis profunda
+5. 24h OMAD (Avanzado) - Máxima autofagia
+6. 48h Extendido (Avanzado) - Reparación celular
+7. Desintoxicación 48h Carnívoro (Principiante) - Reducción antojos azúcar
+
+PRUEBAS SUPERADAS:
+- Migración aplicada sin errores usando Supabase MCP
+- 7 registros insertados correctamente verificados
+- Solo plan 12/12 marcado como is_default=true
+- RLS y políticas activas confirmadas en pg_policies
+- Trigger updated_at probado y funcional
+- Prevención de duplicados confirmada
+
+Base de datos productiva (rwsoddkrhdzdbthzszby.supabase.co) actualizada correctamente.
+</info added on 2025-10-27T12:41:55.863Z>
+
+# Test Strategy:
+Verificar que la migración se ejecute sin errores en Supabase Dashboard. Comprobar que los 7 planes se insertaron correctamente con SELECT * FROM fasting_plans ORDER BY difficulty_level, fasting_hours. Validar que RLS está habilitado y permite lectura pública. Probar que el plan '12/12' tiene is_default = true. Verificar que múltiples ejecuciones de la migración no crean duplicados. Confirmar que trigger de updated_at funciona al hacer UPDATE manual de un registro.
+
+# Subtasks:
+## 1. Crear archivo de migración SQL con esquema de tabla fasting_plans [done]
+### Dependencies: None
+### Description: Generar archivo de migración SQL en supabase/migrations/ que defina la estructura completa de la tabla fasting_plans con todas las columnas necesarias
+### Details:
+Crear archivo YYYYMMDDHHMMSS_seed_fasting_plans.sql que incluya: verificación de existencia de tabla, definición de esquema con id UUID PRIMARY KEY, plan_name TEXT UNIQUE, fasting_hours INT, eating_hours INT, description TEXT, difficulty_level con CHECK constraint, recommended_for TEXT, is_default BOOLEAN, timestamps created_at y updated_at con valores por defecto
+
+## 2. Insertar datos seed de los 7 planes de ayuno intermitente [done]
+### Dependencies: 71.1
+### Description: Implementar las sentencias INSERT para poblar la tabla con los planes predefinidos incluyendo manejo de duplicados
+### Details:
+Agregar 7 sentencias INSERT con ON CONFLICT (plan_name) DO UPDATE para los planes: 12/12 (beginner, default), 14/10 (beginner), 16/8 (intermediate), 18/6 (advanced), 24h OMAD (advanced), 48h ayuno extendido (advanced), y Desintoxicación 48h carnívoro (beginner). Incluir descripciones completas en español y configurar correctamente difficulty_level y recommended_for
+
+## 3. Configurar RLS y trigger de updated_at para la tabla [done]
+### Dependencies: 71.1
+### Description: Implementar políticas de Row Level Security y trigger automático para mantener el campo updated_at actualizado
+### Details:
+Habilitar RLS en la tabla fasting_plans, crear política 'Public read access' que permita SELECT a todos los usuarios usando (true). Crear función trigger update_updated_at_column() y asociarla a la tabla para actualizar automáticamente updated_at en cada UPDATE. Esto garantiza acceso público de lectura y mantenimiento automático de timestamps
+

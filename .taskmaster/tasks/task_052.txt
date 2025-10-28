@@ -1,0 +1,31 @@
+# Task ID: 52
+# Title: Configurar monitoreo de app con analytics custom
+# Status: pending
+# Dependencies: 48
+# Priority: low
+# Description: Implementar tracking de eventos críticos para product insights y funnel analysis
+# Details:
+Implementar custom analytics events: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown. Usar Supabase analytics_events table y/o third-party service (Mixpanel/Amplitude). Create analytics dashboard para track: completion rates por plan type, panic button usage correlation, conversion funnels. Implement privacy-compliant tracking (no PII).
+
+# Test Strategy:
+Verificar events se logean correctamente, probar analytics dashboard functional, validar privacy compliance
+
+# Subtasks:
+## 1. Implementar tracking de eventos analíticos básicos [pending]
+### Dependencies: None
+### Description: Crear servicio de analytics e implementar tracking de eventos críticos como fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed
+### Details:
+Crear AnalyticsService class que maneje tracking de eventos. Implementar métodos para cada evento crítico: trackFastingStarted(), trackFastingCompleted(), trackFastingInterrupted(), trackPanicButtonUsed(), trackMeditationCompleted(). Configurar parámetros relevantes para cada evento (duration, planType, userId). Implementar queue local para eventos offline y sync cuando hay conexión. Asegurar compliance con privacidad (no enviar PII directamente).
+
+## 2. Configurar backend analytics con Supabase y servicio tercero [pending]
+### Dependencies: 52.1
+### Description: Configurar tabla analytics_events en Supabase e integrar servicio de analytics de terceros como Mixpanel o Amplitude para almacenamiento y procesamiento
+### Details:
+Crear tabla analytics_events en Supabase con campos: event_name, user_id (hash), properties (JSONB), timestamp, session_id. Configurar RLS policies para seguridad. Integrar Mixpanel o Amplitude SDK para analytics avanzados. Implementar doble tracking: eventos críticos a Supabase para control directo, eventos de engagement a third-party para análisis profundo. Configurar batching y retry logic para optimizar performance.
+
+## 3. Crear dashboard de analytics y métricas de conversión [pending]
+### Dependencies: 52.2
+### Description: Desarrollar dashboard para visualizar métricas clave: completion rates por plan, uso de panic button, conversion funnels y premium conversions
+### Details:
+Crear dashboard web usando Supabase queries para mostrar: completion rates por tipo de plan de ayuno, correlación de uso del panic button con abandono, funnel de conversión desde gratuito a premium, métricas de paywall_shown vs premium_conversion. Implementar gráficos temporales, filtros por fecha y segmentación de usuarios. Configurar métricas clave: CAC, LTV, retention rates, churn analysis. Incluir alertas automáticas para métricas críticas.
+

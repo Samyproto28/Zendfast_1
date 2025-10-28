@@ -1,0 +1,31 @@
+# Task ID: 1
+# Title: Configurar sistema de diseño Zendfast (colores, tipografía, espaciado)
+# Status: done
+# Dependencies: None
+# Priority: high
+# Description: Crear el sistema de diseño base con colores zen-inspirados, tipografías legibles y espaciado consistente para toda la aplicación
+# Details:
+Implementar ZendfastColors con paleta: Teal principal (#069494), Verde secundario (#7fb069), Naranja para botón pánico (#ffb366). Configurar tipografías: Inter para headers, Source Sans Pro para cuerpo, Nunito Sans para énfasis emocional. Establecer espaciado base 8dp grid system. Crear ThemeData para Material 3 con elevaciones y radios de borde apropiados.
+
+# Test Strategy:
+Verificar contraste WCAG 2.1 AA (4.5:1 mínimo), pruebas de snapshot visual para consistencia, validar tamaños de fuente legibles (16sp mínimo para cuerpo)
+
+# Subtasks:
+## 1. Implementar paleta de colores ZendfastColors con Material 3 [done]
+### Dependencies: None
+### Description: Crear clase ZendfastColors con la paleta completa: Teal principal (#069494), Verde secundario (#7fb069), Naranja para botón pánico (#ffb366) y configurar ColorScheme para Material 3
+### Details:
+Crear archivo lib/theme/colors.dart con clase ZendfastColors conteniendo colores primarios, secundarios, surface, background, error y sus variantes. Implementar ColorScheme.fromSeed() usando teal como color primario. Agregar colores semánticos específicos como panicButton, successColor, warningColor. Definir variaciones para light/dark theme. Asegurar compatibilidad con Material 3 color tokens.
+
+## 2. Configurar tipografías Inter, Source Sans Pro y Nunito Sans [done]
+### Dependencies: 1.1
+### Description: Establecer jerarquía tipográfica con Inter para headers, Source Sans Pro para texto de cuerpo y Nunito Sans para énfasis emocional, integrando con TextTheme de Material 3
+### Details:
+Agregar fuentes a pubspec.yaml y assets/fonts/. Crear ZendfastTextStyles con estilos: displayLarge/Medium/Small (Inter), headlineLarge/Medium/Small (Inter), bodyLarge/Medium/Small (Source Sans Pro), labelLarge/Medium/Small (Nunito Sans). Configurar TextTheme con tamaños apropiados: headlines 24-32sp, body 16-18sp, labels 12-14sp. Implementar responsive typography scaling.
+
+## 3. Establecer sistema de espaciado 8dp grid y ThemeData completo [done]
+### Dependencies: 1.1, 1.2
+### Description: Implementar sistema de espaciado basado en grid de 8dp y crear ThemeData completo para Material 3 con elevaciones, radios de borde y componentes
+### Details:
+Crear ZendfastSpacing con valores: xs(4dp), s(8dp), m(16dp), l(24dp), xl(32dp), xxl(40dp). Implementar ZendfastTheme que combine colores, tipografías y espaciado en ThemeData. Configurar elevaciones Material 3: level0-5. Establecer border radius: small(4dp), medium(8dp), large(12dp), extraLarge(16dp). Configurar component themes: AppBar, Card, Button, TextField con estilos consistentes.
+

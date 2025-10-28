@@ -1,0 +1,31 @@
+# Task ID: 81
+# Title: Crear datos seed iniciales para tabla learning_content con contenido educativo curado
+# Status: pending
+# Dependencies: 3, 48
+# Priority: medium
+# Description: Desarrollar script SQL de migración que inserte 25-30 piezas curadas de contenido educativo sobre ayuno intermitente en la tabla learning_content de Supabase
+# Details:
+Crear archivo de migración SQL en supabase/migrations/ que inserte contenido educativo curado en tabla learning_content existente. Incluir 25-30 entradas con: artículos sobre beneficios del ayuno intermitente (8-10 piezas), estudios científicos sobre autofagia y metabolismo (6-8 piezas), videos de YouTube sobre técnicas de ayuno (8-10 piezas), guías sobre hidratación durante ayuno (4-5 piezas). Cada entrada debe contener: content_id (UUID), title (texto descriptivo en español), content_type (article/study/video), category (basics/science/tips/success_stories), content_url (URLs reales y funcionales), description (resumen 100-150 caracteres), difficulty_level (beginner/intermediate/advanced), estimated_read_time (minutos para artículos/estudios, duration_minutes para videos), is_premium (distribuir 70% gratuito, 30% premium). Implementar INSERT statements con datos reales verificados: artículos de sitios confiables como Healthline, estudios de PubMed, videos de canales educativos de YouTube. Incluir validaciones CHECK constraints para content_type y category según esquema existente. Agregar comentarios SQL explicando categorización y fuentes.
+
+# Test Strategy:
+Verificar migración se ejecuta sin errores en Supabase, confirmar que se insertan exactamente 25-30 registros, validar URLs son accesibles y funcionales, probar que políticas RLS permiten lectura pública del contenido, verificar distribución correcta de dificultad y premium/gratuito, confirmar que content_type y category respetan constraints definidos, revisar que estimated_read_time es realista para cada tipo de contenido
+
+# Subtasks:
+## 1. Investigar y recopilar contenido educativo sobre ayuno intermitente [pending]
+### Dependencies: None
+### Description: Buscar y validar 25-30 piezas de contenido educativo de calidad sobre ayuno intermitente desde fuentes confiables
+### Details:
+Investigar y recopilar contenido de fuentes verificadas: 8-10 artículos de Healthline/Mayo Clinic sobre beneficios del ayuno, 6-8 estudios científicos de PubMed sobre autofagia y metabolismo, 8-10 videos educativos de YouTube de canales médicos reconocidos, 4-5 guías sobre hidratación durante ayuno. Verificar que todas las URLs sean accesibles y el contenido sea actual. Categorizar por dificultad (principiante/intermedio/avanzado) y determinar distribución premium/gratuito (70%/30%).
+
+## 2. Crear script SQL de migración con datos seed [pending]
+### Dependencies: 81.1
+### Description: Desarrollar archivo de migración SQL que inserte todo el contenido educativo recopilado en la tabla learning_content
+### Details:
+Crear archivo de migración en supabase/migrations/ con INSERT statements para las 25-30 piezas de contenido. Cada registro debe incluir: content_id (UUID generado), title en español, content_type (article/study/video), category (basics/science/tips), content_url válida, description de 100-150 caracteres, difficulty_level, estimated_read_time/duration_minutes, is_premium. Implementar validaciones CHECK constraints según esquema existente. Agregar comentarios SQL explicando categorización y fuentes de cada entrada.
+
+## 3. Ejecutar y validar migración en Supabase [pending]
+### Dependencies: 81.2
+### Description: Aplicar la migración SQL en Supabase y verificar que todos los datos se insertaron correctamente
+### Details:
+Ejecutar la migración SQL en Supabase usando el CLI o dashboard. Verificar que se insertan exactamente 25-30 registros sin errores. Probar que todas las URLs son accesibles mediante requests automáticos. Validar que las políticas RLS permiten lectura pública del contenido. Confirmar distribución correcta: 70% contenido gratuito, 30% premium. Verificar que los tipos de contenido y categorías coinciden con las validaciones del esquema.
+

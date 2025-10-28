@@ -1,0 +1,31 @@
+# Task ID: 67
+# Title: Implementar Edge Function 'sentry-error-report' en Supabase para relay de errores a Sentry
+# Status: pending
+# Dependencies: 61, 63
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que capture errores de otras Edge Functions, formatee contexto y los reenvíe a Sentry con filtrado de información sensible, rate limiting y manejo robusto de errores.
+# Details:
+Crear archivo supabase/functions/sentry-error-report/index.ts implementando la funcionalidad definida en Backend Structure Document líneas 1024-1050. La función debe: 1) Implementar endpoint POST que reciba estructura {error: string, userId: string, context: object, stackTrace?: string, functionName?: string, timestamp?: number}, 2) Validar entrada JSON y sanitizar datos sensibles eliminando campos como passwords, tokens, keys y PII usando allowlist approach, 3) Implementar rate limiting por usuario (máx 10 errores/minuto, 100 errores/hora) usando Map temporal o Redis, 4) Formatear payload para Sentry API incluyendo user.id, message, extra context, timestamp, platform: 'edge-function', environment basado en SUPABASE_ENV, 5) Enviar a Sentry vía fetch POST a https://sentry.io/api/YOUR_PROJECT_ID/store/ con headers X-Sentry-Auth correctos usando SENTRY_API_KEY, 6) Implementar circuit breaker pattern - si Sentry falla 5 veces consecutivas, pausar envíos por 5 minutos, 7) Logging structured con console.log para debugging local incluyendo error_id, user_id, sent_to_sentry boolean, 8) Manejo de errores del propio error handler retornando 500 pero sin causar loops infinitos, 9) Configurar CORS headers para permitir llamadas desde otras Edge Functions, 10) Incluir timeout de 10 segundos para requests a Sentry.
+
+# Test Strategy:
+Crear tests unitarios para sanitización de datos sensibles con payloads que contengan passwords, tokens y PII. Probar rate limiting simulando múltiples requests rápidos del mismo usuario. Verificar circuit breaker pausando Sentry y enviando errores. Probar Edge Function end-to-end desde otras funciones simulando errores reales de calculate-user-metrics y sync-user-data. Validar formato correcto de payload Sentry y headers de autenticación. Probar manejo de errores internos sin causar recursión infinita. Verificar timeouts y logging structured funciona correctamente.
+
+# Subtasks:
+## 1. Crear estructura base de Edge Function y validación de entrada [pending]
+### Dependencies: None
+### Description: Implementar la estructura inicial del archivo index.ts con endpoint POST, validación JSON y sanitización de datos sensibles
+### Details:
+Crear archivo supabase/functions/sentry-error-report/index.ts con estructura Deno.serve básica. Implementar endpoint POST que valide estructura de entrada {error, userId, context, stackTrace?, functionName?, timestamp?}. Crear función sanitizeData() que elimine campos sensibles (passwords, tokens, keys, PII) usando allowlist approach. Configurar CORS headers para permitir llamadas desde otras Edge Functions.
+
+## 2. Implementar rate limiting y circuit breaker pattern [pending]
+### Dependencies: 67.1
+### Description: Desarrollar sistema de rate limiting por usuario y circuit breaker para pausar envíos cuando Sentry falla
+### Details:
+Implementar rate limiting usando Map temporal con límites de 10 errores/minuto y 100 errores/hora por usuario. Crear circuit breaker que pause envíos por 5 minutos después de 5 fallos consecutivos a Sentry. Incluir cleanup automático de Map para evitar memory leaks. Agregar logging structured para debugging.
+
+## 3. Integrar envío a Sentry API con manejo de errores robusto [pending]
+### Dependencies: 67.2
+### Description: Implementar formateo de payload para Sentry y envío vía API con timeout y manejo de errores sin loops infinitos
+### Details:
+Formatear payload para Sentry API incluyendo user.id, message, extra context, timestamp, platform 'edge-function', environment basado en SUPABASE_ENV. Implementar envío POST a https://sentry.io/api/YOUR_PROJECT_ID/store/ con headers X-Sentry-Auth usando SENTRY_API_KEY. Configurar timeout de 10 segundos. Manejar errores del propio error handler retornando 500 sin causar loops infinitos.
+

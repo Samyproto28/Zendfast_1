@@ -1,0 +1,31 @@
+# Task ID: 77
+# Title: Implementar detección y ajuste automático de zona horaria en Flutter
+# Status: pending
+# Dependencies: 11, 52
+# Priority: high
+# Description: Desarrollar sistema que detecte cambios de zona horaria del dispositivo usando plugin timezone, ajuste automáticamente timers de ayuno activos, notifique al usuario sobre los ajustes realizados y registre eventos en analytics.
+# Details:
+Crear archivo lib/services/timezone_service.dart implementando TimeZoneService con flutter_timezone plugin para detectar cambios de zona horaria del dispositivo. Implementar TimezoneChangeListener que use zone_detector para monitorear cambios automáticos y manuales. Al detectar cambio: 1) Pausar timers activos usando FastingTimerService, 2) Calcular diferencia horaria y ajustar start_time y end_time de sesiones activas en Isar database, 3) Reiniciar timers con nuevos timestamps, 4) Mostrar notification usando local_notifications explicando el ajuste realizado con detalles de zona anterior/nueva. Manejar edge cases: viajes internacionales con múltiples cambios rápidos (throttling de 5 minutos), cambios de horario de verano automáticos, sincronización con Supabase respetando UTC timestamps. Integrar con analytics service (task 52) registrando eventos timezone_change_detected y timezone_adjustment_completed con metadata de zonas y duración de ajuste. Implementar configuración en user preferences para habilitar/deshabilitar ajustes automáticos.
+
+# Test Strategy:
+Crear tests unitarios para TimeZoneService usando timezone mocks simulando cambios GMT-5 a GMT+2. Probar TimezoneChangeListener con diferentes scenarios: cambio manual de zona, viaje internacional, horario de verano. Crear widget tests para notification display verificando textos informativos correctos. Probar integration end-to-end con ayuno activo de 16h simulando cambio de zona a mitad del ayuno y verificando que timer se ajusta correctamente sin perder progreso. Validar que eventos analytics se registran con metadata apropiada usando analytics service mocks.
+
+# Subtasks:
+## 1. Crear TimeZoneService con flutter_timezone plugin [pending]
+### Dependencies: None
+### Description: Implementar el servicio principal para detectar cambios de zona horaria del dispositivo
+### Details:
+Crear archivo lib/services/timezone_service.dart implementando TimeZoneService que utilice el plugin flutter_timezone para detectar la zona horaria actual del dispositivo. Incluir métodos getCurrentTimeZone(), detectTimeZoneChange() y registerTimeZoneListener(). Configurar el plugin en pubspec.yaml y manejar permisos necesarios para Android/iOS.
+
+## 2. Implementar TimezoneChangeListener para ajuste automático de timers [pending]
+### Dependencies: 77.1
+### Description: Desarrollar el listener que monitorea cambios de zona horaria y ajusta automáticamente los timers de ayuno activos
+### Details:
+Implementar TimezoneChangeListener que use zone_detector para monitorear cambios automáticos y manuales. Al detectar cambio: 1) Pausar timers activos usando FastingTimerService, 2) Calcular diferencia horaria y ajustar start_time y end_time de sesiones activas en Isar database, 3) Reiniciar timers con nuevos timestamps. Incluir throttling de 5 minutos para viajes internacionales con múltiples cambios rápidos.
+
+## 3. Integrar notificaciones y analytics para cambios de zona horaria [pending]
+### Dependencies: 77.2
+### Description: Implementar sistema de notificaciones al usuario y registro de eventos en analytics cuando ocurren cambios de zona horaria
+### Details:
+Mostrar notification usando local_notifications explicando el ajuste realizado con detalles de zona anterior/nueva. Integrar con analytics service registrando eventos timezone_change_detected y timezone_adjustment_completed con metadata de zonas y duración de ajuste. Implementar configuración en user preferences para habilitar/deshabilitar ajustes automáticos. Manejar sincronización con Supabase respetando UTC timestamps.
+

@@ -1,0 +1,31 @@
+# Task ID: 35
+# Title: Desarrollar SyncManager para sincronización bidireccional
+# Status: pending
+# Dependencies: 7, 16, 17, 25
+# Priority: high
+# Description: Implementar sistema robusto de sincronización entre Isar local y Supabase con resolución de conflictos
+# Details:
+Crear SyncManager con métodos: fullSync(), incrementalSync(), conflictResolution(). Estrategia: last-write-wins usando timestamps. Sync triggers: app foreground, wifi connect, manual refresh, timer eventos. Implement exponential backoff para retry failed syncs. Queue local changes durante offline periods. Sync entities: FastingSession, HydrationLog, UserProfile, ContentFavorites. Handle partial sync failures gracefully.
+
+# Test Strategy:
+Probar sync funciona offline->online, verificar conflict resolution, validar no data loss durante sync failures
+
+# Subtasks:
+## 1. Crear clase SyncManager con arquitectura base y métodos principales [pending]
+### Dependencies: None
+### Description: Implementar la estructura fundamental del SyncManager con los métodos core para sincronización
+### Details:
+Crear clase SyncManager en lib/services/sync/ con métodos: fullSync(), incrementalSync(), conflictResolution(). Definir interfaces ISyncable para entidades. Implementar SyncState enum (idle, syncing, error). Crear SyncResult class para retornos. Configurar dependency injection con Riverpod. Implementar singleton pattern para acceso global.
+
+## 2. Implementar sistema de cola offline y triggers de sincronización [pending]
+### Dependencies: 35.1
+### Description: Desarrollar mecanismo para queuing de cambios locales y triggers automáticos de sync
+### Details:
+Crear SyncQueue para almacenar cambios offline usando Isar. Implementar SyncTrigger enum (appForeground, wifiConnect, manual, timer). Configurar listeners para app lifecycle y connectivity changes. Implementar timer periódico (configurable). Crear PendingChange model con operationType (create/update/delete), entityType, data, timestamp. Manejar prioridades de sync.
+
+## 3. Desarrollar resolución de conflictos y manejo de errores con retry [pending]
+### Dependencies: 35.1, 35.2
+### Description: Implementar estrategia last-write-wins y sistema robusto de manejo de errores con exponential backoff
+### Details:
+Implementar ConflictResolver con estrategia last-write-wins usando updatedAt timestamps. Crear RetryManager con exponential backoff (base 2s, max 60s, max 5 retries). Manejar partial sync failures gracefully manteniendo progreso. Implementar SyncError types (network, conflict, validation). Crear recovery mechanisms para data corruption. Logging detallado para debugging.
+

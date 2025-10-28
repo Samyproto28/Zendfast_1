@@ -1,0 +1,31 @@
+# Task ID: 80
+# Title: Crear suite de widget tests para componentes UI críticos en Flutter
+# Status: pending
+# Dependencies: 11, 18, 19
+# Priority: high
+# Description: Implementar tests de widgets completos para TimerDisplay, PanicButton, HydrationTracker y ZendfastDialog usando flutter_test y golden tests para verificación visual, alcanzando 70% de cobertura en componentes UI.
+# Details:
+Crear directorio test/widgets/ e implementar archivos: test/widgets/timer_display_test.dart verificando renderizado correcto del tiempo formateado (HH:MM:SS), actualización cada segundo usando testWidgets y FakeTimer, progress indicator actualización durante ayuno activo. test/widgets/panic_button_test.dart probando accesibilidad con semantics labels, estados habilitado/deshabilitado según fastingState, animaciones pulse usando AnimationController. test/widgets/hydration_tracker_test.dart verificando visualización de progreso usando LinearProgressIndicator, interacción táctil para logging, color changes (azul->verde al 100%). test/widgets/zendfast_dialog_test.dart testeando renderizado con showDialog, acciones de botones onPressed callbacks, dismissal con Navigator.pop(). Implementar golden tests usando flutter_test goldens comparando screenshots pixelPerfect. Configurar flutter_test_config.dart para golden file updates. Usar ProviderContainer.overrideWith() para mockear providers dependencies. Instalar coverage package y ejecutar flutter test --coverage para generar lcov.info alcanzando mínimo 70% line coverage en lib/widgets/.
+
+# Test Strategy:
+Ejecutar flutter test test/widgets/ verificando todos los widget tests pasan sin errores. Generar reporte de cobertura con flutter test --coverage validando ≥70% coverage en componentes UI. Probar golden tests con flutter test --update-goldens para regenerar reference images. Verificar tests en diferentes screen sizes usando MediaQuery. Probar accessibility con semantics testing y tester.binding.pipelineOwner.flushSemantics(). Validar animations usando WidgetTester.pumpAndSettle() y AnimationController state verification.
+
+# Subtasks:
+## 1. Configurar estructura básica de tests y dependencias para widgets [pending]
+### Dependencies: None
+### Description: Crear directorio test/widgets/ y configurar archivos base de configuración para testing de widgets, instalando dependencias necesarias como coverage package y configurando flutter_test_config.dart
+### Details:
+Crear directorio test/widgets/ en el proyecto. Instalar coverage package en pubspec.yaml dev_dependencies. Configurar flutter_test_config.dart para manejo de golden files con testExecutable que permita updates. Establecer estructura base con imports comunes para testing de widgets Flutter. Configurar ProviderContainer.overrideWith() base para mockear dependencies en todos los widget tests.
+
+## 2. Implementar widget tests para TimerDisplay y PanicButton [pending]
+### Dependencies: 80.1
+### Description: Crear tests completos para los componentes TimerDisplay y PanicButton verificando renderizado, estados y interacciones usando testWidgets y FakeTimer
+### Details:
+Implementar test/widgets/timer_display_test.dart verificando renderizado correcto del tiempo formateado (HH:MM:SS), actualización cada segundo usando testWidgets y FakeTimer, progress indicator actualización durante ayuno activo. Crear test/widgets/panic_button_test.dart probando accesibilidad con semantics labels, estados habilitado/deshabilitado según fastingState, animaciones pulse usando AnimationController. Mockear providers necesarios con ProviderContainer.overrideWith().
+
+## 3. Implementar widget tests para HydrationTracker y ZendfastDialog con golden tests [pending]
+### Dependencies: 80.2
+### Description: Crear tests para HydrationTracker y ZendfastDialog, implementar golden tests para verificación visual y generar reporte de cobertura alcanzando 70%
+### Details:
+Implementar test/widgets/hydration_tracker_test.dart verificando visualización de progreso usando LinearProgressIndicator, interacción táctil para logging, color changes (azul->verde al 100%). Crear test/widgets/zendfast_dialog_test.dart testeando renderizado con showDialog, acciones de botones onPressed callbacks, dismissal con Navigator.pop(). Implementar golden tests usando flutter_test goldens comparando screenshots pixelPerfect. Ejecutar flutter test --coverage para generar lcov.info alcanzando mínimo 70% line coverage en lib/widgets/.
+

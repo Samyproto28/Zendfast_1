@@ -1,0 +1,31 @@
+# Task ID: 74
+# Title: Implementar modales de confirmación en Flutter para acciones críticas
+# Status: pending
+# Dependencies: 11, 15
+# Priority: medium
+# Description: Crear sistema de modales de confirmación para acciones críticas del ayuno usando ZendfastDialog con animaciones, botones diferenciados y feedback háptico.
+# Details:
+Crear lib/widgets/dialogs/zendfast_dialog.dart implementando widget ZendfastDialog que extienda AlertDialog con Material 3 design system siguiendo tema existente en theme.dart. Incluir propiedades: title (Widget), content (Widget), confirmButtonText (String), cancelButtonText (String), onConfirm (VoidCallback), onCancel (VoidCallback), confirmButtonColor (Color), showCloseButton (bool). Implementar animaciones de entrada/salida usando AnimatedScale y AnimatedOpacity con duration 300ms y curve Curves.easeInOut. Crear tipos específicos: StartFastingDialog, ChangePlanDialog, BreakFastingDialog, DeleteHistoryDialog con copy diferenciado y colores semánticos (error para acciones destructivas, primary para acciones normales). Agregar HapticFeedback.lightImpact() en onConfirm y HapticFeedback.selectionClick() en onCancel. Implementar método estático ZendfastDialog.show() para mostrar modales con barrier dismissible configurables. Botones deben usar FilledButton para confirmación (elevated visualmente) y TextButton para cancelación, con spacing ZendfastSpacing.m entre ellos. Usar colorScheme del contexto para consistencia visual.
+
+# Test Strategy:
+Crear tests unitarios para ZendfastDialog verificando renderizado correcto de props y callbacks. Crear widget tests para cada tipo específico verificando textos y colores correctos. Probar animaciones usando WidgetTester.pumpAndSettle() para completar transiciones. Verificar feedback háptico se activa correctamente con mock de HapticFeedback. Probar interaction tests con tap en botones confirmación/cancelación y verificar callbacks ejecutados. Validar barrier dismissible funciona según configuración. Probar responsividad en diferentes tamaños de pantalla y orientaciones.
+
+# Subtasks:
+## 1. Crear widget base ZendfastDialog con propiedades y animaciones [pending]
+### Dependencies: None
+### Description: Implementar el widget ZendfastDialog base que extienda AlertDialog con todas las propiedades requeridas y animaciones de entrada/salida
+### Details:
+Crear archivo lib/widgets/dialogs/zendfast_dialog.dart implementando ZendfastDialog que extienda AlertDialog. Incluir propiedades: title (Widget), content (Widget), confirmButtonText (String), cancelButtonText (String), onConfirm (VoidCallback), onCancel (VoidCallback), confirmButtonColor (Color), showCloseButton (bool). Implementar animaciones usando AnimatedScale y AnimatedOpacity con duration 300ms y curve Curves.easeInOut. Crear método estático ZendfastDialog.show() para mostrar modales con barrier dismissible configurables. Usar Material 3 design system siguiendo tema en theme.dart.
+
+## 2. Implementar botones diferenciados con feedback háptico [pending]
+### Dependencies: 74.1
+### Description: Configurar botones FilledButton para confirmación y TextButton para cancelación con colores semánticos y feedback háptico
+### Details:
+Implementar botones usando FilledButton para confirmación (elevated visualmente) y TextButton para cancelación. Aplicar spacing ZendfastSpacing.m entre botones. Usar colorScheme del contexto para consistencia visual. Agregar HapticFeedback.lightImpact() en onConfirm y HapticFeedback.selectionClick() en onCancel. Configurar colores semánticos: error para acciones destructivas, primary para acciones normales según confirmButtonColor prop.
+
+## 3. Crear tipos específicos de diálogos para acciones críticas [pending]
+### Dependencies: 74.1, 74.2
+### Description: Implementar diálogos especializados para cada acción crítica del ayuno con copy y colores diferenciados
+### Details:
+Crear tipos específicos: StartFastingDialog, ChangePlanDialog, BreakFastingDialog, DeleteHistoryDialog. Cada tipo debe tener copy diferenciado apropiado para la acción y colores semánticos correctos. StartFastingDialog y ChangePlanDialog usan color primary, BreakFastingDialog y DeleteHistoryDialog usan color error para indicar acciones destructivas. Implementar factory constructors para cada tipo que preconfiguran textos y colores apropiados.
+

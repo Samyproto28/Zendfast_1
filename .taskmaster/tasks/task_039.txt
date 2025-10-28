@@ -1,0 +1,31 @@
+# Task ID: 39
+# Title: Crear assets de Lottie para animación de respiración
+# Status: pending
+# Dependencies: None
+# Priority: low
+# Description: Diseñar o adquirir animación Lottie optimizada para meditación 4-4-8 con visual zen-inspirado
+# Details:
+Adquirir o crear Lottie animation file (<100KB) que muestre breathing pattern: círculo/pulmones expanding (4s), holding (4s), contracting (8s). Colors: teal/green palette matching app theme. Animation debe loop infinitely hasta user stops. Considerar subtle particles o light effects para enhanced meditation experience. Store en assets/animations/breathing.json.
+
+# Test Strategy:
+Verificar animación smooth 60fps en mid-range devices, probar timing preciso 4-4-8, validar file size <100KB
+
+# Subtasks:
+## 1. Investigar y seleccionar assets de animación Lottie existentes [pending]
+### Dependencies: None
+### Description: Buscar en repositorios como LottieFiles, Freepik y GitHub animaciones de respiración que cumplan con los requisitos del proyecto
+### Details:
+Explorar LottieFiles.com, Freepik y repositorios open-source para encontrar animaciones de respiración compatibles. Evaluar calidad, tamaño de archivo (<100KB), compatibilidad con palette teal/verde, y timing personalizable para patrón 4-4-8. Documentar opciones viables con URLs y licencias.
+
+## 2. Diseñar animación Lottie personalizada para respiración 4-4-8 [pending]
+### Dependencies: 39.1
+### Description: Crear desde cero una animación Lottie optimizada específicamente para el patrón de respiración 4-4-8 con diseño zen-inspirado
+### Details:
+Usar After Effects con plugin Bodymovin para crear animación de círculo/pulmones expandiendo (4s), manteniendo (4s), contrayendo (8s). Aplicar palette teal (#069494) y verde (#7fb069). Agregar partículas sutiles y efectos de luz. Optimizar para loop infinito y export como .json <100KB.
+
+## 3. Integrar y probar animación Lottie en la aplicación [pending]
+### Dependencies: 39.2
+### Description: Implementar la animación seleccionada en la aplicación Flutter y optimizar su rendimiento en dispositivos de gama media
+### Details:
+Guardar archivo en assets/animations/breathing.json. Implementar con paquete lottie en Flutter. Configurar controles de play/pause/stop. Optimizar rendering para 60fps en dispositivos mid-range. Implementar preloading para evitar delays. Añadir fallback si animación falla al cargar.
+

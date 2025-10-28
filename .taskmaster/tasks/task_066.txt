@@ -1,0 +1,31 @@
+# Task ID: 66
+# Title: Implementar Edge Function 'track-analytics-event' en Supabase para registrar eventos de usuario en tabla analytics_events
+# Status: pending
+# Dependencies: 52, 15, 11
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que registre eventos críticos de usuario (inicio/fin ayuno, botón pánico, conversiones paywall, interacción contenido) con batching, validación de esquema y rate limiting.
+# Details:
+Crear archivo supabase/functions/track-analytics-event/index.ts implementando la lógica definida en Backend Structure Document líneas 1241-1271. La función debe: 1) Implementar endpoint POST que reciba eventos con estructura {userId, eventType, parameters, timestamp}, 2) Validar esquema de entrada usando Joi o similar validando tipos de eventos permitidos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, content_interaction, 3) Implementar rate limiting por usuario (máximo 100 eventos por minuto) usando Redis o in-memory store, 4) Implementar batching de eventos para optimizar inserts en analytics_events table - acumular eventos por 30 segundos antes de hacer batch insert, 5) Conectar con Supabase usando createClient() con SERVICE_ROLE_KEY para permisos completos, 6) Insertar eventos en tabla analytics_events con campos: user_id, event_type, event_data (JSON), timestamp, session_id (opcional), 7) Implementar manejo robusto de errores con logs específicos para debugging, 8) Agregar CORS headers para requests desde app Flutter, 9) Implementar autenticación verificando JWT token en Authorization header, 10) Opcional: integrar con Firebase Analytics usando sendToFirebaseAnalytics() helper. Estructura de respuesta: {success: boolean, message?: string, eventId?: string}. La función debe ser eficiente y manejar alta concurrencia de eventos.
+
+# Test Strategy:
+Crear tests unitarios para validación de esquema, rate limiting y batching con datos mock variados. Probar Edge Function end-to-end simulando eventos reales desde app Flutter con diferentes tipos de eventos críticos. Verificar rate limiting funciona correctamente bloqueando requests excesivos. Probar batching accumula eventos y hace inserts bulk optimizados. Validar manejo de errores para requests malformados, tokens inválidos y límites excedidos. Verificar CORS headers permiten requests desde dominio app. Probar performance con alta carga de eventos simultáneos. Validar datos se insertan correctamente en analytics_events con estructura esperada.
+
+# Subtasks:
+## 1. Configurar estructura básica y validación de esquema para Edge Function track-analytics-event [pending]
+### Dependencies: None
+### Description: Crear archivo supabase/functions/track-analytics-event/index.ts con estructura básica del endpoint POST, implementar validación de esquema usando Joi para validar tipos de eventos permitidos y estructura de entrada
+### Details:
+Configurar Edge Function con Deno.serve() para recibir requests POST. Implementar validación de esquema con Joi validando: userId (string requerido), eventType (enum: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, content_interaction), parameters (objeto opcional), timestamp (ISO string). Configurar CORS headers para requests desde Flutter app. Implementar manejo básico de errores y logging.
+
+## 2. Implementar rate limiting y autenticación JWT para proteger la Edge Function [pending]
+### Dependencies: 66.1
+### Description: Desarrollar sistema de rate limiting por usuario (máximo 100 eventos por minuto) y verificación de JWT token en Authorization header para autenticación segura
+### Details:
+Implementar rate limiting usando Map en memoria con cleanup automático cada 60 segundos, tracking de requests por userId. Configurar verificación JWT usando supabase.auth.getUser() con token del Authorization header. Implementar middleware para verificar autenticación antes de procesar eventos. Agregar logging específico para intentos de rate limiting y autenticación fallida.
+
+## 3. Implementar batching de eventos y inserción en tabla analytics_events [pending]
+### Dependencies: 66.2
+### Description: Desarrollar sistema de batching que acumule eventos por 30 segundos antes de hacer batch insert en tabla analytics_events, con conexión Supabase usando SERVICE_ROLE_KEY
+### Details:
+Configurar batch system con Map para acumular eventos por usuario durante 30 segundos. Implementar timer que ejecute batch insert cada 30s o cuando acumule 50+ eventos. Conectar con Supabase usando createClient() con SERVICE_ROLE_KEY para permisos completos. Insertar en analytics_events con campos: user_id, event_type, event_data (JSON), timestamp, session_id. Implementar retry logic para fallos de inserción y logging detallado.
+

@@ -1,0 +1,31 @@
+# Task ID: 72
+# Title: Implementar función PostgreSQL 'validate_fasting_duration' en Supabase para prevenir ayunos peligrosos
+# Status: pending
+# Dependencies: 15, 11
+# Priority: high
+# Description: Desarrollar función PostgreSQL robusta que valide duraciones de ayuno seguras, requiera confirmación explícita para ayunos >48h, analice historial de riesgo y bloquee usuarios con condiciones médicas registradas
+# Details:
+Crear archivo supabase/migrations/20250125000000_enhanced_fasting_validation.sql implementando función validate_fasting_duration() mejorada según Backend Structure Document líneas 656-707. La función debe: 1) Extender validación existente agregando parámetro opcional 'explicit_confirmation' para ayunos >48h que retorne FALSE si no se proporciona confirmación explícita, 2) Implementar análisis de historial agregando consulta a fasting_sessions para detectar patrones de riesgo como >3 interrupciones por panic_button en últimos 7 días o >5 ayunos interrumpidos en último mes, 3) Agregar tabla medical_conditions con campos: user_id UUID, condition_type TEXT (diabetes, eating_disorder, pregnancy, underweight), severity TEXT (mild, moderate, severe), created_at TIMESTAMP, 4) Implementar bloqueo automático consultando medical_conditions donde severity='severe' retorna FALSE inmediatamente, 5) Agregar logging de intentos bloqueados en tabla fasting_validation_logs para auditoría médica, 6) Mantener compatibilidad con función actual mientras extiende funcionalidad, 7) Implementar rate limiting para prevenir bypass via múltiples intentos. Función debe retornar BOOLEAN con casos: TRUE para ayunos seguros, FALSE para rechazados, y trigger exception con mensaje específico para cada tipo de bloqueo.
+
+# Test Strategy:
+Crear suite completa de tests en supabase/tests/validate_fasting_duration_test.sql probando: casos base de función original (ayunos 12-24h normales), límite 48h sin confirmación explícita debe fallar, ayunos >48h con explicit_confirmation=true debe pasar, detección patrones riesgo con datos mock de sesiones interrumpidas, bloqueo por condiciones médicas severity='severe', logging correcto en fasting_validation_logs, rate limiting tras múltiples intentos fallidos. Probar edge cases: usuarios sin historial, perfiles incompletos, condiciones médicas múltiples, timezone handling para cálculos de tiempo. Verificar performance con datasets grandes (>1000 sesiones por usuario). Implementar integration tests desde Edge Functions simulando validaciones reales durante creación de ayunos. Validar trigger validate_fasting_session_safety funciona con nueva función extendida.
+
+# Subtasks:
+## 1. Crear migración y estructura de tablas de soporte para validación de ayuno [pending]
+### Dependencies: None
+### Description: Implementar archivo de migración con tabla medical_conditions, fasting_validation_logs y extender función validate_fasting_duration existente
+### Details:
+Crear archivo supabase/migrations/20250125000000_enhanced_fasting_validation.sql que incluya: 1) Tabla medical_conditions con campos user_id UUID, condition_type TEXT (diabetes, eating_disorder, pregnancy, underweight), severity TEXT (mild, moderate, severe), created_at TIMESTAMP, 2) Tabla fasting_validation_logs para auditoría médica con campos user_id, attempted_duration, blocked_reason, created_at, 3) Extender función validate_fasting_duration existente agregando parámetro opcional explicit_confirmation BOOLEAN DEFAULT FALSE
+
+## 2. Implementar lógica de validación avanzada en función validate_fasting_duration [pending]
+### Dependencies: 72.1
+### Description: Desarrollar algoritmo de validación que analice historial de riesgo, condiciones médicas y requiera confirmación explícita para ayunos >48h
+### Details:
+Modificar función validate_fasting_duration para incluir: 1) Validación de confirmación explícita para ayunos >48h retornando FALSE si explicit_confirmation no se proporciona, 2) Análisis de historial consultando fasting_sessions para detectar >3 interrupciones por panic_button en últimos 7 días o >5 ayunos interrumpidos en último mes, 3) Bloqueo automático para usuarios con severity='severe' en medical_conditions, 4) Rate limiting para prevenir bypass via múltiples intentos, 5) Logging de intentos bloqueados en fasting_validation_logs
+
+## 3. Implementar manejo de errores y compatibilidad con función existente [pending]
+### Dependencies: 72.2
+### Description: Asegurar compatibilidad backward con función actual, implementar manejo robusto de errores y mensajes específicos para cada tipo de bloqueo
+### Details:
+Finalizar implementación de validate_fasting_duration asegurando: 1) Mantener compatibilidad con llamadas existentes sin parámetro explicit_confirmation, 2) Implementar manejo de errores con RAISE EXCEPTION para cada tipo de bloqueo con mensajes específicos (condición médica, historial riesgo, falta confirmación), 3) Optimizar consultas para performance usando índices apropiados, 4) Documentar función con comentarios SQL explicando parámetros y casos de uso, 5) Crear función helper get_user_risk_score() para centralizar cálculo de riesgo
+

@@ -1,0 +1,31 @@
+# Task ID: 64
+# Title: Implementar Edge Function 'handle-superwall-webhook' en Supabase para procesar webhooks de Superwall
+# Status: pending
+# Dependencies: 31
+# Priority: high
+# Description: Desarrollar función Edge Function en Supabase que procese webhooks de Superwall para actualizar estado de suscripción del usuario, trackear conversiones y manejar eventos de renovación/cancelación con sincronización a tabla user_profiles.
+# Details:
+Crear archivo supabase/functions/handle-superwall-webhook/index.ts implementando la lógica definida en Backend Structure Document líneas 1148-1202. La función debe: 1) Implementar endpoint POST que reciba webhooks de Superwall con estructura SuperwallWebhook interface incluyendo event_type ('subscription_started' | 'subscription_cancelled' | 'subscription_renewed'), user_id, product_id ('monthly_premium' | 'yearly_premium') y transaction_data, 2) Validar firma de webhook usando crypto.subtle API para verificar autenticidad del request con secret compartido, 3) Actualizar tabla user_profiles con campos subscription_status, subscription_type y subscription_expires_at basado en el event_type recibido, 4) Insertar eventos en tabla analytics_events para tracking de conversiones con event_type 'subscription_converted', 'subscription_cancelled', 'subscription_renewed', 5) Implementar manejo robusto de errores con logging detallado de eventos procesados y fallos, 6) Configurar CORS headers apropiados para permitir requests desde Superwall servers, 7) Retornar respuestas HTTP adecuadas (200 para éxito, 400/401 para errores) en formato JSON, 8) Implementar rate limiting básico para prevenir abuse, 9) Usar createClient con SUPABASE_SERVICE_ROLE_KEY para operaciones administrativas en user_profiles.
+
+# Test Strategy:
+Crear tests unitarios para validación de firma de webhook con diferentes payloads y secrets. Probar Edge Function end-to-end con webhooks mock de Superwall simulando todos los event_types (started, cancelled, renewed). Verificar actualización correcta de user_profiles y inserción en analytics_events para cada tipo de evento. Validar manejo de errores para webhooks inválidos, firmas incorrectas y usuarios inexistentes. Probar rate limiting y CORS headers. Usar herramientas como ngrok para testing con webhooks reales de Superwall durante desarrollo.
+
+# Subtasks:
+## 1. Crear estructura de proyecto y definir interfaces TypeScript [pending]
+### Dependencies: None
+### Description: Establecer la estructura base del Edge Function y definir todas las interfaces TypeScript necesarias para manejar webhooks de Superwall
+### Details:
+Crear directorio supabase/functions/handle-superwall-webhook/ con archivo index.ts. Definir interface SuperwallWebhook con campos event_type ('subscription_started' | 'subscription_cancelled' | 'subscription_renewed'), user_id, product_id ('monthly_premium' | 'yearly_premium') y transaction_data. Configurar imports necesarios para Supabase Edge Runtime incluyendo createClient y crypto APIs. Establecer estructura básica del handler HTTP con manejo de método POST.
+
+## 2. Implementar validación de firma de webhook y autenticación [pending]
+### Dependencies: 64.1
+### Description: Desarrollar el sistema de validación de firma usando crypto.subtle API para verificar la autenticidad de los webhooks de Superwall
+### Details:
+Implementar función validateWebhookSignature() usando crypto.subtle.importKey() y crypto.subtle.verify() con algoritmo HMAC-SHA256. Extraer signature del header x-superwall-signature del request. Crear función para comparar firmas de forma segura usando crypto.timingSafeEqual(). Configurar manejo de errores para firmas inválidas retornando HTTP 401. Implementar logging detallado para intentos de validación fallidos.
+
+## 3. Procesar eventos de webhook y actualizar base de datos [pending]
+### Dependencies: 64.2
+### Description: Implementar la lógica de procesamiento de eventos para actualizar user_profiles y registrar analytics según el tipo de evento recibido
+### Details:
+Crear función processWebhookEvent() que maneje cada event_type: subscription_started actualiza subscription_status='active', subscription_type basado en product_id, subscription_expires_at calculado desde transaction_data; subscription_cancelled establece status='cancelled' preservando expires_at; subscription_renewed actualiza expires_at y mantiene status='active'. Usar createClient con SUPABASE_SERVICE_ROLE_KEY para operaciones administrativas. Insertar eventos correspondientes en analytics_events con metadatos del webhook. Implementar transacciones para consistencia de datos.
+

@@ -1,0 +1,31 @@
+# Task ID: 68
+# Title: Crear tabla 'analytics_events' en Supabase con tracking de eventos de usuario
+# Status: done
+# Dependencies: 3
+# Priority: high
+# Description: Implementar tabla PostgreSQL analytics_events con campos especificados, políticas RLS por usuario, índices optimizados y particionamiento por fecha para tracking de eventos.
+# Details:
+Crear migración SQL en Supabase para tabla analytics_events con campos: event_id (UUID PRIMARY KEY con gen_random_uuid()), user_id (UUID FK a auth.users), event_type (TEXT con CHECK constraint para valores válidos: 'fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data (JSONB para datos flexibles), timestamp (TIMESTAMPTZ DEFAULT NOW()), session_id (TEXT). Implementar RLS con políticas: 'users_own_analytics_only' permitiendo solo acceso a eventos propios, 'admin_aggregate_analytics_only' para agregaciones. Crear índices: idx_analytics_events_user_type (user_id, event_type), idx_analytics_events_type_timestamp (event_type, timestamp). Implementar particionamiento por rango de fecha mensual usando PARTITION BY RANGE (timestamp) con particiones automáticas. Agregar trigger para actualización de updated_at. Configurar retention de 2 años para optimizar storage.
+
+# Test Strategy:
+Verificar tabla creada correctamente con DESCRIBE analytics_events. Probar RLS policies con diferentes usuarios - confirmar users solo ven sus eventos. Validar CHECK constraints rechazando event_types inválidos. Probar inserción de eventos con diferentes tipos y verificar campos JSONB. Validar performance de queries con EXPLAIN ANALYZE en índices. Verificar particionamiento funciona creando eventos en diferentes meses. Probar retention policies eliminando datos antiguos correctamente.
+
+# Subtasks:
+## 1. Crear migración SQL base para tabla analytics_events [done]
+### Dependencies: None
+### Description: Crear la migración SQL en Supabase que defina la estructura básica de la tabla analytics_events con todos los campos especificados
+### Details:
+Crear migración SQL con CREATE TABLE analytics_events incluyendo: event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE, event_type TEXT NOT NULL con CHECK constraint para valores válidos ('fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data JSONB DEFAULT '{}', timestamp TIMESTAMPTZ DEFAULT NOW(), session_id TEXT, updated_at TIMESTAMPTZ DEFAULT NOW(). Aplicar migración y verificar estructura.
+
+## 2. Implementar políticas RLS y sistema de permisos [done]
+### Dependencies: 68.1
+### Description: Configurar Row Level Security con políticas para restringir acceso a eventos por usuario y permitir agregaciones para administradores
+### Details:
+Habilitar RLS en tabla analytics_events con ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY. Crear política 'users_own_analytics_only' que permita SELECT, INSERT, UPDATE, DELETE solo para auth.uid() = user_id. Crear política 'admin_aggregate_analytics_only' para rol admin que permita SELECT para agregaciones sin acceso a datos individuales. Configurar grants apropiados para roles.
+
+## 3. Configurar índices optimizados y particionamiento por fecha [done]
+### Dependencies: 68.2
+### Description: Implementar índices para consultas eficientes y particionamiento mensual automático con configuración de retención de 2 años
+### Details:
+Crear índices: CREATE INDEX idx_analytics_events_user_type ON analytics_events (user_id, event_type) y CREATE INDEX idx_analytics_events_type_timestamp ON analytics_events (event_type, timestamp). Implementar particionamiento con PARTITION BY RANGE (timestamp), crear particiones mensuales automáticas usando pg_partman o similar. Configurar trigger para updated_at con función update_timestamp(). Establecer política de retención de 2 años para optimizar storage.
+

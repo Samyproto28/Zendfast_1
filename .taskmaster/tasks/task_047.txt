@@ -1,0 +1,31 @@
+# Task ID: 47
+# Title: Desarrollar Edge Functions en Supabase
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: Crear funciones serverless para cálculo de métricas, scheduling de notificaciones y webhook handling
+# Details:
+Crear Edge Functions: calculate-user-metrics (recalcula streak/hours tras session), schedule-notifications (OneSignal API calls), sync-user-data (conflict resolution), handle-superwall-webhook (subscription events), backup-data (GDPR export), track-analytics-event (custom events). Usar Deno runtime. Implement error handling y logging. Deploy via Supabase CLI. Setup monitoring y alertas.
+
+# Test Strategy:
+Probar functions respond correctly, verificar error handling, validar webhook security signatures
+
+# Subtasks:
+## 1. Crear Edge Function calculate-user-metrics para recálculo de métricas [pending]
+### Dependencies: None
+### Description: Desarrollar función serverless que recalcula streak y horas totales de ayuno después de cada sesión completada
+### Details:
+Implementar calculate-user-metrics.ts usando Deno runtime. La función debe recibir userId y sessionId, consultar Supabase para obtener todas las sesiones del usuario, calcular streak actual (días consecutivos), sumar horas totales ayunadas, y actualizar UserProfile. Incluir validación de datos de entrada, manejo de errores con try-catch, y logging detallado. Configurar CORS headers y autenticación JWT.
+
+## 2. Desarrollar Edge Functions para notificaciones y webhooks [pending]
+### Dependencies: 47.1
+### Description: Crear funciones schedule-notifications para OneSignal y handle-superwall-webhook para eventos de suscripción
+### Details:
+Implementar schedule-notifications.ts que use OneSignal API para enviar notificaciones programadas basadas en horarios de ayuno del usuario. Crear handle-superwall-webhook.ts para procesar eventos de Superwall (subscription_started, subscription_expired, etc.) y actualizar UserProfile accordingly. Incluir verificación de signatures de webhook, rate limiting, y error handling robusto con códigos HTTP apropiados.
+
+## 3. Implementar Edge Functions de utilidad y deploy completo [pending]
+### Dependencies: 47.1, 47.2
+### Description: Crear funciones sync-user-data, backup-data, track-analytics-event y configurar deployment con monitoring
+### Details:
+Desarrollar sync-user-data.ts para resolución de conflictos durante sincronización, backup-data.ts para exportación GDPR de datos del usuario, y track-analytics-event.ts para eventos personalizados de analytics. Configurar deployment usando Supabase CLI con environment variables apropiadas. Setup monitoring con alertas para errores, timeouts y usage metrics. Documentar todas las funciones con ejemplos de uso.
+

@@ -1,0 +1,31 @@
+# Task ID: 55
+# Title: Ejecutar submission a App Store y Google Play
+# Status: pending
+# Dependencies: 54
+# Priority: high
+# Description: Realizar submission final a las tiendas de aplicaciones con todos los assets y configuraciones necesarias
+# Details:
+Submit iOS app a App Store Connect con: production build obfuscado, all required screenshots, app preview video, optimized description, proper categorization (Health & Fitness), age rating (4+). Submit Android app a Google Play Console con: production AAB, feature graphic, screenshots, content rating, privacy policy link. Monitor review process y respond a feedback si necesario.
+
+# Test Strategy:
+Verificar submissions sin errores, probar builds funcionan en store review devices, monitor approval status
+
+# Subtasks:
+## 1. Preparar y subir aplicación iOS a App Store Connect [pending]
+### Dependencies: None
+### Description: Configurar y subir la build de producción de iOS con todos los metadatos y assets requeridos para la revisión de Apple
+### Details:
+Generar build de producción obfuscado para iOS usando flutter build ipa --release --obfuscate. Subir a App Store Connect via Xcode o Transporter. Configurar metadatos: título, descripción optimizada, palabras clave, categoría Health & Fitness, age rating 4+. Subir screenshots requeridos para todos los tamaños de pantalla iPhone. Añadir app preview video si disponible. Configurar pricing como gratuito con IAPs. Enviar para revisión.
+
+## 2. Preparar y subir aplicación Android a Google Play Console [pending]
+### Dependencies: None
+### Description: Configurar y subir el AAB de producción de Android con todos los assets y configuraciones necesarias para Google Play Store
+### Details:
+Generar Android App Bundle (AAB) de producción usando flutter build appbundle --release --obfuscate. Subir a Google Play Console. Configurar store listing: título, descripción corta/larga, feature graphic, screenshots para phone/tablet. Configurar content rating completando cuestionario. Añadir privacy policy link. Configurar pricing como gratuito. Configurar countries de distribución. Enviar a revisión en track de producción.
+
+## 3. Monitorear proceso de revisión y responder feedback [pending]
+### Dependencies: 55.1, 55.2
+### Description: Supervisar el estado de las revisiones en ambas tiendas y responder rápidamente a cualquier feedback o rechazo
+### Details:
+Monitorear App Store Connect y Google Play Console diariamente para updates del estado de revisión. Si hay rejection, analizar feedback detalladamente y crear plan de corrección. Responder a reviewers si necesario via Resolution Center. Preparar hotfixes si required. Documentar cualquier issue encontrado para futuras submissions. Notificar a stakeholders sobre timeline updates.
+

@@ -1,0 +1,31 @@
+# Task ID: 73
+# Title: Implementar trigger PostgreSQL 'validate_fasting_limits' en Supabase sobre tabla fasting_sessions
+# Status: pending
+# Dependencies: 72
+# Priority: high
+# Description: Crear trigger automático que ejecute validación de duración de ayuno en INSERT/UPDATE de fasting_sessions, registre advertencias en system_logs y opcionalmente bloquee sesiones inseguras
+# Details:
+Crear archivo supabase/migrations/20250125000001_validate_fasting_limits_trigger.sql implementando: 1) Trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions que llame automáticamente a función validate_fasting_duration(), 2) Agregar parámetro 'block_unsafe_sessions' (boolean) que determine si rechazar INSERT/UPDATE cuando validación falla o solo registrar warning, 3) Implementar función trigger validate_fasting_limits_trigger() que: extraiga planned_duration de NEW record, llame validate_fasting_duration(NEW.user_id, NEW.planned_duration, NEW.explicit_confirmation), registre resultado en system_logs con nivel WARNING/ERROR según corresponda, retorne NEW si block_unsafe_sessions=false o NULL si debe bloquear, 4) Manejar excepciones con EXCEPTION clause capturando errores de validación y registrándolos en system_logs antes de permitir/rechazar operación, 5) Agregar logging detallado incluyendo user_id, planned_duration, validation_result, timestamp en cada ejecución, 6) Configurar trigger para activarse en todas las operaciones de fasting_sessions manteniendo performance óptima
+
+# Test Strategy:
+Crear suite de tests en supabase/tests/validate_fasting_limits_trigger_test.sql probando: INSERT sesión 16h debe pasar sin warnings, INSERT sesión 72h sin explicit_confirmation debe registrar warning/bloquear según configuración, UPDATE aumentando duración de 24h a 60h debe disparar validación, verificar entries correctas en system_logs con niveles apropiados, probar manejo de excepciones con datos inválidos o función validate_fasting_duration unavailable, validar performance del trigger con INSERT/UPDATE batch de 100+ registros, confirmar trigger no interfiere con operaciones normales de la aplicación
+
+# Subtasks:
+## 1. Crear función trigger validate_fasting_limits_trigger() en PostgreSQL [pending]
+### Dependencies: None
+### Description: Implementar función trigger principal que validará las sesiones de ayuno automáticamente
+### Details:
+Desarrollar función validate_fasting_limits_trigger() que extraiga planned_duration del NEW record, llame a validate_fasting_duration(NEW.user_id, NEW.planned_duration, NEW.explicit_confirmation), maneje el parámetro block_unsafe_sessions para determinar si rechazar o permitir operaciones inseguras, registre resultados en system_logs con niveles WARNING/ERROR apropiados, y retorne NEW o NULL según configuración de bloqueo
+
+## 2. Configurar trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions [pending]
+### Dependencies: 73.1
+### Description: Crear trigger automático que ejecute la función de validación en operaciones de la tabla fasting_sessions
+### Details:
+Implementar trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions que llame automáticamente a validate_fasting_limits_trigger(). Configurar para activarse en todas las operaciones manteniendo performance óptima. Incluir manejo de excepciones con EXCEPTION clause para capturar errores de validación y registrarlos en system_logs antes de permitir/rechazar la operación
+
+## 3. Crear archivo de migración con logging detallado y tests [pending]
+### Dependencies: 73.1, 73.2
+### Description: Generar migración Supabase completa con sistema de logging y suite de tests
+### Details:
+Crear archivo supabase/migrations/20250125000001_validate_fasting_limits_trigger.sql con toda la implementación. Agregar logging detallado incluyendo user_id, planned_duration, validation_result, timestamp en cada ejecución. Incluir comentarios SQL explicativos y configuración del parámetro block_unsafe_sessions. Crear tests en supabase/tests/ para validar funcionamiento completo del trigger
+

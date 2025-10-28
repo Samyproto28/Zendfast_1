@@ -1,0 +1,31 @@
+# Task ID: 46
+# Title: Implementar testing de performance con métricas específicas
+# Status: pending
+# Dependencies: None
+# Priority: medium
+# Description: Desarrollar suite de pruebas para validar rendimiento de timer, consumo de batería y fluidez de animaciones
+# Details:
+Crear performance tests para: timer accuracy (±5s en 16h), battery consumption (<5% en 16h background), app launch time (<2s cold start), animation frame rate (60fps para Lottie), memory usage monitoring. Usar Flutter DevTools Timeline para profiling. Test en target devices: Pixel 6, iPhone 13. Implement automated performance regression testing en CI.
+
+# Test Strategy:
+Ejecutar performance tests en CI, verificar métricas meet requirements, probar en physical devices
+
+# Subtasks:
+## 1. Configurar herramientas de testing de performance y métricas base [pending]
+### Dependencies: None
+### Description: Establecer el framework de testing de performance con Flutter DevTools y configurar métricas base para timer accuracy, battery consumption, app launch time, frame rate y memory usage
+### Details:
+Configurar Flutter DevTools Timeline para profiling. Implementar PerformanceTestSuite con métodos para medir timer accuracy (±5s en 16h), battery consumption (<5% en 16h background), app launch time (<2s cold start), animation frame rate (60fps para Lottie) y memory usage monitoring. Crear TestMetricsCollector para capturar y almacenar datos de performance.
+
+## 2. Implementar tests específicos para cada métrica de performance [pending]
+### Dependencies: 46.1
+### Description: Desarrollar tests individuales para validar cada aspecto de performance: timer accuracy, battery usage, launch time, animation smoothness y memory consumption
+### Details:
+Crear TimerAccuracyTest para validar precisión de ±5s en 16h, BatteryConsumptionTest para verificar <5% consumption en background, AppLaunchTest para cold start <2s, AnimationFrameRateTest para 60fps en Lottie animations, MemoryUsageTest para monitoring. Implementar thresholds y assertions para cada métrica. Configurar test execution en target devices: Pixel 6, iPhone 13.
+
+## 3. Integrar automated performance regression testing en CI [pending]
+### Dependencies: 46.2
+### Description: Configurar pipeline de CI para ejecutar performance tests automáticamente y detectar regresiones de performance en cada deployment
+### Details:
+Integrar PerformanceTestSuite en CI pipeline (GitHub Actions o similar). Configurar automated execution en cada PR y merge. Implementar PerformanceReportGenerator para generar reportes comparativos. Configurar alerts para performance regressions que excedan thresholds. Establecer baseline metrics y trending analysis. Implementar fail conditions cuando performance degrada significativamente.
+

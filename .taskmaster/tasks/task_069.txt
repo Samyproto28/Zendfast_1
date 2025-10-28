@@ -1,0 +1,31 @@
+# Task ID: 69
+# Title: Crear tabla 'user_content_interactions' para rastrear interacciones con contenido educativo
+# Status: done
+# Dependencies: 3, 48
+# Priority: high
+# Description: Implementar tabla PostgreSQL/Supabase para rastrear interacciones de usuarios con contenido educativo incluyendo vistas, favoritos y contenido compartido
+# Details:
+Crear tabla 'user_content_interactions' en Supabase con campos: interaction_id (UUID PRIMARY KEY), user_id (UUID FK a auth.users), content_id (UUID FK a learning_content), interaction_type (ENUM: 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER 0-100). Implementar constraint UNIQUE(user_id, content_id, interaction_type) para evitar duplicados. Configurar RLS policy 'Users can manage own content interactions' usando auth.uid() = user_id. Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Implementar trigger 'update_content_popularity_metrics' que actualice automáticamente campos popularity_score y interaction_count en tabla learning_content cuando se inserten/actualicen interacciones. Configurar función PL/pgSQL que calcule popularity_score basado en: views * 1 + favorites * 3 + shares * 5 + completions * 2. Implementar soft delete mediante campo 'deleted_at' para mantener historial de analytics. Agregar validaciones CHECK para progress_percentage (0-100) y time_spent_seconds (>= 0).
+
+# Test Strategy:
+Verificar tabla se crea correctamente con todas las constraints y índices. Probar RLS policies bloquean acceso no autorizado entre usuarios diferentes. Validar trigger actualiza métricas de popularidad en learning_content automáticamente al insertar interacciones. Testear índices compuestos mejoran performance de queries por user_id y content_id. Verificar constraint UNIQUE previene duplicados de interaction_type por usuario/contenido. Probar soft delete preserva data para analytics. Validar cálculo de popularity_score es correcto con diferentes combinaciones de interacciones. Realizar load testing con 10000+ interacciones para verificar performance de índices.
+
+# Subtasks:
+## 1. Crear estructura de tabla user_content_interactions con campos y constraints [done]
+### Dependencies: None
+### Description: Implementar la estructura completa de la tabla user_content_interactions en Supabase con todos los campos necesarios, tipos de datos, claves primarias, foráneas y constraints de validación
+### Details:
+Crear migración SQL para tabla user_content_interactions con campos: interaction_id (UUID PRIMARY KEY DEFAULT gen_random_uuid()), user_id (UUID FK REFERENCES auth.users), content_id (UUID FK REFERENCES learning_content), interaction_type (ENUM 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER). Implementar constraints: UNIQUE(user_id, content_id, interaction_type), CHECK progress_percentage BETWEEN 0 AND 100, CHECK time_spent_seconds >= 0. Agregar campo deleted_at TIMESTAMPTZ para soft delete.
+
+## 2. Configurar índices compuestos y políticas RLS para rendimiento y seguridad [done]
+### Dependencies: 69.1
+### Description: Implementar índices compuestos para optimizar consultas frecuentes y configurar políticas RLS para controlar acceso de usuarios a sus propias interacciones
+### Details:
+Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Configurar política RLS 'Users can manage own content interactions' usando condición auth.uid() = user_id para SELECT, INSERT, UPDATE, DELETE. Habilitar RLS en la tabla con ALTER TABLE user_content_interactions ENABLE ROW LEVEL SECURITY.
+
+## 3. Implementar trigger para actualizar métricas de popularidad automáticamente [done]
+### Dependencies: 69.1
+### Description: Crear trigger y función PL/pgSQL que actualice automáticamente los campos popularity_score e interaction_count en la tabla learning_content cuando se registren nuevas interacciones
+### Details:
+Crear función PL/pgSQL update_content_popularity_metrics() que calcule popularity_score usando fórmula: views * 1 + favorites * 3 + shares * 5 + completions * 2. Actualizar campos popularity_score e interaction_count en tabla learning_content basado en COUNT de interacciones por content_id. Implementar trigger update_content_popularity_metrics AFTER INSERT OR UPDATE OR DELETE ON user_content_interactions FOR EACH ROW que ejecute la función. Manejar casos de soft delete verificando deleted_at IS NULL.
+

@@ -3560,7 +3560,7 @@
         "description": "Implementar tabla PostgreSQL/Supabase para rastrear interacciones de usuarios con contenido educativo incluyendo vistas, favoritos y contenido compartido",
         "details": "Crear tabla 'user_content_interactions' en Supabase con campos: interaction_id (UUID PRIMARY KEY), user_id (UUID FK a auth.users), content_id (UUID FK a learning_content), interaction_type (ENUM: 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER 0-100). Implementar constraint UNIQUE(user_id, content_id, interaction_type) para evitar duplicados. Configurar RLS policy 'Users can manage own content interactions' usando auth.uid() = user_id. Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Implementar trigger 'update_content_popularity_metrics' que actualice automáticamente campos popularity_score y interaction_count en tabla learning_content cuando se inserten/actualicen interacciones. Configurar función PL/pgSQL que calcule popularity_score basado en: views * 1 + favorites * 3 + shares * 5 + completions * 2. Implementar soft delete mediante campo 'deleted_at' para mantener historial de analytics. Agregar validaciones CHECK para progress_percentage (0-100) y time_spent_seconds (>= 0).",
         "testStrategy": "Verificar tabla se crea correctamente con todas las constraints y índices. Probar RLS policies bloquean acceso no autorizado entre usuarios diferentes. Validar trigger actualiza métricas de popularidad en learning_content automáticamente al insertar interacciones. Testear índices compuestos mejoran performance de queries por user_id y content_id. Verificar constraint UNIQUE previene duplicados de interaction_type por usuario/contenido. Probar soft delete preserva data para analytics. Validar cálculo de popularity_score es correcto con diferentes combinaciones de interacciones. Realizar load testing con 10000+ interacciones para verificar performance de índices.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           3,
           48
@@ -3573,7 +3573,7 @@
             "description": "Implementar la estructura completa de la tabla user_content_interactions en Supabase con todos los campos necesarios, tipos de datos, claves primarias, foráneas y constraints de validación",
             "dependencies": [],
             "details": "Crear migración SQL para tabla user_content_interactions con campos: interaction_id (UUID PRIMARY KEY DEFAULT gen_random_uuid()), user_id (UUID FK REFERENCES auth.users), content_id (UUID FK REFERENCES learning_content), interaction_type (ENUM 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER). Implementar constraints: UNIQUE(user_id, content_id, interaction_type), CHECK progress_percentage BETWEEN 0 AND 100, CHECK time_spent_seconds >= 0. Agregar campo deleted_at TIMESTAMPTZ para soft delete.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar tabla se crea correctamente con todos los campos y tipos de datos. Probar constraints UNIQUE evitan duplicados. Validar CHECK constraints rechazan valores inválidos para progress_percentage y time_spent_seconds. Verificar claves foráneas funcionan correctamente."
           },
           {
@@ -3584,7 +3584,7 @@
               1
             ],
             "details": "Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Configurar política RLS 'Users can manage own content interactions' usando condición auth.uid() = user_id para SELECT, INSERT, UPDATE, DELETE. Habilitar RLS en la tabla con ALTER TABLE user_content_interactions ENABLE ROW LEVEL SECURITY.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar índices mejoran performance de consultas frecuentes usando EXPLAIN ANALYZE. Probar políticas RLS bloquean acceso a interacciones de otros usuarios. Validar usuarios pueden crear, leer, actualizar y eliminar solo sus propias interacciones."
           },
           {
@@ -3595,7 +3595,7 @@
               1
             ],
             "details": "Crear función PL/pgSQL update_content_popularity_metrics() que calcule popularity_score usando fórmula: views * 1 + favorites * 3 + shares * 5 + completions * 2. Actualizar campos popularity_score e interaction_count en tabla learning_content basado en COUNT de interacciones por content_id. Implementar trigger update_content_popularity_metrics AFTER INSERT OR UPDATE OR DELETE ON user_content_interactions FOR EACH ROW que ejecute la función. Manejar casos de soft delete verificando deleted_at IS NULL.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar trigger se ejecuta correctamente al insertar, actualizar y eliminar interacciones. Validar cálculo de popularity_score con diferentes combinaciones de interacciones. Probar performance del trigger con volumen alto de datos. Verificar soft deletes no afectan métricas incorrectamente."
           }
         ]
@@ -4170,7 +4170,7 @@
       ],
       "created": "2025-10-24T22:12:47.124Z",
       "description": "Tasks for master context",
-      "updated": "2025-10-27T21:34:56.979Z"
+      "updated": "2025-10-28T02:41:36.861Z"
     }
   }
 }

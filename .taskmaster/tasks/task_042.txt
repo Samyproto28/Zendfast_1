@@ -1,0 +1,43 @@
+# Task ID: 42
+# Title: Configurar CI/CD con Codemagic
+# Status: pending
+# Dependencies: 41
+# Priority: low
+# Description: Establecer pipeline automatizado para testing, building y deployment a app stores
+# Details:
+Crear codemagic.yaml con workflows para iOS/Android production builds. Configure triggers: push to main -> production build, PR -> run tests only. Setup environment variables: Supabase keys, signing certificates, App Store Connect keys. Implement automated testing, obfuscated builds, symbol upload to Sentry. Configure deployment a TestFlight (iOS) y Internal testing (Android). Setup Slack notifications para build status.
+
+# Test Strategy:
+Verificar CI runs sin errores, probar deployments automáticos funcionan, validar notifications apropiadas
+
+# Subtasks:
+## 1. Configurar workflows básicos en codemagic.yaml [pending]
+### Dependencies: None
+### Description: Crear archivo codemagic.yaml con workflows para iOS y Android, configurando triggers para push a main y pull requests
+### Details:
+Crear codemagic.yaml en la raíz del proyecto. Definir workflows separados para iOS y Android con triggers: push to main -> production build, PR -> run tests only. Configurar scripts de build para Flutter con --release flag. Establecer artefactos de output para IPA y APK.
+
+## 2. Configurar variables de entorno y certificados [pending]
+### Dependencies: 42.1
+### Description: Setup de environment variables, signing certificates y keys necesarios para builds de producción
+### Details:
+Configurar variables de entorno en Codemagic: SUPABASE_URL, SUPABASE_ANON_KEY, SENTRY_DSN. Subir certificados iOS (provisioning profiles, distribution certificate) y Android (keystore, key.properties). Configurar App Store Connect API key para deployment automático.
+
+## 3. Implementar testing automatizado en pipeline [pending]
+### Dependencies: 42.1
+### Description: Configurar ejecución automática de tests unitarios y de integración en el pipeline CI/CD
+### Details:
+Agregar step de testing en workflows que ejecute 'flutter test' antes del build. Configurar code coverage reporting. Implementar tests que validen funcionalidad crítica antes de deployment. Configurar pipeline para fallar si tests no pasan.
+
+## 4. Configurar deployment automático a stores [pending]
+### Dependencies: 42.2
+### Description: Setup de deployment automático a TestFlight para iOS e Internal Testing para Android con builds obfuscados
+### Details:
+Configurar deployment a TestFlight usando App Store Connect API. Setup Google Play Console para Android Internal Testing. Implementar obfuscation con --obfuscate flag. Configurar upload de símbolos de debug a Sentry para crash reporting. Establecer versionado automático.
+
+## 5. Configurar notificaciones Slack para build status [pending]
+### Dependencies: 42.4
+### Description: Implementar notificaciones automáticas a Slack para reportar estado de builds exitosos y fallidos
+### Details:
+Configurar Slack webhook en Codemagic para canal de desarrollo. Implementar notificaciones para: build started, build success con links a artifacts, build failed con logs de error. Configurar diferentes mensajes para production builds vs test runs.
+

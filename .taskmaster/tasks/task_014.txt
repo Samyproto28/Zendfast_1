@@ -1,0 +1,31 @@
+# Task ID: 14
+# Title: Crear biblioteca de frases motivacionales
+# Status: pending
+# Dependencies: 2, 3
+# Priority: medium
+# Description: Desarrollar repository y modelo para gestionar frases motivacionales categorizadas para el botón pánico
+# Details:
+Crear MotivationalPhrase model con fields: id, phraseText, category (motivation/anti_binge/calm), language. Implementar MotivationalPhrasesRepository con métodos: getRandomByCategory(), getAllByLanguage(). Seed data con 15+ frases en español cubrir categories. Implementar cache local en Isar para offline access. Sync desde Supabase motivational_phrases table. Manejar fallbacks si no hay conexión.
+
+# Test Strategy:
+Verificar frases random no se repiten consecutivamente, probar funciona offline, validar sync bidireccional
+
+# Subtasks:
+## 1. Crear modelo MotivationalPhrase y configurar base de datos [pending]
+### Dependencies: None
+### Description: Implementar el modelo de datos para frases motivacionales con todos los campos necesarios y configurar la estructura en Isar y Supabase
+### Details:
+Crear MotivationalPhrase model con campos: id (String), phraseText (String), category (enum: motivation/anti_binge/calm), language (String, default 'es'). Definir schema Isar con índices apropiados por category y language. Crear tabla motivational_phrases en Supabase con misma estructura. Implementar serialización/deserialización JSON para sync.
+
+## 2. Implementar MotivationalPhrasesRepository con métodos core [pending]
+### Dependencies: 14.1
+### Description: Desarrollar repository con métodos principales para gestionar frases motivacionales incluyendo obtención aleatoria y filtrado por idioma
+### Details:
+Implementar MotivationalPhrasesRepository con métodos: getRandomByCategory(category) que evite repetir última frase, getAllByLanguage(language), addPhrase(), deletePhrase(), syncFromSupabase(). Usar Isar queries optimizadas. Implementar lógica anti-repetición guardando última frase mostrada. Manejar cache local y fallbacks cuando no hay datos.
+
+## 3. Poblar base de datos y configurar sincronización [pending]
+### Dependencies: 14.2
+### Description: Crear seed data con frases motivacionales en español y implementar sincronización automática con Supabase
+### Details:
+Crear seed data con 15+ frases en español distribuidas en categories: 5+ motivation, 5+ anti_binge, 5+ calm. Implementar auto-sync desde Supabase motivational_phrases table al iniciar app. Configurar sync bidireccional cuando usuario agrega frases custom. Implementar fallback a frases hardcoded si no hay conexión ni datos locales. Manejar errores de red gracefully.
+

@@ -1,0 +1,31 @@
+# Task ID: 70
+# Title: Crear tabla 'system_logs' en PostgreSQL/Supabase para logs de debugging del sistema
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: Implementar tabla system_logs con campos log_id, severity, service, message, metadata (JSONB) y timestamp, incluyendo política de retención de 90 días, índices optimizados y configuración sin RLS para acceso administrativo exclusivo
+# Details:
+Crear migración SQL para tabla system_logs en Supabase con campos: log_id (UUID PRIMARY KEY con gen_random_uuid()), severity (ENUM con valores 'info', 'warning', 'error', 'critical'), service (ENUM con valores 'edge_function', 'database', 'auth'), message (TEXT NOT NULL), metadata (JSONB para datos estructurados adicionales), timestamp (TIMESTAMPTZ DEFAULT NOW()). Implementar índices: CREATE INDEX idx_system_logs_severity ON system_logs(severity), CREATE INDEX idx_system_logs_timestamp ON system_logs(timestamp), CREATE INDEX idx_system_logs_service ON system_logs(service). Configurar política de retención automática con trigger PostgreSQL que elimine logs >90 días: CREATE OR REPLACE FUNCTION cleanup_old_logs() que ejecute DELETE FROM system_logs WHERE timestamp < NOW() - INTERVAL '90 days', programado con pg_cron extension daily. NO habilitar RLS en esta tabla (acceso solo para service_role y admins). Crear función helper log_system_event(severity, service, message, metadata) para inserción consistente desde Edge Functions. Integrar con existing SupabaseConfig.from('system_logs') para queries desde Flutter app.
+
+# Test Strategy:
+Verificar inserción de logs con diferentes severity levels, probar consultas con índices funcionando correctamente, validar política de retención elimina logs antiguos, confirmar acceso restringido sin RLS habilitado, probar función helper log_system_event con metadata JSONB, verificar performance de queries con índices en timestamp y severity
+
+# Subtasks:
+## 1. Crear migración SQL para tabla system_logs con campos y ENUMs [pending]
+### Dependencies: None
+### Description: Crear migración SQL en Supabase para definir tabla system_logs con todos los campos requeridos incluyendo ENUMs para severity y service
+### Details:
+Crear archivo de migración SQL que defina: CREATE TYPE severity_level AS ENUM ('info', 'warning', 'error', 'critical'); CREATE TYPE service_type AS ENUM ('edge_function', 'database', 'auth'); CREATE TABLE system_logs (log_id UUID PRIMARY KEY DEFAULT gen_random_uuid(), severity severity_level NOT NULL, service service_type NOT NULL, message TEXT NOT NULL, metadata JSONB, timestamp TIMESTAMPTZ DEFAULT NOW()). Aplicar migración usando herramientas Supabase CLI o interfaz web.
+
+## 2. Implementar índices optimizados y política de retención automática [pending]
+### Dependencies: 70.1
+### Description: Crear índices para mejorar performance de consultas y configurar trigger automático para eliminar logs antiguos cada 90 días
+### Details:
+Crear índices: CREATE INDEX idx_system_logs_severity ON system_logs(severity); CREATE INDEX idx_system_logs_timestamp ON system_logs(timestamp); CREATE INDEX idx_system_logs_service ON system_logs(service). Implementar función de limpieza: CREATE OR REPLACE FUNCTION cleanup_old_logs() RETURNS void AS $$ BEGIN DELETE FROM system_logs WHERE timestamp < NOW() - INTERVAL '90 days'; END; $$ LANGUAGE plpgsql. Configurar pg_cron job diario: SELECT cron.schedule('cleanup-logs', '0 2 * * *', 'SELECT cleanup_old_logs();').
+
+## 3. Crear función helper log_system_event y configurar acceso sin RLS [pending]
+### Dependencies: 70.2
+### Description: Implementar función helper para inserción consistente de logs y configurar permisos administrativos sin Row Level Security
+### Details:
+Crear función: CREATE OR REPLACE FUNCTION log_system_event(p_severity severity_level, p_service service_type, p_message TEXT, p_metadata JSONB DEFAULT NULL) RETURNS UUID AS $$ DECLARE log_uuid UUID; BEGIN INSERT INTO system_logs (severity, service, message, metadata) VALUES (p_severity, p_service, p_message, p_metadata) RETURNING log_id INTO log_uuid; RETURN log_uuid; END; $$ LANGUAGE plpgsql SECURITY DEFINER. Configurar permisos: GRANT USAGE ON SCHEMA public TO service_role; GRANT ALL ON system_logs TO service_role; GRANT EXECUTE ON FUNCTION log_system_event TO service_role. NO habilitar RLS en esta tabla.
+
