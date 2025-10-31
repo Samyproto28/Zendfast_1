@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../models/auth_state.dart';
 import '../services/auth_service.dart';
+import '../services/consent_manager.dart';
 import '../utils/result.dart';
 import '../services/supabase_error_handler.dart';
 
@@ -72,9 +74,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
 
     result.when(
-      success: (response) {
+      success: (response) async {
         // State will be updated automatically by the auth state listener
-        // No need to set state here
+
+        // Initialize default consents for new user (GDPR/CCPA compliance)
+        final userId = response.user?.id;
+        if (userId != null) {
+          debugPrint('[Auth] Initializing default consents for new user: $userId');
+          final consentResult = await ConsentManager.instance
+              .initializeDefaultConsents(userId);
+
+          consentResult.when(
+            success: (_) => debugPrint('[Auth] Default consents initialized successfully'),
+            failure: (error) => debugPrint('[Auth] Failed to initialize consents: $error'),
+          );
+          // Note: We don't fail registration if consent initialization fails
+          // The user can still set consents later
+        }
       },
       failure: (error) {
         state = AuthState.unauthenticated(errorMessage: error.message);

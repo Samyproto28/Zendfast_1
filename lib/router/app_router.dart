@@ -11,6 +11,7 @@ import '../screens/onboarding/onboarding_coordinator.dart';
 import '../screens/privacy/privacy_policy_screen.dart';
 import '../screens/privacy/data_rights_screen.dart';
 import '../screens/privacy/consent_management_screen.dart';
+import '../screens/settings/settings_screen.dart';
 import '../services/database_service.dart';
 
 /// GoRouter configuration provider
@@ -99,6 +100,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/home',
         name: 'home',
         builder: (context, state) => const MyHomePage(title: 'Zendfast'),
+      ),
+
+      // Settings route (protected)
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsScreen(),
       ),
 
       // Privacy routes (protected)
