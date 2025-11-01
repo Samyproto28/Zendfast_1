@@ -22,7 +22,7 @@ class OnboardingPaywallScreen extends ConsumerStatefulWidget {
 
 class _OnboardingPaywallScreenState
     extends ConsumerState<OnboardingPaywallScreen> {
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   /// Handle user viewing subscription options
   /// Note: This is a simplified version. Full Superwall integration
