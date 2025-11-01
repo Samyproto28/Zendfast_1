@@ -234,6 +234,7 @@ class _ExperienceLevelOption extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // TODO: Migrate to RadioGroup when stable (groupValue/onChanged deprecated after v3.32.0)
             Radio<String>(
               value: value,
               groupValue: groupValue,

@@ -7,6 +7,7 @@ import '../models/hydration_log.dart';
 import '../models/content_item.dart';
 import '../models/user_consent.dart';
 import '../models/privacy_policy.dart';
+import '../models/push_notification.dart';
 
 /// Singleton service for managing Isar database operations
 /// Provides CRUD methods for all collections
@@ -52,6 +53,7 @@ class DatabaseService {
         ContentItemSchema,
         UserConsentSchema,
         PrivacyPolicySchema,
+        PushNotificationSchema,
       ],
       directory: dir.path,
       inspector: true, // Enable Isar Inspector in debug mode

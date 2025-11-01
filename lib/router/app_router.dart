@@ -125,6 +125,19 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'consent-management',
         builder: (context, state) => const ConsentManagementScreen(),
       ),
+
+      // Notification route (protected)
+      // For deep linking from push notifications
+      GoRoute(
+        path: '/notification/:id',
+        name: 'notification-detail',
+        builder: (context, state) {
+          // TODO: Create NotificationDetailScreen and use notificationId
+          // final notificationId = state.pathParameters['id'] ?? '';
+          // For now, redirect to home
+          return const MyHomePage(title: 'Zendfast');
+        },
+      ),
     ],
   );
 });

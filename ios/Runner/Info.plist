@@ -46,11 +46,12 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-	<!-- Background modes for timer persistence -->
+	<!-- Background modes for timer persistence and push notifications -->
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 
 	<!-- BGTaskScheduler permitted identifiers -->
