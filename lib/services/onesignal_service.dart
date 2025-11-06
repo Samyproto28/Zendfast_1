@@ -375,6 +375,26 @@ class OneSignalService {
     };
   }
 
+  /// Template: New learning content available
+  Map<String, dynamic> learningContentTemplate({
+    required String title,
+    required String articleId,
+  }) {
+    return {
+      'headings': {'en': '📚 New Content Available'},
+      'contents': {
+        'en': 'Check out our latest article: "$title"',
+      },
+      'data': {
+        'type': 'learning_content',
+        'article_id': articleId,
+        'article_title': title,
+        'action_url': 'zendfast://learning/articles/$articleId',
+      },
+      'url': 'zendfast://learning/articles/$articleId',
+    };
+  }
+
   /// Dispose resources
   void dispose() {
     _notificationController.close();

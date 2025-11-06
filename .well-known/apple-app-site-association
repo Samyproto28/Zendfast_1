@@ -1,0 +1,42 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "TEAM_ID.com.zendfast.app"
+        ],
+        "components": [
+          {
+            "/": "/home",
+            "comment": "Navigate to home screen"
+          },
+          {
+            "/": "/fasting/*",
+            "comment": "Fasting routes (main, start, progress)"
+          },
+          {
+            "/": "/hydration",
+            "comment": "Hydration tracking screen"
+          },
+          {
+            "/": "/learning/*",
+            "comment": "Learning content routes (list and article details)"
+          },
+          {
+            "/": "/profile",
+            "comment": "User profile screen"
+          },
+          {
+            "/": "/settings",
+            "comment": "App settings"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "TEAM_ID.com.zendfast.app"
+    ]
+  }
+}

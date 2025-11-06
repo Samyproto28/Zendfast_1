@@ -12,10 +12,15 @@ import 'package:go_router/go_router.dart';
 ///
 /// Supported paths:
 /// - zendfast://home -> Navigate to home screen
-/// - zendfast://fasting/view -> View current fasting session
+/// - zendfast://fasting -> View fasting overview
+/// - zendfast://fasting/view -> View fasting overview (alias)
 /// - zendfast://fasting/start -> Start new fasting session
-/// - zendfast://fasting/complete -> Fasting completion screen
+/// - zendfast://fasting/progress -> View active fasting progress
+/// - zendfast://fasting/complete -> View fasting progress (alias)
 /// - zendfast://hydration -> Navigate to hydration screen
+/// - zendfast://learning -> Navigate to learning screen
+/// - zendfast://learning/articles/:id -> View specific article
+/// - zendfast://profile -> Navigate to profile screen
 /// - zendfast://notification/:id -> View specific notification
 /// - zendfast://settings -> Navigate to settings
 class DeepLinkHandler {
@@ -60,32 +65,47 @@ class DeepLinkHandler {
     final fullPath = uri.host + uri.path;
 
     switch (fullPath) {
+      // Home
       case 'home':
       case 'home/':
         router.go('/home');
         return true;
 
+      // Fasting routes
+      case 'fasting':
+      case 'fasting/':
       case 'fasting/view':
-        router.go('/home'); // Navigate to home where fasting view is
+        router.go('/fasting');
         return true;
 
       case 'fasting/start':
-        router.go('/home'); // Navigate to home and trigger start action
-        // TODO: Add query parameter or state to trigger start action
+        router.go('/fasting/start');
         return true;
 
+      case 'fasting/progress':
       case 'fasting/complete':
-        router.go('/home'); // Navigate to home with completion view
-        // TODO: Add query parameter to show completion screen
+        router.go('/fasting/progress');
         return true;
 
+      // Hydration
       case 'hydration':
       case 'hydration/':
-        // TODO: Implement hydration screen route
-        router.go('/home');
-        debugPrint('ℹ️ Hydration screen not yet implemented, navigating to home');
+        router.go('/hydration');
         return true;
 
+      // Learning
+      case 'learning':
+      case 'learning/':
+        router.go('/learning');
+        return true;
+
+      // Profile
+      case 'profile':
+      case 'profile/':
+        router.go('/profile');
+        return true;
+
+      // Settings
       case 'settings':
       case 'settings/':
         router.go('/settings');
@@ -96,6 +116,13 @@ class DeepLinkHandler {
         if (fullPath.startsWith('notification/')) {
           final notificationId = fullPath.replaceFirst('notification/', '');
           router.go('/notification/$notificationId');
+          return true;
+        }
+
+        // Check if it's a learning article link
+        if (fullPath.startsWith('learning/articles/')) {
+          final articleId = fullPath.replaceFirst('learning/articles/', '');
+          router.go('/learning/articles/$articleId');
           return true;
         }
 

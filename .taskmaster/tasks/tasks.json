@@ -2959,7 +2959,7 @@
         "description": "Implementar sistema completo de rutas protegidas con guards de autenticación, deep linking para notificaciones push y enlaces externos, y navegación tipo-segura para toda la aplicación",
         "details": "Extender el actual app_router.dart existente para incluir rutas completas de la aplicación: /home, /fasting (con subrutas /start, /progress), /hydration, /learning (con subrutas /articles/:id), /profile, /settings. Implementar AuthGuard middleware que verifique isAuthenticatedProvider antes de permitir acceso a rutas protegidas. Configurar deep linking handlers para notificaciones: fast_milestone -> /fasting/progress, hydration_reminder -> /hydration, learning_content -> /learning/articles/:id. Configurar Universal Links para iOS (apple-app-site-association) y App Links para Android (assetlinks.json) en dominio zendfast.app. Implementar typed navigation con rutas nombradas y parámetros tipo-seguro usando go_router extensions. Agregar manejo de rutas no encontradas (404) y redirecciones apropiadas para usuarios no autenticados que intentan acceder a rutas protegidas. Configurar refresh listener que detecte cambios en authState y redirija automáticamente.",
         "testStrategy": "Verificar que rutas protegidas redirigen a login cuando usuario no autenticado, probar deep links funcionan desde notificaciones push simuladas, validar Universal Links y App Links mediante adb y simulador iOS, confirmar navegación tipo-segura compila sin errores, probar redirecciones automáticas cuando cambia estado de autenticación, verificar manejo de rutas 404",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           "6",
           "5"
@@ -2972,7 +2972,7 @@
             "description": "Extender app_router.dart con todas las rutas de la aplicación y implementar guards de autenticación",
             "dependencies": [],
             "details": "Definir rutas completas: /home, /fasting (con subrutas /start, /progress), /hydration, /learning (con subrutas /articles/:id), /profile, /settings. Implementar AuthGuard middleware que verifique isAuthenticatedProvider antes de permitir acceso a rutas protegidas. Configurar manejo de rutas 404 y redirecciones para usuarios no autenticados.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que rutas protegidas redirigen a login cuando usuario no autenticado, probar navegación entre rutas funciona correctamente, validar manejo de rutas no encontradas",
             "parentId": "undefined"
           },
@@ -2984,7 +2984,7 @@
               1
             ],
             "details": "Configurar deep linking handlers para notificaciones: fast_milestone -> /fasting/progress, hydration_reminder -> /hydration, learning_content -> /learning/articles/:id. Implementar manejo de parámetros en URLs y navegación automática desde notificaciones. Configurar refresh listener que detecte cambios en authState.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar deep links funcionan desde notificaciones push simuladas, verificar navegación automática con parámetros correctos, validar manejo de estado de autenticación",
             "parentId": "undefined"
           },
@@ -2996,7 +2996,7 @@
               2
             ],
             "details": "Configurar Universal Links para iOS con apple-app-site-association en dominio zendfast.app. Configurar App Links para Android con assetlinks.json. Implementar manejo nativo de enlaces desde navegadores y otras aplicaciones. Configurar verificación de dominio y certificados.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Validar Universal Links y App Links mediante adb y simulador iOS, probar enlaces funcionan desde navegadores móviles, verificar apertura automática de la aplicación",
             "parentId": "undefined"
           },
@@ -3008,7 +3008,7 @@
               1
             ],
             "details": "Implementar typed navigation con rutas nombradas y parámetros tipo-seguro usando go_router extensions. Crear clases de navegación que garanticen tipos correctos en tiempo de compilación. Agregar métodos helper para navegación común y manejo de parámetros. Configurar redirecciones automáticas basadas en estado de autenticación.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Confirmar navegación tipo-segura compila sin errores de tipos, probar redirecciones automáticas funcionan correctamente, validar parámetros se pasan correctamente entre rutas",
             "parentId": "undefined"
           }
@@ -4364,7 +4364,7 @@
       ],
       "created": "2025-11-01T03:28:51.489Z",
       "description": "Tasks for master context",
-      "updated": "2025-11-01T03:30:38.644Z"
+      "updated": "2025-11-06T13:41:45.214Z"
     }
   }
 }
