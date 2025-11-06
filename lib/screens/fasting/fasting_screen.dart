@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/timer_provider.dart';
-import '../../providers/auth_computed_providers.dart';
 import '../../router/navigation_extensions.dart';
 
 /// Main fasting screen that shows overview and current fasting status
@@ -12,7 +11,6 @@ class FastingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final timerState = ref.watch(timerProvider);
-    final currentUserId = ref.watch(currentUserIdProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +82,7 @@ class FastingScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             if (isActive && timerState != null) ...[
               Text(
-                _formatDuration(timerState.elapsedTime),
+                _formatDuration(Duration(milliseconds: timerState.elapsedMilliseconds)),
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
