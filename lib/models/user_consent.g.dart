@@ -194,6 +194,8 @@ const _UserConsentconsentTypeEnumValueMap = {
   r'dataProcessing': r'dataProcessing',
   r'nonEssentialCookies': r'nonEssentialCookies',
   r'doNotSellData': r'doNotSellData',
+  r'privacyPolicy': r'privacyPolicy',
+  r'termsOfService': r'termsOfService',
 };
 const _UserConsentconsentTypeValueEnumMap = {
   r'analyticsTracking': ConsentType.analyticsTracking,
@@ -201,6 +203,8 @@ const _UserConsentconsentTypeValueEnumMap = {
   r'dataProcessing': ConsentType.dataProcessing,
   r'nonEssentialCookies': ConsentType.nonEssentialCookies,
   r'doNotSellData': ConsentType.doNotSellData,
+  r'privacyPolicy': ConsentType.privacyPolicy,
+  r'termsOfService': ConsentType.termsOfService,
 };
 
 Id _userConsentGetId(UserConsent object) {

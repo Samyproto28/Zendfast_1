@@ -286,6 +286,10 @@ class ConsentManager {
         return 'non_essential_cookies';
       case ConsentType.doNotSellData:
         return 'do_not_sell_data';
+      case ConsentType.privacyPolicy:
+        return 'privacy_policy';
+      case ConsentType.termsOfService:
+        return 'terms_of_service';
     }
   }
 
@@ -318,5 +322,71 @@ class ConsentManager {
   Future<bool> hasOptedOutOfDataSelling(String userId) async {
     // For "Do Not Sell", true means user has opted OUT
     return await getConsent(userId, ConsentType.doNotSellData);
+  }
+
+  // ============================================================================
+  // Legal Document Acceptance
+  // ============================================================================
+
+  /// Check if user has accepted the Privacy Policy
+  Future<bool> hasAcceptedPrivacyPolicy(String userId) async {
+    return await getConsent(userId, ConsentType.privacyPolicy);
+  }
+
+  /// Check if user has accepted the Terms of Service
+  Future<bool> hasAcceptedTermsOfService(String userId) async {
+    return await getConsent(userId, ConsentType.termsOfService);
+  }
+
+  /// Check if user has accepted both Privacy Policy and Terms of Service
+  /// Required before allowing user to continue with onboarding
+  Future<bool> hasAcceptedLegalDocuments(String userId) async {
+    final results = await Future.wait([
+      hasAcceptedPrivacyPolicy(userId),
+      hasAcceptedTermsOfService(userId),
+    ]);
+    return results.every((accepted) => accepted);
+  }
+
+  /// Save legal document acceptances (Privacy Policy + Terms of Service)
+  /// Used during onboarding when user accepts both documents
+  Future<Result<void, Exception>> saveLegalAcceptance({
+    required String userId,
+    required bool acceptPrivacyPolicy,
+    required bool acceptTermsOfService,
+  }) async {
+    try {
+      debugPrint(
+        '[ConsentManager] Saving legal acceptance - '
+        'User: $userId, Privacy: $acceptPrivacyPolicy, Terms: $acceptTermsOfService',
+      );
+
+      // Update both consents
+      final privacyResult = await updateConsent(
+        userId: userId,
+        consentType: ConsentType.privacyPolicy,
+        granted: acceptPrivacyPolicy,
+      );
+
+      final termsResult = await updateConsent(
+        userId: userId,
+        consentType: ConsentType.termsOfService,
+        granted: acceptTermsOfService,
+      );
+
+      // Check if either failed
+      if (privacyResult is Failure) {
+        return privacyResult;
+      }
+      if (termsResult is Failure) {
+        return termsResult;
+      }
+
+      debugPrint('[ConsentManager] Legal acceptance saved successfully');
+      return const Success(null);
+    } catch (e) {
+      debugPrint('[ConsentManager] Error saving legal acceptance: $e');
+      return Failure(Exception('Error al guardar aceptación legal: $e'));
+    }
   }
 }

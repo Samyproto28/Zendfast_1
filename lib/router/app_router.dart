@@ -8,6 +8,7 @@ import '../screens/auth/register_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
 import '../screens/onboarding/onboarding_coordinator.dart';
 import '../screens/privacy/privacy_policy_screen.dart';
+import '../screens/privacy/terms_of_service_screen.dart';
 import '../screens/privacy/data_rights_screen.dart';
 import '../screens/privacy/consent_management_screen.dart';
 import '../screens/settings/settings_screen.dart';
@@ -209,6 +210,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.privacyPolicy,
         name: 'privacy-policy',
         builder: (context, state) => const PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: Routes.termsOfService,
+        name: 'terms-of-service',
+        builder: (context, state) => const TermsOfServiceScreen(),
       ),
       GoRoute(
         path: Routes.dataRights,

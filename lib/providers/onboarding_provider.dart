@@ -8,6 +8,8 @@ class OnboardingState {
   final String? fastingExperienceLevel;
   final bool? hasSubscribed;
   final bool? detoxPlanOptIn;
+  final bool hasAcceptedPrivacyPolicy;
+  final bool hasAcceptedTermsOfService;
 
   const OnboardingState({
     this.currentPage = 0,
@@ -16,6 +18,8 @@ class OnboardingState {
     this.fastingExperienceLevel,
     this.hasSubscribed,
     this.detoxPlanOptIn,
+    this.hasAcceptedPrivacyPolicy = false,
+    this.hasAcceptedTermsOfService = false,
   });
 
   OnboardingState copyWith({
@@ -25,6 +29,8 @@ class OnboardingState {
     String? fastingExperienceLevel,
     bool? hasSubscribed,
     bool? detoxPlanOptIn,
+    bool? hasAcceptedPrivacyPolicy,
+    bool? hasAcceptedTermsOfService,
   }) {
     return OnboardingState(
       currentPage: currentPage ?? this.currentPage,
@@ -34,6 +40,10 @@ class OnboardingState {
           fastingExperienceLevel ?? this.fastingExperienceLevel,
       hasSubscribed: hasSubscribed ?? this.hasSubscribed,
       detoxPlanOptIn: detoxPlanOptIn ?? this.detoxPlanOptIn,
+      hasAcceptedPrivacyPolicy:
+          hasAcceptedPrivacyPolicy ?? this.hasAcceptedPrivacyPolicy,
+      hasAcceptedTermsOfService:
+          hasAcceptedTermsOfService ?? this.hasAcceptedTermsOfService,
     );
   }
 }
@@ -68,6 +78,17 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
   /// Save detox plan opt-in decision
   void saveDetoxDecision(bool optIn) {
     state = state.copyWith(detoxPlanOptIn: optIn);
+  }
+
+  /// Save legal acceptance (Privacy Policy + Terms of Service)
+  void saveLegalAcceptance({
+    required bool privacyPolicy,
+    required bool termsOfService,
+  }) {
+    state = state.copyWith(
+      hasAcceptedPrivacyPolicy: privacyPolicy,
+      hasAcceptedTermsOfService: termsOfService,
+    );
   }
 
   /// Reset onboarding state (clear all data)

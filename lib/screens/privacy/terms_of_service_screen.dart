@@ -1,62 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/supabase_config.dart';
-import '../../models/privacy_policy.dart';
+import '../../models/terms_of_service.dart';
 
-/// Privacy Policy Screen - displays the current privacy policy
+/// Terms of Service Screen - displays the current terms and conditions
 /// Loads dynamically from Supabase for easy updates
-class PrivacyPolicyScreen extends ConsumerStatefulWidget {
-  const PrivacyPolicyScreen({super.key});
+/// Supports Spanish and English with language switcher
+class TermsOfServiceScreen extends ConsumerStatefulWidget {
+  const TermsOfServiceScreen({super.key});
 
   @override
-  ConsumerState<PrivacyPolicyScreen> createState() =>
-      _PrivacyPolicyScreenState();
+  ConsumerState<TermsOfServiceScreen> createState() =>
+      _TermsOfServiceScreenState();
 }
 
-class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
+class _TermsOfServiceScreenState extends ConsumerState<TermsOfServiceScreen> {
   bool _isLoading = true;
-  PrivacyPolicy? _policy;
+  TermsOfService? _terms;
   String? _error;
   String _currentLanguage = 'es'; // Default to Spanish
 
   @override
   void initState() {
     super.initState();
-    _loadPrivacyPolicy();
+    _loadTermsOfService();
   }
 
-  Future<void> _loadPrivacyPolicy() async {
+  Future<void> _loadTermsOfService() async {
     try {
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
-      final response = await SupabaseConfig.from('privacy_policy')
+      final response = await SupabaseConfig.from('terms_of_service')
           .select()
           .eq('is_active', true)
           .eq('language', _currentLanguage)
           .maybeSingle();
 
       if (response != null) {
-        final policy = PrivacyPolicy.fromJson(response);
+        final terms = TermsOfService.fromJson(response);
         setState(() {
-          _policy = policy;
+          _terms = terms;
           _isLoading = false;
         });
       } else {
         setState(() {
           _error = _currentLanguage == 'es'
-              ? 'No se encontró la política de privacidad'
-              : 'Privacy Policy not found';
+              ? 'No se encontraron los términos y condiciones'
+              : 'Terms of Service not found';
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
         _error = _currentLanguage == 'es'
-            ? 'Error al cargar la política de privacidad: $e'
-            : 'Error loading Privacy Policy: $e';
+            ? 'Error al cargar los términos y condiciones: $e'
+            : 'Error loading Terms of Service: $e';
         _isLoading = false;
       });
     }
@@ -67,17 +68,19 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
       setState(() {
         _currentLanguage = newLanguage;
       });
-      _loadPrivacyPolicy();
+      _loadTermsOfService();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_currentLanguage == 'es'
-            ? 'Política de Privacidad'
-            : 'Privacy Policy'),
+            ? 'Términos y Condiciones'
+            : 'Terms and Conditions'),
         elevation: 0,
         actions: [
           // Language switcher
@@ -143,7 +146,7 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: _loadPrivacyPolicy,
+                          onPressed: _loadTermsOfService,
                           child: Text(_currentLanguage == 'es'
                               ? 'Reintentar'
                               : 'Retry'),
@@ -152,24 +155,28 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
                     ),
                   ),
                 )
-              : _policy == null
+              : _terms == null
                   ? Center(
                       child: Text(_currentLanguage == 'es'
-                          ? 'No hay política disponible'
-                          : 'No policy available'),
+                          ? 'No hay términos disponibles'
+                          : 'No terms available'),
                     )
                   : SingleChildScrollView(
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Version info
+                          // Version info card
                           Card(
+                            elevation: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.info_outline),
+                                  Icon(
+                                    Icons.gavel,
+                                    color: theme.colorScheme.primary,
+                                  ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
@@ -178,15 +185,20 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
                                       children: [
                                         Text(
                                           _currentLanguage == 'es'
-                                              ? 'Versión ${_policy!.version}'
-                                              : 'Version ${_policy!.version}',
-                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                              ? 'Versión ${_terms!.version}'
+                                              : 'Version ${_terms!.version}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                         Text(
                                           _currentLanguage == 'es'
-                                              ? 'Vigente desde: ${_policy!.formattedEffectiveDate}'
-                                              : 'Effective from: ${_policy!.formattedEffectiveDate}',
-                                          style: const TextStyle(fontSize: 12),
+                                              ? 'Vigente desde: ${_terms!.formattedEffectiveDate}'
+                                              : 'Effective from: ${_terms!.formattedEffectiveDate}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: theme.colorScheme.onSurfaceVariant,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -195,10 +207,53 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
                               ),
                             ),
                           ),
+
                           const SizedBox(height: 24),
 
-                          // Policy content
-                          Text(_policy!.content),
+                          // Important notice
+                          Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.errorContainer,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: theme.colorScheme.error.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.warning_amber_rounded,
+                                  color: theme.colorScheme.error,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    _currentLanguage == 'es'
+                                        ? 'IMPORTANTE: Zendfast NO proporciona asesoramiento médico. Consulta con un profesional de la salud antes de comenzar cualquier programa de ayuno.'
+                                        : 'IMPORTANT: Zendfast DOES NOT provide medical advice. Consult with a healthcare professional before starting any fasting program.',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: theme.colorScheme.onErrorContainer,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Terms content
+                          SelectableText(
+                            _terms!.content,
+                            style: const TextStyle(
+                              height: 1.6,
+                              fontSize: 14,
+                            ),
+                          ),
 
                           const SizedBox(height: 32),
 
@@ -212,6 +267,12 @@ class _PrivacyPolicyScreenState extends ConsumerState<PrivacyPolicyScreen> {
                               label: Text(_currentLanguage == 'es'
                                   ? 'He leído y entiendo'
                                   : 'I have read and understand'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 16),

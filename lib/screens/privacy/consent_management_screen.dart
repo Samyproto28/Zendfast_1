@@ -192,6 +192,10 @@ class _ConsentManagementScreenState
         return Icons.cookie;
       case ConsentType.doNotSellData:
         return Icons.money_off;
+      case ConsentType.privacyPolicy:
+        return Icons.privacy_tip;
+      case ConsentType.termsOfService:
+        return Icons.gavel;
     }
   }
 }

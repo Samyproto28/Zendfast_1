@@ -39,6 +39,7 @@ class Routes {
 
   // Privacy & GDPR routes
   static const String privacyPolicy = '/privacy-policy';
+  static const String termsOfService = '/terms-of-service';
   static const String dataRights = '/data-rights';
   static const String consentManagement = '/consent-management';
 
@@ -76,6 +77,7 @@ class RouteNames {
   static const String learning = 'learning';
   static const String learningArticle = 'learning-article';
   static const String privacyPolicy = 'privacy-policy';
+  static const String termsOfService = 'terms-of-service';
   static const String dataRights = 'data-rights';
   static const String consentManagement = 'consent-management';
   static const String notFound = 'not-found';

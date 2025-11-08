@@ -10,6 +10,8 @@ enum ConsentType {
   dataProcessing,         // Third-party data processing
   nonEssentialCookies,    // Optional cookies/local storage
   doNotSellData,          // CCPA "Do Not Sell My Personal Information" right
+  privacyPolicy,          // Acceptance of Privacy Policy (required)
+  termsOfService,         // Acceptance of Terms of Service (required)
 }
 
 /// Represents a user's consent preference for GDPR/CCPA compliance
@@ -70,6 +72,10 @@ class UserConsent {
         return 'non_essential_cookies';
       case ConsentType.doNotSellData:
         return 'do_not_sell_data';
+      case ConsentType.privacyPolicy:
+        return 'privacy_policy';
+      case ConsentType.termsOfService:
+        return 'terms_of_service';
     }
   }
 
@@ -106,6 +112,12 @@ class UserConsent {
       case 'do_not_sell_data':
         type = ConsentType.doNotSellData;
         break;
+      case 'privacy_policy':
+        type = ConsentType.privacyPolicy;
+        break;
+      case 'terms_of_service':
+        type = ConsentType.termsOfService;
+        break;
       default:
         throw ArgumentError('Unknown consent type: ${json['consent_type']}');
     }
@@ -141,6 +153,10 @@ class UserConsent {
         return 'Cookies No Esenciales';
       case ConsentType.doNotSellData:
         return 'No Vender Mis Datos (CCPA)';
+      case ConsentType.privacyPolicy:
+        return 'Política de Privacidad';
+      case ConsentType.termsOfService:
+        return 'Términos y Condiciones';
     }
   }
 
@@ -157,6 +173,10 @@ class UserConsent {
         return 'Almacenar cookies y datos locales opcionales para mejorar tu experiencia.';
       case ConsentType.doNotSellData:
         return 'Ejercer tu derecho bajo CCPA para que no vendamos tu información personal.';
+      case ConsentType.privacyPolicy:
+        return 'He leído y acepto la Política de Privacidad de Zendfast.';
+      case ConsentType.termsOfService:
+        return 'He leído y acepto los Términos y Condiciones de uso de Zendfast.';
     }
   }
 }

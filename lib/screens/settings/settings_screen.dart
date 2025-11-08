@@ -173,14 +173,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             icon: Icons.shield,
             title: 'Términos y Condiciones',
             subtitle: 'Términos de uso de la aplicación',
-            onTap: () {
-              // TODO: Navigate to terms screen
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Próximamente: Términos y Condiciones'),
-                ),
-              );
-            },
+            onTap: () => context.push('/terms-of-service'),
           ),
 
           const Divider(height: 32),
