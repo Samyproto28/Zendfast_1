@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="zendfast_1"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -37,11 +37,12 @@
             </intent-filter>
 
             <!-- Deep Links configuration for Superwall -->
+            <!-- Scheme is flavor-specific: zendfast (prod) or zendfast-dev (dev) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="zendfast" />
+                <data android:scheme="@string/deep_link_scheme" />
             </intent-filter>
 
             <!-- App Links configuration for Universal Deep Linking -->

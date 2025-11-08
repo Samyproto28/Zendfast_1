@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:zendfast_1/config/app_config.dart';
 import 'package:zendfast_1/models/push_notification.dart';
 import 'package:zendfast_1/services/database_service.dart';
 
 /// Service for managing OneSignal push notifications
 ///
 /// This service handles:
-/// - OneSignal SDK initialization
+/// - OneSignal SDK initialization (using environment-aware AppConfig)
 /// - Push notification permissions
 /// - Notification event handling
 /// - User segmentation with tags
@@ -36,7 +36,7 @@ class OneSignalService {
   /// Initialize OneSignal SDK
   ///
   /// Must be called before any other OneSignal operations.
-  /// Reads configuration from .env file.
+  /// Reads configuration from AppConfig (environment-aware).
   ///
   /// Note: Will silently fail if Firebase (Android) or APNs (iOS)
   /// are not configured. Check logs for configuration status.
@@ -47,15 +47,10 @@ class OneSignalService {
     }
 
     try {
-      final appId = dotenv.env['ONESIGNAL_APP_ID'];
+      final appId = AppConfig.instance.oneSignalAppId;
+      final environment = AppConfig.instance.environment.name;
 
-      if (appId == null || appId.isEmpty) {
-        debugPrint('⚠️ ONESIGNAL_APP_ID not found in .env');
-        debugPrint('   Push notifications will not work until configured');
-        return;
-      }
-
-      debugPrint('🔔 Initializing OneSignal with App ID: $appId');
+      debugPrint('🔔 Initializing OneSignal [$environment] with App ID: $appId');
 
       // Remove this method to stop OneSignal Debugging
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -276,6 +271,7 @@ class OneSignalService {
     required String fastingPlan,
     required int targetHours,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     return {
       'headings': {'en': '🏁 Fasting Started!'},
       'contents': {
@@ -285,9 +281,9 @@ class OneSignalService {
         'type': 'fasting_start',
         'fasting_plan': fastingPlan,
         'target_hours': targetHours.toString(),
-        'action_url': 'zendfast://fasting/view',
+        'action_url': '$deepLinkScheme://fasting/view',
       },
-      'url': 'zendfast://fasting/view',
+      'url': '$deepLinkScheme://fasting/view',
     };
   }
 
@@ -296,6 +292,7 @@ class OneSignalService {
     required int hours,
     required int targetHours,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     final percentage = ((hours / targetHours) * 100).round();
     final emoji = hours >= 12 ? '🔥' : '⭐';
 
@@ -309,9 +306,9 @@ class OneSignalService {
         'hours': hours.toString(),
         'target_hours': targetHours.toString(),
         'percentage': percentage.toString(),
-        'action_url': 'zendfast://fasting/view',
+        'action_url': '$deepLinkScheme://fasting/view',
       },
-      'url': 'zendfast://fasting/view',
+      'url': '$deepLinkScheme://fasting/view',
     };
   }
 
@@ -320,6 +317,7 @@ class OneSignalService {
     required int hours,
     required String fastingPlan,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     return {
       'headings': {'en': '🎉 Fasting Complete!'},
       'contents': {
@@ -329,9 +327,9 @@ class OneSignalService {
         'type': 'fasting_complete',
         'hours': hours.toString(),
         'fasting_plan': fastingPlan,
-        'action_url': 'zendfast://fasting/complete',
+        'action_url': '$deepLinkScheme://fasting/complete',
       },
-      'url': 'zendfast://fasting/complete',
+      'url': '$deepLinkScheme://fasting/complete',
     };
   }
 
@@ -340,6 +338,7 @@ class OneSignalService {
     int glassesConsumed = 0,
     int targetGlasses = 8,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     return {
       'headings': {'en': '💧 Stay Hydrated!'},
       'contents': {
@@ -349,9 +348,9 @@ class OneSignalService {
         'type': 'hydration_reminder',
         'glasses_consumed': glassesConsumed.toString(),
         'target_glasses': targetGlasses.toString(),
-        'action_url': 'zendfast://hydration',
+        'action_url': '$deepLinkScheme://hydration',
       },
-      'url': 'zendfast://hydration',
+      'url': '$deepLinkScheme://hydration',
     };
   }
 
@@ -359,6 +358,7 @@ class OneSignalService {
   Map<String, dynamic> reEngagementTemplate({
     int daysSinceLastFast = 0,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     return {
       'headings': {'en': '👋 We Miss You!'},
       'contents': {
@@ -369,9 +369,9 @@ class OneSignalService {
       'data': {
         'type': 're_engagement',
         'days_since_last_fast': daysSinceLastFast.toString(),
-        'action_url': 'zendfast://home',
+        'action_url': '$deepLinkScheme://home',
       },
-      'url': 'zendfast://home',
+      'url': '$deepLinkScheme://home',
     };
   }
 
@@ -380,6 +380,7 @@ class OneSignalService {
     required String title,
     required String articleId,
   }) {
+    final deepLinkScheme = AppConfig.instance.deepLinkScheme;
     return {
       'headings': {'en': '📚 New Content Available'},
       'contents': {
@@ -389,9 +390,9 @@ class OneSignalService {
         'type': 'learning_content',
         'article_id': articleId,
         'article_title': title,
-        'action_url': 'zendfast://learning/articles/$articleId',
+        'action_url': '$deepLinkScheme://learning/articles/$articleId',
       },
-      'url': 'zendfast://learning/articles/$articleId',
+      'url': '$deepLinkScheme://learning/articles/$articleId',
     };
   }
 

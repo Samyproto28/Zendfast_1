@@ -32,6 +32,26 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("development") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            // Development-specific configuration
+            resValue("string", "app_name", "Zendfast Dev")
+            resValue("string", "deep_link_scheme", "zendfast-dev")
+        }
+
+        create("production") {
+            dimension = "environment"
+            // Production configuration
+            resValue("string", "app_name", "Zendfast")
+            resValue("string", "deep_link_scheme", "zendfast")
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

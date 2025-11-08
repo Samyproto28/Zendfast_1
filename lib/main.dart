@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'theme/theme.dart';
+import 'config/app_config.dart';
 import 'services/database_service.dart';
 import 'services/timer_service.dart';
 import 'services/onesignal_service.dart';
@@ -15,10 +16,17 @@ void main() async {
   // Ensure Flutter binding is initialized before async operations
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables from .env file
+  // Load environment variables from .env file (fallback for local development)
+  // Production/Development builds use --dart-define instead
   await dotenv.load(fileName: '.env');
 
-  // Initialize Supabase with credentials from environment
+  // Initialize AppConfig (must be first to provide environment-aware configuration)
+  await AppConfig.instance.initialize();
+
+  // Print configuration summary in debug mode
+  AppConfig.instance.printConfigSummary();
+
+  // Initialize Supabase with credentials from AppConfig
   await SupabaseConfig.initialize();
 
   // Initialize Isar database for local storage
@@ -28,14 +36,14 @@ void main() async {
   await TimerService.instance.initialize();
 
   // Initialize push notification services
-  // OneSignal for remote push notifications (requires Firebase/APNs configuration)
+  // OneSignal for remote push notifications (uses environment-specific app ID)
   await OneSignalService.instance.initialize();
 
   // Local notifications as fallback (works without external services)
   await LocalNotificationService.instance.initialize();
 
-  // Initialize Superwall SDK with API Key
-  Superwall.configure('pk_We8ksAmppDXeDDD5AWOvg');
+  // Initialize Superwall SDK with environment-specific API Key
+  Superwall.configure(AppConfig.instance.superwallApiKey);
 
   // Set up deep link listener for Superwall and notifications
   _handleIncomingLinks();

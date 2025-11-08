@@ -1,35 +1,19 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:zendfast_1/config/app_config.dart';
 
 /// Configuration helper for Supabase client
 /// Provides typed access to Supabase services and environment variables
+///
+/// Now uses AppConfig for environment-aware configuration
 class SupabaseConfig {
   // Private constructor to prevent instantiation
   SupabaseConfig._();
 
-  /// Get the Supabase URL from environment variables
-  static String get supabaseUrl {
-    final url = dotenv.env['SUPABASE_URL'];
-    if (url == null || url.isEmpty) {
-      throw Exception(
-        'SUPABASE_URL not found in .env file. '
-        'Please ensure .env contains SUPABASE_URL.',
-      );
-    }
-    return url;
-  }
+  /// Get the Supabase URL from AppConfig
+  static String get supabaseUrl => AppConfig.instance.supabaseUrl;
 
-  /// Get the Supabase anonymous key from environment variables
-  static String get supabaseAnonKey {
-    final key = dotenv.env['SUPABASE_ANON_KEY'];
-    if (key == null || key.isEmpty) {
-      throw Exception(
-        'SUPABASE_ANON_KEY not found in .env file. '
-        'Please ensure .env contains SUPABASE_ANON_KEY.',
-      );
-    }
-    return key;
-  }
+  /// Get the Supabase anonymous key from AppConfig
+  static String get supabaseAnonKey => AppConfig.instance.supabaseAnonKey;
 
   /// Get the singleton Supabase client instance
   /// Must call [initialize] first before accessing this

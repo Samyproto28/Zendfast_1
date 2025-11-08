@@ -1,4 +1,4 @@
-package com.example.zendfast_1
+package com.zendfast.app
 
 import io.flutter.embedding.android.FlutterActivity
 

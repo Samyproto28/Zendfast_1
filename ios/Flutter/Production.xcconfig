@@ -1,0 +1,12 @@
+// Production flavor configuration
+#include "Generated.xcconfig"
+
+// Bundle identifier for production
+PRODUCT_BUNDLE_IDENTIFIER = com.zendfast.app
+
+// App display name
+PRODUCT_NAME = Zendfast
+
+// Deep link URL scheme for production
+// Add this to Info.plist: CFBundleURLSchemes = zendfast
+PRODUCTION_URL_SCHEME = zendfast

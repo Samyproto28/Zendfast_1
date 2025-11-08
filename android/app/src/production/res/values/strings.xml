@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zendfast</string>
+    <string name="deep_link_scheme">zendfast</string>
+</resources>
