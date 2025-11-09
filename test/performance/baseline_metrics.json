@@ -1,0 +1,52 @@
+{
+  "created_at": "2025-01-09T00:00:00.000Z",
+  "version": "1.0.0",
+  "description": "Baseline performance metrics for Zendfast app",
+  "metrics": {
+    "app_launch": {
+      "cold_start_ms": 1800,
+      "warm_start_ms": 400,
+      "first_frame_ms": 80
+    },
+    "timer_accuracy": {
+      "drift_1min_ms": 50,
+      "drift_5min_ms": 200,
+      "drift_1hour_ms": 3000
+    },
+    "memory_usage": {
+      "idle_mb": 60,
+      "timer_running_mb": 75,
+      "max_usage_mb": 120,
+      "leak_rate_mb_per_min": 0.1
+    },
+    "animation_performance": {
+      "fadeIn_avg_frame_ms": 14.5,
+      "scaleIn_avg_frame_ms": 15.0,
+      "slideIn_avg_frame_ms": 14.8,
+      "fadeSlideIn_avg_frame_ms": 15.5,
+      "multiple_animations_avg_frame_ms": 16.0,
+      "max_dropped_frames": 3
+    },
+    "battery_consumption": {
+      "drain_per_hour_percent": 4.5,
+      "background_drain_per_hour_percent": 3.0
+    }
+  },
+  "thresholds": {
+    "cold_start_ms": 2000,
+    "warm_start_ms": 500,
+    "timer_accuracy_1h_ms": 5000,
+    "timer_accuracy_16h_ms": 80000,
+    "max_frame_time_ms": 18.33,
+    "max_dropped_frames": 5,
+    "max_memory_mb": 150,
+    "max_battery_drain_per_hour_percent": 5.0
+  },
+  "notes": [
+    "Baseline metrics established on Android Pixel 6 emulator",
+    "iOS metrics may vary slightly due to platform differences",
+    "Battery metrics require physical devices for accuracy",
+    "Timer accuracy measured over abbreviated 10-minute tests in CI",
+    "Full 16-hour validation should be performed manually"
+  ]
+}

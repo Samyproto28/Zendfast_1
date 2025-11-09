@@ -1,3 +1,26 @@
 description: This file stores settings for Dart & Flutter DevTools.
 documentation: https://docs.flutter.dev/tools/devtools/extensions#configure-extension-enablement-states
+
+# Performance profiling settings
+# Enable Timeline recording for performance analysis
+performance:
+  # Enable frame rendering tracking
+  trackFrames: true
+
+  # Enable widget rebuild tracking
+  trackRebuilds: true
+
+  # Enable detailed Timeline events
+  timeline:
+    enabled: true
+    recordAllEvents: true
+
+# Memory profiling settings
+memory:
+  # Enable memory leak detection
+  trackLeaks: true
+
+  # Enable allocation tracking
+  trackAllocations: true
+
 extensions:

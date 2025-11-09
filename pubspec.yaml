@@ -100,6 +100,11 @@ dev_dependencies:
   isar_generator: ^3.1.0+1
   riverpod_generator: ^2.4.0
 
+  # Performance and integration testing
+  integration_test:
+    sdk: flutter
+  battery_plus: ^6.0.3  # Battery monitoring for performance tests
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
