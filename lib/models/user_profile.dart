@@ -35,6 +35,9 @@ class UserProfile {
   /// Whether user opted into 48h detox plan (null = not answered)
   bool? detoxPlanOptIn;
 
+  /// Selected fasting plan type (e.g., 'plan16_8', 'plan18_6')
+  String? selectedFastingPlan;
+
   /// When this profile was created
   late DateTime createdAt;
 
@@ -52,6 +55,7 @@ class UserProfile {
     this.fastingExperienceLevel,
     this.hasCompletedOnboarding = false,
     this.detoxPlanOptIn,
+    this.selectedFastingPlan,
   }) {
     createdAt = DateTime.now();
     updatedAt = DateTime.now();

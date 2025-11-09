@@ -62,6 +62,7 @@ class _OnboardingDetoxRecommendationScreenState
           fastingExperienceLevel: onboardingState.fastingExperienceLevel,
           hasCompletedOnboarding: true,
           detoxPlanOptIn: onboardingState.detoxPlanOptIn,
+          selectedFastingPlan: onboardingState.selectedFastingPlan,
         );
         await db.saveUserProfile(profile);
       } else {
@@ -72,6 +73,8 @@ class _OnboardingDetoxRecommendationScreenState
             profile.fastingExperienceLevel;
         profile.hasCompletedOnboarding = true;
         profile.detoxPlanOptIn = onboardingState.detoxPlanOptIn;
+        profile.selectedFastingPlan = onboardingState.selectedFastingPlan ??
+            profile.selectedFastingPlan;
         profile.markUpdated();
         await db.saveUserProfile(profile);
       }

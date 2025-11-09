@@ -488,7 +488,7 @@
         "dependencies": [
           "1"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -496,7 +496,7 @@
             "description": "Implementar la estructura de datos para los planes de ayuno con toda la información necesaria para mostrar en la UI",
             "dependencies": [],
             "details": "Crear clase FastingPlan con propiedades: nombre, duración de ayuno, duración de comida, nivel de dificultad (enum), descripción de beneficios, recomendado para (pérdida de grasa/autofagia), icono. Definir lista de planes predefinidos: 12/12, 14/10, 16/8, 18/6, 24h, 48h con sus respectivos datos completos. Incluir validaciones de datos y métodos de serialización JSON.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que todos los planes tienen datos completos, probar serialización/deserialización JSON, validar enum values correctos",
             "parentId": "undefined"
           },
@@ -508,7 +508,7 @@
               1
             ],
             "details": "Crear FastingPlanCard widget que muestre nombre del plan, duración ayuno/comida, nivel de dificultad con badge colorido, descripción de beneficios y para qué está recomendado. Implementar estados visuales de Material 3: normal, hover, pressed, selected. Usar Card con elevation y border radius apropiados. Agregar animaciones suaves de transición entre estados (250ms). Soportar temas claro y oscuro.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Probar estados visuales funcionan correctamente, verificar animaciones fluidas, validar accesibilidad con semantic labels",
             "parentId": "undefined"
           },
@@ -521,7 +521,7 @@
               2
             ],
             "details": "Crear PlanSelectionScreen con ListView de FastingPlanCard widgets. Implementar selección single-choice con estado visual claro. Agregar AppBar con título y botón confirmar. Manejar selección con StatefulWidget o Riverpod provider. Guardar plan seleccionado en UserProfile y persistir en storage local. Implementar navegación de regreso con resultado. Agregar loading states durante guardado.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar selección funciona correctamente, probar persistencia de datos, validar UI responsive en diferentes tamaños de pantalla",
             "parentId": "undefined"
           }
@@ -4374,7 +4374,7 @@
       ],
       "created": "2025-11-09T16:12:49.138Z",
       "description": "Tasks for master context",
-      "updated": "2025-11-09T20:57:09.200Z"
+      "updated": "2025-11-09T21:30:01.145Z"
     }
   }
 }

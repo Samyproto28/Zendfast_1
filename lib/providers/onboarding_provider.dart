@@ -6,6 +6,7 @@ class OnboardingState {
   final double? weightKg;
   final double? heightCm;
   final String? fastingExperienceLevel;
+  final String? selectedFastingPlan;
   final bool? hasSubscribed;
   final bool? detoxPlanOptIn;
   final bool hasAcceptedPrivacyPolicy;
@@ -16,6 +17,7 @@ class OnboardingState {
     this.weightKg,
     this.heightCm,
     this.fastingExperienceLevel,
+    this.selectedFastingPlan,
     this.hasSubscribed,
     this.detoxPlanOptIn,
     this.hasAcceptedPrivacyPolicy = false,
@@ -27,6 +29,7 @@ class OnboardingState {
     double? weightKg,
     double? heightCm,
     String? fastingExperienceLevel,
+    String? selectedFastingPlan,
     bool? hasSubscribed,
     bool? detoxPlanOptIn,
     bool? hasAcceptedPrivacyPolicy,
@@ -38,6 +41,7 @@ class OnboardingState {
       heightCm: heightCm ?? this.heightCm,
       fastingExperienceLevel:
           fastingExperienceLevel ?? this.fastingExperienceLevel,
+      selectedFastingPlan: selectedFastingPlan ?? this.selectedFastingPlan,
       hasSubscribed: hasSubscribed ?? this.hasSubscribed,
       detoxPlanOptIn: detoxPlanOptIn ?? this.detoxPlanOptIn,
       hasAcceptedPrivacyPolicy:
@@ -78,6 +82,11 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
   /// Save detox plan opt-in decision
   void saveDetoxDecision(bool optIn) {
     state = state.copyWith(detoxPlanOptIn: optIn);
+  }
+
+  /// Save selected fasting plan
+  void saveFastingPlan(String planType) {
+    state = state.copyWith(selectedFastingPlan: planType);
   }
 
   /// Save legal acceptance (Privacy Policy + Terms of Service)

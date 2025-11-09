@@ -6,11 +6,12 @@ import 'splash_screen.dart';
 import 'intro_screen.dart';
 import 'legal_acceptance_screen.dart';
 import 'questionnaire_screen.dart';
+import 'plan_selection_screen.dart';
 import 'paywall_screen.dart';
 import 'detox_recommendation_screen.dart';
 import '../../theme/spacing.dart';
 
-/// Main onboarding coordinator managing the 6-screen flow
+/// Main onboarding coordinator managing the 7-screen flow
 /// Uses PageView to navigate between screens with smooth transitions
 class OnboardingCoordinator extends ConsumerStatefulWidget {
   const OnboardingCoordinator({super.key});
@@ -33,7 +34,7 @@ class _OnboardingCoordinatorState
 
   /// Navigate to next page
   void _nextPage() {
-    if (_currentPage < 5) {
+    if (_currentPage < 6) {
       _pageController.animateToPage(
         _currentPage + 1,
         duration: const Duration(milliseconds: 300),
@@ -106,13 +107,19 @@ class _OnboardingCoordinatorState
                   onSkip: _skipPage,
                 ),
 
-                // Screen 5: Paywall (skippable)
+                // Screen 5: Plan Selection (skippable)
+                PlanSelectionScreen(
+                  onContinue: _nextPage,
+                  onSkip: _skipPage,
+                ),
+
+                // Screen 6: Paywall (skippable)
                 OnboardingPaywallScreen(
                   onNext: _nextPage,
                   onSkip: _skipPage,
                 ),
 
-                // Screen 6: Detox Recommendation (final screen, handles completion)
+                // Screen 7: Detox Recommendation (final screen, handles completion)
                 const OnboardingDetoxRecommendationScreen(),
               ],
             ),
@@ -128,14 +135,14 @@ class _OnboardingCoordinatorState
                     padding: const EdgeInsets.all(ZendfastSpacing.m),
                     child: OnboardingProgressIndicator(
                       currentStep: _currentPage,
-                      totalSteps: 6,
+                      totalSteps: 7,
                     ),
                   ),
                 ),
               ),
 
             // Back button (shown from screen 2 onwards, except last screen)
-            if (_currentPage > 0 && _currentPage < 5)
+            if (_currentPage > 0 && _currentPage < 6)
               Positioned(
                 top: 0,
                 left: 0,
