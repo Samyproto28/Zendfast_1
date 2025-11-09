@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/content_item.dart';
 import '../../services/database_service.dart';
 import '../../router/route_params.dart';
+import '../../config/cache_config.dart';
 import 'package:go_router/go_router.dart';
 
 /// Screen displaying detailed view of a learning article/content item
@@ -136,11 +138,21 @@ class _ArticleDetailScreenState extends ConsumerState<ArticleDetailScreen> {
                 fit: StackFit.expand,
                 children: [
                   _article!.thumbnailUrl!.startsWith('http')
-                      ? Image.network(
-                          _article!.thumbnailUrl!,
+                      ? CachedNetworkImage(
+                          imageUrl: _article!.thumbnailUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
+                          cacheManager: LearningContentCacheManager(),
+                          memCacheWidth: CacheConfig.fullImageCacheWidth,
+                          memCacheHeight: CacheConfig.fullImageCacheHeight,
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
                               _buildPlaceholderImage(),
+                          fadeInDuration: CacheConfig.fadeDuration,
                         )
                       : _buildPlaceholderImage(),
                   Container(

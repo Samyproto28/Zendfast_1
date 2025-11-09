@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/content_item.dart';
 import '../../services/database_service.dart';
 import '../../router/navigation_extensions.dart';
+import '../../config/cache_config.dart';
 
 /// Screen displaying educational content (articles, videos, etc.)
 /// Allows users to browse and filter learning resources
@@ -141,13 +143,14 @@ class _LearningScreenState extends ConsumerState<LearningScreen> {
       itemCount: _filteredContent.length,
       itemBuilder: (context, index) {
         final item = _filteredContent[index];
-        return _buildContentCard(context, item);
+        return _buildContentCard(context, item, key: ValueKey(item.id));
       },
     );
   }
 
-  Widget _buildContentCard(BuildContext context, ContentItem item) {
+  Widget _buildContentCard(BuildContext context, ContentItem item, {Key? key}) {
     return Card(
+      key: key,
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -161,11 +164,21 @@ class _LearningScreenState extends ConsumerState<LearningScreen> {
                 child: Container(
                   color: Colors.grey[300],
                   child: item.thumbnailUrl!.startsWith('http')
-                      ? Image.network(
-                          item.thumbnailUrl!,
+                      ? CachedNetworkImage(
+                          imageUrl: item.thumbnailUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
+                          cacheManager: LearningContentCacheManager(),
+                          memCacheWidth: CacheConfig.thumbnailCacheWidth,
+                          memCacheHeight: CacheConfig.thumbnailCacheHeight,
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
                               _buildPlaceholderImage(item.contentType),
+                          fadeInDuration: CacheConfig.fadeDuration,
                         )
                       : _buildPlaceholderImage(item.contentType),
                 ),

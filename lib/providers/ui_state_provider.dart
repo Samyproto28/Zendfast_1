@@ -18,7 +18,7 @@ import '../widgets/ui_states/empty_state.dart';
 /// ref.read(uiStateProvider.notifier).setEmpty(type: EmptyStateType.noData);
 /// ref.read(uiStateProvider.notifier).setSuccess();
 /// ```
-final uiStateProvider = StateNotifierProvider<UIStateNotifier, UIState>((ref) {
+final uiStateProvider = StateNotifierProvider.autoDispose<UIStateNotifier, UIState>((ref) {
   return UIStateNotifier();
 });
 
