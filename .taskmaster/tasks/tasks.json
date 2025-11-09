@@ -2,7 +2,7 @@
   "master": {
     "tasks": [
       {
-        "id": "1",
+        "id": 1,
         "title": "Configurar sistema de diseño Zendfast (colores, tipografía, espaciado)",
         "description": "Crear el sistema de diseño base con colores zen-inspirados, tipografías legibles y espaciado consistente para toda la aplicación",
         "details": "Implementar ZendfastColors con paleta: Teal principal (#069494), Verde secundario (#7fb069), Naranja para botón pánico (#ffb366). Configurar tipografías: Inter para headers, Source Sans Pro para cuerpo, Nunito Sans para énfasis emocional. Establecer espaciado base 8dp grid system. Crear ThemeData para Material 3 con elevaciones y radios de borde apropiados.",
@@ -52,7 +52,7 @@
         "expansionPrompt": "Break down this task with a focus on configurar sistema de diseño zendfast (colores, tipografía, espaciado)."
       },
       {
-        "id": "2",
+        "id": 2,
         "title": "Configurar base de datos Isar v3.1.0 con esquemas principales",
         "description": "Inicializar Isar con esquemas para FastingSession, UserProfile, HydrationLog y ContentItem con relaciones y índices optimizados",
         "details": "Instalar isar 3.1.0, isar_flutter_libs, build_runner. Crear esquemas @collection para: FastingSession (id, userId, startTime, endTime, durationMinutes, completed, interrupted, planType), UserProfile (id, weightKg, heightCm, dailyHydrationGoal calculado), HydrationLog (id, userId, amount, timestamp), ContentItem (id, title, contentType, category, url, isPremium). Configurar índices para consultas frecuentes (userId, timestamp). Implementar DatabaseService singleton.",
@@ -105,7 +105,7 @@
         "updatedAt": "2025-10-24T17:58:18.007Z"
       },
       {
-        "id": "3",
+        "id": 3,
         "title": "Configurar cliente Supabase con autenticación y RLS",
         "description": "Establecer conexión con Supabase, configurar autenticación email/password y políticas Row Level Security para aislamiento de datos",
         "details": "Instalar supabase_flutter ^2.0.0. Configurar client con URL y anon key desde environment variables. Implementar AuthService con métodos signUp, signIn, signOut, resetPassword. Crear tablas en Supabase: user_profiles, fasting_sessions, hydration_logs, learning_content, analytics_events. Configurar RLS policies: usuarios solo acceden a sus datos. Implementar manejo de errores Supabase específicos.",
@@ -179,7 +179,7 @@
         "expansionPrompt": "Dividir en setup de cliente Supabase, implementación de AuthService, configuración de tablas y RLS policies, manejo de errores específicos, y testing de flows de autenticación"
       },
       {
-        "id": "4",
+        "id": 4,
         "title": "Implementar servicio de fondo para persistencia del timer",
         "description": "Configurar flutter_background_service para mantener timer activo cuando app está cerrada o en background",
         "details": "Instalar flutter_background_service ^3.0.0. Configurar permisos Android (FOREGROUND_SERVICE, WAKE_LOCK) e iOS (background modes). Crear BackgroundTimerService que mantenga estado del ayuno en SharedPreferences. Implementar notificación persistente mostrando tiempo restante. Manejar reinicio del dispositivo y auto-start del servicio. Sincronizar estado con UI principal cuando app vuelve a foreground.",
@@ -228,7 +228,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar servicio de fondo para persistencia del timer."
       },
       {
-        "id": "5",
+        "id": 5,
         "title": "Configurar OneSignal para notificaciones push",
         "description": "Integración completa de OneSignal para notificaciones push con templates de ayuno, hidratación y engagement, incluyendo deep linking y persistencia de historial. Sistema dual con fallback de notificaciones locales.",
         "status": "done",
@@ -325,7 +325,7 @@
         "expansionPrompt": "Dividir en subtareas específicas: configuración inicial del SDK OneSignal en Flutter, configuración de permisos por plataforma (iOS/Android), implementación de templates de notificaciones categorizadas, y configuración de deep linking para navegación desde notificaciones"
       },
       {
-        "id": "6",
+        "id": 6,
         "title": "Implementar sistema de autenticación con Supabase Auth",
         "description": "Crear flujos completos de registro, login y logout con validación de email y manejo de estados de sesión",
         "details": "Crear AuthService con métodos async para signUp, signIn, signOut usando Supabase Auth. Implementar validación email format, password strength (8+ caracteres). Crear Riverpod authStateProvider que exponga User? y isAuthenticated. Manejar estados loading, error, success. Implementar auto-login si sesión válida existe. Crear pantallas LoginScreen y RegisterScreen con formularios responsive.",
@@ -376,7 +376,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar sistema de autenticación con supabase auth."
       },
       {
-        "id": "7",
+        "id": 7,
         "title": "Crear modelo FastingSession en Isar",
         "description": "Definir esquema completo para sesiones de ayuno con campos para tracking, estado y sincronización",
         "details": "Crear @collection class FastingSession con campos: Id id (auto-increment), String userId, DateTime startTime, DateTime? endTime, int durationMinutes, bool completed, bool interrupted, String? planType, DateTime createdAt, DateTime updatedAt, int? syncVersion. Agregar métodos helper para calcular elapsed time, progress percentage, isActive. Implementar toJson/fromJson para sync con Supabase.",
@@ -427,7 +427,7 @@
         "expansionPrompt": "Dividir en: definición del esquema Isar con anotaciones y campos principales, implementación de métodos helper para cálculos de tiempo y estado, y configuración de serialización JSON para sincronización con Supabase"
       },
       {
-        "id": "8",
+        "id": 8,
         "title": "Desarrollar TimerService con lógica de ayuno",
         "description": "Implementar servicio central para gestionar estado del timer, inicio/pausa/finalización de ayunos con persistencia",
         "details": "Crear TimerService como singleton con Stream<FastingState> para reactive updates. Implementar métodos: startFast(planType), pauseFast(), resumeFast(), completeFast(), interruptFast(). Usar Timer.periodic para updates cada segundo. Persistir estado en Isar y background service. Manejar edge cases: cambio de timezone, reinicio de dispositivo. Implementar FastingState enum (idle, fasting, paused, completed).",
@@ -479,7 +479,7 @@
         "expansionPrompt": "Dividir en: implementación del singleton TimerService con Stream para actualizaciones reactivas, desarrollo de lógica de timer con Timer.periodic y control de estados, integración con persistencia Isar y manejo de casos edge como cambios de timezone, y configuración de background service integration"
       },
       {
-        "id": "9",
+        "id": 9,
         "title": "Crear pantalla de selección de planes de ayuno",
         "description": "Diseñar UI para elegir entre planes predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 48h) con descripción y nivel de dificultad",
         "details": "Crear PlanSelectionScreen con ListView de FastingPlanCard widgets. Mostrar para cada plan: nombre, duración ayuno/comida, nivel dificultad (principiante/intermedio/avanzado), descripción beneficios, recomendado para (pérdida grasa/autofagia). Implementar selección visual con Material 3 selection states. Crear FastingPlan model con datos predefinidos. Guardar selección en UserProfile.",
@@ -531,7 +531,7 @@
         "expansionPrompt": "Dividir en: creación del modelo FastingPlan con datos predefinidos, desarrollo del widget FastingPlanCard con Material 3 design y estados de selección, e implementación de la pantalla completa con persistencia de selección"
       },
       {
-        "id": "10",
+        "id": 10,
         "title": "Desarrollar pantalla principal FastingHomeScreen",
         "description": "Crear UI principal mostrando timer grande, progreso del ayuno, botones de control y estado actual",
         "details": "Crear FastingHomeScreen con timer central (48sp, bold, color dinámico según estado). Mostrar progress ring circular o linear bar. Implementar botones Start/Stop/Pause con estados visuales claros. Mostrar información contextual: tiempo transcurrido/restante, fase actual (ayuno/comida), próximo hito. Usar Riverpod fastingTimerProvider para estado reactivo. Agregar animaciones suaves (250ms transitions).",
@@ -585,7 +585,7 @@
         "expansionPrompt": "Dividir en: implementación del componente timer central con tipografía dinámica y colores por estado, desarrollo del indicador de progreso circular y botones de control con estados visuales, e integración de información contextual con animaciones de transición suaves"
       },
       {
-        "id": "11",
+        "id": 11,
         "title": "Implementar botón de pánico como FloatingActionButton",
         "description": "Crear botón pánico persistente que aparece solo durante ayuno activo para apoyo emocional en momentos de antojos",
         "details": "Crear PanicButton como FloatingActionButton naranja (#ffb366) de 64×64dp con icono corazón o SOS. Mostrar solo cuando fastingState == fasting. Implementar animación pulse sutil (no distractiva). Posicionar en bottom-right con elevation 8dp. Al tap, abrir PanicModal con opciones: frases motivacionales, meditación respiración, opción 'No puedo continuar'. Trackear eventos panic_button_used en analytics.",
@@ -636,7 +636,7 @@
         "expansionPrompt": "Dividir en: creación del componente FloatingActionButton con estilo específico y visibilidad condicional, implementación de animación pulse sutil no intrusiva, e integración de analytics tracking para eventos de uso"
       },
       {
-        "id": "12",
+        "id": 12,
         "title": "Crear modal de pánico con contenido motivacional",
         "description": "Desarrollar overlay que se muestra al presionar botón pánico con quotes motivacionales y opciones de apoyo",
         "details": "Crear PanicModal como full-screen overlay con blur background. Mostrar frase motivacional aleatoria de categories: motivation, anti_binge, calm. Incluir botones: 'Meditar 5 min', 'Continuar ayuno', 'No puedo seguir'. Implementar repository MotivationalPhrasesRepository que fetch desde Supabase o cache local. Agregar ilustraciones calm/zen. Usar Material 3 modal design patterns.",
@@ -688,7 +688,7 @@
         "expansionPrompt": "Dividir en: implementación del modal full-screen con blur background y Material 3 design, desarrollo del repositorio de frases motivacionales con cache local y conexión Supabase, y creación de botones de acción con navegación y lógica de respuesta"
       },
       {
-        "id": "13",
+        "id": 13,
         "title": "Implementar animación de respiración 4-4-8 con Lottie",
         "description": "Crear pantalla de meditación guiada con animación visual para técnica de respiración 4-4-8 (inhalar-mantener-exhalar)",
         "details": "Instalar lottie ^2.7.0. Crear MeditationScreen con Lottie widget mostrando círculo/pulmones que expande (4s inhale), mantiene (4s hold), contrae (8s exhale). Agregar text overlay con instrucciones 'Inhala', 'Mantén', 'Exhala'. Implementar contador de ciclos completados. Botones: 'Parar meditación', 'Continuar ayuno', 'No puedo seguir'. Asset Lottie <100KB para rendimiento. Colores teal/verde zen.",
@@ -739,7 +739,7 @@
         "expansionPrompt": "Dividir en: instalación de Lottie dependency y configuración de assets, creación de MeditationScreen con widget Lottie y controles de timing para patrón 4-4-8, e implementación de botones de control con navegación apropiada"
       },
       {
-        "id": "14",
+        "id": 14,
         "title": "Crear biblioteca de frases motivacionales",
         "description": "Desarrollar repository y modelo para gestionar frases motivacionales categorizadas para el botón pánico",
         "details": "Crear MotivationalPhrase model con fields: id, phraseText, category (motivation/anti_binge/calm), language. Implementar MotivationalPhrasesRepository con métodos: getRandomByCategory(), getAllByLanguage(). Seed data con 15+ frases en español cubrir categories. Implementar cache local en Isar para offline access. Sync desde Supabase motivational_phrases table. Manejar fallbacks si no hay conexión.",
@@ -791,7 +791,7 @@
         "expansionPrompt": "Dividir en: creación del modelo MotivationalPhrase y configuración de base de datos local/remota, implementación del repositorio con métodos core y lógica anti-repetición, y poblado de base de datos con seed data y configuración de sincronización"
       },
       {
-        "id": "15",
+        "id": 15,
         "title": "Implementar gestión de sesiones (completar/interrumpir ayuno)",
         "description": "Desarrollar lógica para finalizar ayunos correctamente, guardar métricas y actualizar historial del usuario",
         "details": "Extender TimerService con completeFast() e interruptFast() methods. Al completar: marcar session.completed = true, calcular duration final, save to Isar, trigger metrics recalculation, mostrar congratulations UI, sync to Supabase. Al interrumpir: marcar interrupted = true, save partial session, preguntar razón (opcional), no penalizar métricas severamente. Implementar SessionManager para orchestrate estos flows.",
@@ -843,7 +843,7 @@
         "expansionPrompt": "Dividir en: extensión de TimerService con métodos de finalización y cálculo de métricas, implementación de persistencia y sincronización de sesiones completadas/interrumpidas, y creación de SessionManager para orchestrar flows y UI de completion"
       },
       {
-        "id": "16",
+        "id": 16,
         "title": "Crear modelo UserProfile con cálculo de hidratación",
         "description": "Implementar perfil de usuario con peso, altura y cálculo automático de meta diaria de hidratación",
         "details": "Crear @collection UserProfile con fields: String id (auth user id), double weightKg, int? heightCm, int dailyHydrationGoal (computed), DateTime createdAt, DateTime updatedAt. Implementar getter que calcula hydration goal: weightKg * 32 ml. Crear UserProfileRepository con CRUD operations y sync con Supabase user_profiles table. Manejar conversiones unidades si necesario (kg/lbs).",
@@ -896,7 +896,7 @@
         "expansionPrompt": "Dividir en: definición del esquema UserProfile con campos básicos y validaciones, implementación de cálculo automático de meta de hidratación basado en peso, y creación del repositorio con operaciones CRUD y sincronización Supabase"
       },
       {
-        "id": "17",
+        "id": 17,
         "title": "Desarrollar servicio de hidratación (HydrationService)",
         "description": "Implementar lógica para tracking de ingesta de agua, metas diarias y cálculo de progreso",
         "details": "Crear HydrationService con métodos: logWater(amount), getTodayProgress(), getDailyGoal(), resetDaily(). Implementar HydrationLog model: id, userId, amount, timestamp, glassSize. Calcular progreso como percentage: totalToday / dailyGoal * 100. Manejar timezone changes y reset automático daily a medianoche. Integrar con UserProfile para goal dinámico.",
@@ -947,7 +947,7 @@
         "expansionPrompt": "Dividir en: implementación del modelo HydrationLog y esquema de base de datos, desarrollo de métodos core del servicio de hidratación con cálculos de progreso, e implementación de reset automático diario y integración con UserProfile"
       },
       {
-        "id": "18",
+        "id": 18,
         "title": "Crear WaterButton widget para logging rápido",
         "description": "Desarrollar botón flotante para registrar ingesta de agua con un tap, mostrando progreso visual",
         "details": "Crear WaterButton como FloatingActionButton 56×56dp en bottom-left corner. Color azul/teal. Al tap: log glass default (250ml), mostrar ripple animation + haptic feedback, update progress instantáneamente. Implementar debouncing para evitar double-taps. Mostrar badge con progreso percentage. Long-press para ajustar glass size. Considerar accessibility labels para screen readers.",
@@ -998,7 +998,7 @@
         "expansionPrompt": "Dividir en: creación del componente FloatingActionButton base con diseño específico, implementación de funcionalidad de logging con feedback visual y háptico, y agregado de badge de progreso con long-press para configuración"
       },
       {
-        "id": "19",
+        "id": 19,
         "title": "Implementar indicador de progreso de hidratación",
         "description": "Crear widget visual que muestre progreso diario de hidratación como barra o círculo con meta dinámica",
         "details": "Crear HydrationProgressIndicator widget como linear progress bar o circular indicator. Mostrar: current intake / daily goal con colors: azul para progreso, verde cuando completado (≥100%). Agregar text overlay con ml consumed y ml remaining. Actualizar en tiempo real via Riverpod hydrationProvider. Implementar animaciones smooth para changes. Considerar diferentes visual styles según contexto (dashboard vs home).",
@@ -1049,7 +1049,7 @@
         "expansionPrompt": "Dividir en: creación del widget base del indicador de progreso con styling apropiado, implementación de text overlay y cálculos visuales de progreso, e integración con Riverpod para actualizaciones en tiempo real con animaciones"
       },
       {
-        "id": "20",
+        "id": 20,
         "title": "Desarrollar pantalla de onboarding con flujo de 6 pasos",
         "description": "Crear experiencia de primera vez con splash, introducción, registro, cuestionario, paywall y recomendación detox",
         "details": "Crear OnboardingCoordinator con PageView de 6 screens: SplashScreen (logo + loading), IntroScreen (beneficios app), RegisterScreen (email/password), QuestionnaireScreen (peso, altura, experiencia), PaywallScreen (Superwall), DetoxRecommendationScreen (48h plan opcional). Implementar navigation entre steps con progress indicator. Guardar answers en UserProfile. Usar go_router para deep linking. Permitir skip en algunos steps.",
@@ -1101,7 +1101,7 @@
         "expansionPrompt": "Dividir en: creación de la estructura de navegación OnboardingCoordinator con PageView y progress indicator, desarrollo de las 6 pantallas individuales con sus funcionalidades específicas, e implementación de persistencia de datos y finalización del flujo"
       },
       {
-        "id": "21",
+        "id": 21,
         "title": "Implementar plan de detox de 48 horas (opcional)",
         "description": "Crear pantalla y lógica para protocolo detox carnívoro pre-ayuno para reducir antojos iniciales",
         "details": "Crear DetoxScreen con countdown timer 48h separado del main timer. Mostrar lista allowed foods: carne, huevos, pescado, caldo de hueso, sal, agua. Implementar daily check-ins (morning/evening) para log adherence. Crear DetoxService paralelo a TimerService. Al completar: unlock fasting plans con congratulations screen. Permitir skip con warning message. Trackear completion rate para analytics.",
@@ -1152,7 +1152,7 @@
         "expansionPrompt": "Dividir en: creación de DetoxScreen con countdown timer independiente de 48 horas, implementación de lista de alimentos permitidos y sistema de check-ins diarios, y desarrollo de DetoxService con pantalla de finalización y unlocking de planes"
       },
       {
-        "id": "22",
+        "id": 22,
         "title": "Crear MetricsService para cálculo de estadísticas",
         "description": "Implementar servicio que calcule streak, horas totales, tasa de completación y análisis de patrones del usuario",
         "details": "Crear MetricsService con métodos: calculateStreak(), getTotalHours(), getCompletionRate(), getLongestFast(), getPatterns(). Streak = días consecutivos con ayunos completados. Completion rate = completed sessions / total sessions. Patterns = análisis best days/times para start fasts. Usar Isar queries optimizadas con indices. Cache calculations en user_metrics table para performance.",
@@ -1203,7 +1203,7 @@
         "expansionPrompt": "Dividir en: creación de la estructura base del MetricsService con métodos principales, implementación de algoritmos de cálculo para streak y métricas temporales, y desarrollo de análisis de patrones con sistema de cache para performance"
       },
       {
-        "id": "23",
+        "id": 23,
         "title": "Desarrollar MetricsDashboardScreen con widgets visuales",
         "description": "Crear pantalla principal de métricas mostrando streak actual, total de horas ayunadas y tasa de éxito",
         "details": "Crear MetricsDashboardScreen con cards para: current streak (con fire icon), total hours fasted, completion rate (percentage), longest fast. Implementar MetricCard widget reusable con title, value, icon, trend indicator. Usar Material 3 card design con elevation y colors apropiados. Agregar subtle animations para value changes. Considerar charts library para future enhancements.",
@@ -1255,7 +1255,7 @@
         "expansionPrompt": "Dividir en: creación del componente MetricCard reutilizable con Material 3 design, implementación de lógica de cálculo de métricas en tiempo real, y desarrollo de la pantalla principal con layout y animaciones"
       },
       {
-        "id": "24",
+        "id": 24,
         "title": "Implementar calendario heatmap para historial visual",
         "description": "Crear vista de calendario que muestre días con ayunos completados, interrumpidos o sin actividad",
         "details": "Crear CalendarHeatmapWidget usando table_calendar ^3.0.9 o custom implementation. Color coding: verde para completed fasts, naranja para interrupted, gris para no sessions. Implementar tap en day para mostrar session details en modal. Agregar legend explicando colors. Navigation entre meses. Load data efficiently para date ranges. Considerar different intensities basado en duration/success.",
@@ -1306,7 +1306,7 @@
         "expansionPrompt": "Dividir en: implementación de la estructura básica del CalendarHeatmapWidget con navegación, desarrollo del sistema de color coding para estados de ayuno, y agregado de interactividad con modales de detalles"
       },
       {
-        "id": "25",
+        "id": 25,
         "title": "Crear modelo ContentItem para biblioteca de aprendizaje",
         "description": "Implementar esquema para artículos, videos y estudios educativos sobre ayuno intermitente",
         "details": "Crear @collection ContentItem con fields: String id, String title, ContentType type (article/video/study), Category category (basics/science/tips/success_stories), String contentUrl, String? thumbnailUrl, String description, int? durationMinutes, bool isPremium, DateTime createdAt. Implementar enums para type y category. Agregar métodos helper para isVideo, isArticle. Sync con Supabase learning_content table.",
@@ -1358,7 +1358,7 @@
         "expansionPrompt": "Dividir en: creación de enums y estructura de clasificación de contenido, implementación de la clase ContentItem con anotaciones Isar, y configuración de sincronización bidireccional con Supabase"
       },
       {
-        "id": "26",
+        "id": 26,
         "title": "Desarrollar ContentService para gestión de contenido educativo",
         "description": "Implementar servicio para fetching, caching y gestión de favoritos para contenido de aprendizaje",
         "details": "Crear ContentService con métodos: fetchContent(), getByCategory(), getFavorites(), toggleFavorite(), cacheForOffline(). Implementar smart caching: articles cache full content for offline, videos cache metadata only. Manejar favorites como separate Isar collection o field en ContentItem. Sync favorites con Supabase. Implementar search functionality para find content.",
@@ -1409,7 +1409,7 @@
         "expansionPrompt": "Dividir en: implementación de la estructura base del ContentService con métodos principales, desarrollo de sistema de caching inteligente diferenciado por tipo de contenido, e implementación de gestión de favoritos con funcionalidad de búsqueda"
       },
       {
-        "id": "27",
+        "id": 27,
         "title": "Crear LearningHomeScreen para exploración de contenido",
         "description": "Desarrollar pantalla principal de aprendizaje con navegación por categorías y contenido featured",
         "details": "Crear LearningHomeScreen con TabBar para categories: Básicos, Ciencia, Tips, Historias Éxito. Implementar ContentListView con ContentCard widgets mostrando thumbnail, title, duration, premium badge. Agregar search bar en app bar. Featured content section en top. Pull-to-refresh para update content. Manejar empty states y loading states elegantemente.",
@@ -1460,7 +1460,7 @@
         "expansionPrompt": "Dividir en: creación de la estructura base con TabBar para categorías, implementación de ContentListView y ContentCard widgets reutilizables, y agregado de featured content section con estados de loading/empty"
       },
       {
-        "id": "28",
+        "id": 28,
         "title": "Integrar youtube_player_flutter para reproducción de videos",
         "description": "Implementar reproductor de video embebido para contenido educativo de YouTube con controles nativos",
         "details": "Instalar youtube_player_flutter ^8.0.0. Crear VideoPlayerScreen que extraiga video ID desde URL y muestre YoutubePlayer widget. Implementar fullscreen mode, autoplay settings, quality selection. Manejar estados: loading, playing, paused, error. Fallback a external browser si embedding fails. Considerar Picture-in-Picture para premium users. Trackear video completion para analytics.",
@@ -1511,7 +1511,7 @@
         "expansionPrompt": "Dividir en: instalación y configuración del SDK youtube_player_flutter, creación de VideoPlayerScreen con extracción de video ID, e implementación de controles avanzados con manejo de estados"
       },
       {
-        "id": "29",
+        "id": 29,
         "title": "Implementar sistema de favoritos para contenido",
         "description": "Desarrollar funcionalidad para guardar artículos y videos favoritos con sincronización entre dispositivos",
         "details": "Extender ContentItem con isFavorite field boolean. Implementar FavoritesRepository con addFavorite(), removeFavorite(), getFavorites(). UI: heart icon en ContentCard que toggle favorite state con animation. Crear FavoritesScreen para ver saved content. Sync favorites con Supabase usando junction table user_content_favorites. Manejar conflicts si same user modifica favorites en multiple devices.",
@@ -1563,7 +1563,7 @@
         "expansionPrompt": "Dividir en: extensión del modelo ContentItem y creación del repositorio de favoritos, implementación de UI con ícono heart y pantalla dedicada, y configuración de sincronización con resolución de conflictos"
       },
       {
-        "id": "30",
+        "id": 30,
         "title": "Crear ProfileScreen para gestión de configuración",
         "description": "Desarrollar pantalla de perfil con edición de peso, configuración de tema y preferencias de notificaciones",
         "details": "Crear ProfileScreen con sections: User Info (weight, height editing), Hydration (goal adjustment, glass size), Notifications (toggles por type), Theme (light/dark/system toggle), Account (logout, export data). Implementar form validation para weight/height. Usar TextFormField con input formatters. Settings persisten en UserProfile y SharedPreferences. Agregar confirmation dialogs para destructive actions.",
@@ -1614,7 +1614,7 @@
         "expansionPrompt": "Dividir en: creación de la estructura base de ProfileScreen con navegación, implementación de secciones User Info y Hydration con validaciones, y desarrollo de configuraciones Theme/Notifications/Account con confirmaciones"
       },
       {
-        "id": "31",
+        "id": 31,
         "title": "Configurar Superwall para monetización y paywall",
         "description": "Integrar Superwall SDK para presentación de paywall, A/B testing y gestión de suscripciones premium",
         "details": "Instalar superwall_flutter SDK. Configurar API keys y experiment IDs. Crear SuperwallService wrapper con métodos: presentPaywall(), checkSubscriptionStatus(), restorePurchases(). Implementar paywall triggers: después onboarding, al acceder premium features. Configurar productos: monthly/yearly subscriptions. Setup webhook endpoint para subscription events. Trackear conversion events para optimization.",
@@ -1677,7 +1677,7 @@
         "expansionPrompt": "Dividir en integración del SDK Superwall, configuración de productos y suscripciones, implementación de triggers de paywall, y manejo de webhooks para eventos de suscripción"
       },
       {
-        "id": "32",
+        "id": 32,
         "title": "Implementar gating de features premium",
         "description": "Desarrollar sistema para restringir funcionalidades avanzadas a usuarios con suscripción activa",
         "details": "Crear SubscriptionManager con checkIsPremium() method. Implementar isPremiumProvider en Riverpod que exponga boolean status. Features premium: custom fasting plans, detailed analytics, meditation library, ad-free experience. Crear PremiumFeatureGate widget que wrappea premium content y muestra upsell si not subscribed. Implementar graceful fallbacks para free users.",
@@ -1728,7 +1728,7 @@
         "expansionPrompt": "Dividir en: creación de SubscriptionManager y provider de estado premium, desarrollo de PremiumFeatureGate widget universal, e implementación de gating en features específicas con fallbacks"
       },
       {
-        "id": "33",
+        "id": 33,
         "title": "Configurar programación de notificaciones con OneSignal",
         "description": "Implementar sistema para programar notificaciones automáticas de ayuno, hidratación y engagement",
         "details": "Crear NotificationScheduler service con métodos: scheduleFastingNotifications(), scheduleHydrationReminders(), scheduleEngagementNotifications(). Trigger notifications en: fast start, milestones (4h, 8h, 12h, 16h), completion, water reminders cada 2h, re-engagement si inactive >24h. Usar OneSignal scheduled notifications API. Implementar user preferences para disable specific types. Handle timezone changes.",
@@ -1792,7 +1792,7 @@
         "expansionPrompt": "Dividir en subtareas específicas para programación de notificaciones: configurar servicio de scheduling, implementar templates de notificaciones, manejar preferencias de usuario y gestionar cambios de zona horaria"
       },
       {
-        "id": "34",
+        "id": 34,
         "title": "Implementar deep linking para notificaciones",
         "description": "Configurar navigation directa a pantallas específicas cuando usuario tapa notificaciones push",
         "details": "Configurar go_router con routes para deep links. Implementar NotificationHandler que parse notification data y route appropriately: fast_milestone -> /home, hydration_reminder -> /home (focus water button), learning_content -> /learning/article/:id. Configurar Universal Links (iOS) y App Links (Android) con domain verification. Host apple-app-site-association y assetlinks.json en https://zendfast.app/.well-known/.",
@@ -1843,7 +1843,7 @@
         "expansionPrompt": "Dividir en configuración de routing con go_router, implementación de NotificationHandler para parsing, y setup de Universal/App Links con verificación de dominio"
       },
       {
-        "id": "35",
+        "id": 35,
         "title": "Desarrollar SyncManager para sincronización bidireccional",
         "description": "Implementar sistema robusto de sincronización entre Isar local y Supabase con resolución de conflictos",
         "details": "Crear SyncManager con métodos: fullSync(), incrementalSync(), conflictResolution(). Estrategia: last-write-wins usando timestamps. Sync triggers: app foreground, wifi connect, manual refresh, timer eventos. Implement exponential backoff para retry failed syncs. Queue local changes durante offline periods. Sync entities: FastingSession, HydrationLog, UserProfile, ContentFavorites. Handle partial sync failures gracefully.",
@@ -1898,7 +1898,7 @@
         "expansionPrompt": "Dividir en: creación de la arquitectura base del SyncManager con métodos principales, implementación de sistema de cola offline y triggers de sincronización, y desarrollo de resolución de conflictos con manejo robusto de errores"
       },
       {
-        "id": "36",
+        "id": 36,
         "title": "Configurar Sentry para monitoreo de errores",
         "description": "Integrar Sentry SDK para tracking automático de crashes, errores y performance monitoring en producción",
         "details": "Instalar sentry_flutter ^7.0.0. Configurar DSN y environment (dev/prod). Wrap runApp en Sentry.init(). Implementar custom error boundaries para graceful error handling. Setup source maps upload para readable stack traces. Configure performance monitoring para detectar slow frames, large widget builds. Implement user context attachment (user ID, subscription status). Setup release tracking.",
@@ -1947,7 +1947,7 @@
         "expansionPrompt": "Dividir en setup inicial de Sentry SDK, configuración de source maps y contexto de usuario, y configuración de performance monitoring y alertas"
       },
       {
-        "id": "37",
+        "id": 37,
         "title": "Implementar testing de accesibilidad WCAG 2.1 AA",
         "description": "Asegurar cumplimiento de estándares de accesibilidad con contraste de colores, tamaños de toque y etiquetas semánticas",
         "details": "Verificar color contrast 4.5:1 mínimo para todos text/background combinations. Implementar touch targets 44×44dp minimum para todas interactive elements. Agregar Semantics labels a todos widgets: buttons, images, progress indicators. Implement focus navigation correcta para keyboard/switch users. Test con TalkBack (Android) y VoiceOver (iOS). Use Accessibility Scanner para automated testing.",
@@ -1998,7 +1998,7 @@
         "expansionPrompt": "Dividir en: configuración de herramientas de testing automatizado, implementación de validación de contraste y tamaños táctiles, y agregado de etiquetas semánticas con testing manual de screen readers"
       },
       {
-        "id": "38",
+        "id": 38,
         "title": "Implementar tema claro/oscuro con toggle del sistema",
         "description": "Desarrollar soporte completo para temas claro y oscuro con detección automática del sistema y toggle manual",
         "details": "Crear ZendfastTheme.lightTheme y ZendfastTheme.darkTheme usando Material 3 ColorScheme. Dark theme: surface #1E1E1E, background #121212, manteniendo brand colors teal/green. Implementar ThemeModeProvider (light/dark/system) con persistence en SharedPreferences. Crear ThemeToggle widget con SegmentedButton. Verificar legibilidad en ambos themes, especialmente timer display y panic button.",
@@ -2049,7 +2049,7 @@
         "expansionPrompt": "Dividir en: creación de esquemas de colores Material 3, implementación de ThemeModeProvider con persistencia, y creación de widget ThemeToggle con verificación de legibilidad"
       },
       {
-        "id": "39",
+        "id": 39,
         "title": "Crear assets de Lottie para animación de respiración",
         "description": "Diseñar o adquirir animación Lottie optimizada para meditación 4-4-8 con visual zen-inspirado",
         "details": "Adquirir o crear Lottie animation file (<100KB) que muestre breathing pattern: círculo/pulmones expanding (4s), holding (4s), contracting (8s). Colors: teal/green palette matching app theme. Animation debe loop infinitely hasta user stops. Considerar subtle particles o light effects para enhanced meditation experience. Store en assets/animations/breathing.json.",
@@ -2098,7 +2098,7 @@
         "expansionPrompt": "Dividir en: investigación y selección de assets existentes, diseño de animación personalizada para patrón 4-4-8, e integración y optimización en la aplicación Flutter"
       },
       {
-        "id": "40",
+        "id": 40,
         "title": "Configurar flavors de Flutter (development/production)",
         "description": "Establecer entornos separados para desarrollo y producción con configuraciones y APIs específicas",
         "details": "Configurar Android flavors en build.gradle: development (app ID suffix .dev), production (release config). Configurar iOS schemes separados. Crear AppConfig class que lea environment variables (ENV=dev/prod) y returne appropriate Supabase URLs, API keys, debug settings. Implementar run commands con --flavor y --dart-define. Setup CI/CD para build both flavors automaticamente.",
@@ -2146,7 +2146,7 @@
         "expansionPrompt": "Dividir en configuración específica por plataforma: setup de Android flavors y build.gradle, configuración de iOS schemes, e implementación de AppConfig para manejo de environment variables"
       },
       {
-        "id": "41",
+        "id": 41,
         "title": "Implementar obfuscación de código para producción",
         "description": "Configurar obfuscación de código Dart para proteger propiedad intelectual en builds de producción",
         "details": "Agregar --obfuscate y --split-debug-info flags a production builds. Configurar symbol file upload a Sentry para crash deobfuscation. Setup ProGuard rules para Android release builds con minification enabled. Configure Xcode release settings para iOS optimization. Store symbol files securely para future debugging. Document build commands para CI/CD.",
@@ -2199,7 +2199,7 @@
         "expansionPrompt": "Dividir en: configuración de flags de obfuscación en builds Flutter, implementación de ProGuard y optimizaciones nativas, e integración de symbol files con Sentry para crash deobfuscation"
       },
       {
-        "id": "42",
+        "id": 42,
         "title": "Configurar CI/CD con Codemagic",
         "description": "Establecer pipeline automatizado para testing, building y deployment a app stores",
         "details": "Crear codemagic.yaml con workflows para iOS/Android production builds. Configure triggers: push to main -> production build, PR -> run tests only. Setup environment variables: Supabase keys, signing certificates, App Store Connect keys. Implement automated testing, obfuscated builds, symbol upload to Sentry. Configure deployment a TestFlight (iOS) y Internal testing (Android). Setup Slack notifications para build status.",
@@ -2274,7 +2274,7 @@
         "expansionPrompt": "Crear subtareas para cada aspecto del pipeline: configuración de workflows, setup de environment variables y certificados, configuración de testing automatizado, deployment automation, y notificaciones de build status"
       },
       {
-        "id": "43",
+        "id": 43,
         "title": "Preparar assets para App Store (iOS)",
         "description": "Crear screenshots, iconos, video preview y descripción optimizada para App Store submission",
         "details": "Crear 5 screenshots por device size requerido (6.5\" iPhone, 5.5\" iPhone, iPad opcional): timer activo, panic modal, metrics dashboard, learning content, profile. Crear app icon 1024×1024 PNG zen-inspired. Grabar app preview video 15-30s mostrando core flow. Escribir App Store description optimizada con keywords 'intermittent fasting, IF tracker, meditation'. Preparar keywords string <100 chars.",
@@ -2319,7 +2319,7 @@
         "expansionPrompt": "Dividir en: creación de screenshots para diferentes tamaños de dispositivos, diseño de icono y video preview, y redacción de descripción optimizada para App Store"
       },
       {
-        "id": "44",
+        "id": 44,
         "title": "Preparar assets para Google Play Store (Android)",
         "description": "Crear screenshots, feature graphic, descripción y metadata para Google Play Store submission",
         "details": "Crear screenshots para phone (1080×1920) mostrando key features. Diseñar feature graphic 1024×500 con app name y key visual. Escribir short description <80 chars y full description <4000 chars con HTML formatting. Preparar promotional video (YouTube URL). Configure age rating, content rating, privacy policy URL. Setup internal testing track para beta users.",
@@ -2367,7 +2367,7 @@
         "expansionPrompt": "Dividir en: creación de screenshots y assets visuales, redacción de descripciones optimizada, y configuración de clasificaciones con testing interno"
       },
       {
-        "id": "45",
+        "id": 45,
         "title": "Crear documentación legal (Privacy Policy y Terms of Service)",
         "description": "Desarrollar documentos legales GDPR/CCPA compliant para cumplimiento regulatorio y app store requirements",
         "status": "done",
@@ -2415,7 +2415,7 @@
         "expansionPrompt": "Dividir en: creación de Privacy Policy GDPR/CCPA compliant, desarrollo de Terms of Service con disclaimers médicos, e implementación de hosting y acceptance flow"
       },
       {
-        "id": "46",
+        "id": 46,
         "title": "Implementar testing de performance con métricas específicas",
         "description": "Desarrollar suite de pruebas para validar rendimiento de timer, consumo de batería y fluidez de animaciones",
         "details": "Crear performance tests para: timer accuracy (±5s en 16h), battery consumption (<5% en 16h background), app launch time (<2s cold start), animation frame rate (60fps para Lottie), memory usage monitoring. Usar Flutter DevTools Timeline para profiling. Test en target devices: Pixel 6, iPhone 13. Implement automated performance regression testing en CI.",
@@ -2468,7 +2468,7 @@
         "updatedAt": "2025-11-09T02:27:22.140Z"
       },
       {
-        "id": "47",
+        "id": 47,
         "title": "Desarrollar Edge Functions en Supabase",
         "description": "Crear funciones serverless para cálculo de métricas, scheduling de notificaciones y webhook handling",
         "details": "Crear Edge Functions: calculate-user-metrics (recalcula streak/hours tras session), schedule-notifications (OneSignal API calls), sync-user-data (conflict resolution), handle-superwall-webhook (subscription events), backup-data (GDPR export), track-analytics-event (custom events). Usar Deno runtime. Implement error handling y logging. Deploy via Supabase CLI. Setup monitoring y alertas.",
@@ -2520,7 +2520,7 @@
         "expansionPrompt": "Dividir en: creación de función calculate-user-metrics, desarrollo de funciones para notificaciones y webhooks, e implementación de funciones de utilidad con deployment completo"
       },
       {
-        "id": "48",
+        "id": 48,
         "title": "Configurar esquemas de base de datos Supabase con RLS",
         "description": "Crear tablas, policies, triggers y seed data para backend completo con seguridad row-level",
         "details": "Crear tablas: user_profiles, fasting_sessions, hydration_logs, learning_content, motivational_phrases, analytics_events, user_metrics. Configurar RLS policies: users access solo own data, public read para content tables. Crear triggers: auto-update metrics on session complete, cleanup old analytics. Seed data: fasting plans, learning content, motivational phrases español. Setup database migrations con versioning.",
@@ -2608,7 +2608,7 @@
         "expansionPrompt": "Dividir en diseño de esquemas de base de datos, configuración de políticas RLS, creación de triggers automáticos, setup de migraciones, seeding de datos iniciales, y testing de seguridad"
       },
       {
-        "id": "49",
+        "id": 49,
         "title": "Implementar sistema de migración de datos",
         "description": "Desarrollar estrategia para migrar esquemas Isar y Supabase sin pérdida de datos de usuarios",
         "details": "Crear DatabaseMigrationService para Isar schema changes con version tracking en SharedPreferences. Implement migration scripts para add/rename fields manteniendo data integrity. Para Supabase: crear SQL migrations files con timestamps, usar Supabase CLI para apply. Implement rollback procedures y testing en development. Create data export/import functionality para user portability (GDPR).",
@@ -2661,14 +2661,14 @@
         "expansionPrompt": "Dividir en: creación de DatabaseMigrationService para Isar, implementación de sistema de migraciones SQL para Supabase, y desarrollo de funcionalidad de export/import de datos"
       },
       {
-        "id": "50",
+        "id": 50,
         "title": "Crear suite de testing E2E completa",
         "description": "Desarrollar pruebas end-to-end cubriendo flujos críticos de usuario con integration_test",
         "details": "Usar integration_test package para E2E tests. Cubrir critical paths: onboarding flow completo, start/complete fast, panic button durante ayuno, water logging, session completion con metrics update. Test offline scenarios: app funciona sin internet, sync recovery on reconnect. Mock external services (Supabase, OneSignal) para deterministic testing. Run en CI con emulators.",
         "testStrategy": "Ejecutar E2E tests en CI pipeline, verificar critical paths covered, probar offline functionality",
         "priority": "medium",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2676,7 +2676,7 @@
             "description": "Instalar y configurar el package integration_test de Flutter para ejecutar pruebas end-to-end con emuladores",
             "dependencies": [],
             "details": "Agregar integration_test dependency al pubspec.yaml. Crear directorio integration_test/ con estructura básica. Configurar test runner para Android y iOS emulators. Implementar helper functions para navigation, form filling, y assertions. Configurar CI pipeline para ejecutar tests automáticamente con emulators.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que tests básicos ejecuten correctamente en emulators locales y CI",
             "parentId": "undefined"
           },
@@ -2688,7 +2688,7 @@
               1
             ],
             "details": "Desarrollar test cases para: onboarding flow completo desde registro hasta primera sesión, start/complete fast workflow con timers, panic button durante ayuno activo, water logging functionality, session completion con metrics update. Implementar page objects pattern para maintainability. Usar realistic test data y user scenarios.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Ejecutar todos los critical paths y verificar que cubren los escenarios de usuario más importantes",
             "parentId": "undefined"
           },
@@ -2700,7 +2700,7 @@
               2
             ],
             "details": "Implementar tests offline: app funciona sin internet, data persiste localmente, sync recovery cuando reconnect. Mock Supabase responses para authentication, data sync, y RLS policies. Mock OneSignal para push notifications testing. Crear deterministic test scenarios con controlled network conditions. Implementar network simulation para edge cases.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verificar que la app funciona completamente offline y que el sync recovery funciona correctamente al reconectarse",
             "parentId": "undefined"
           }
@@ -2710,7 +2710,7 @@
         "expansionPrompt": "Dividir en: configuración de framework E2E con integration_test, implementación de tests de flujos críticos, e implementación de testing offline con mocking de servicios"
       },
       {
-        "id": "51",
+        "id": 51,
         "title": "Implementar beta testing con usuarios reales",
         "description": "Configurar programa de beta testing con 20 usuarios para validar funcionalidad y recopilar feedback",
         "details": "Setup TestFlight (iOS) y Google Play Internal Testing (Android) tracks. Recruit 20 beta testers via social media/forums. Crear beta testing guidelines y feedback form (Google Forms/Typeform). Implement in-app feedback widget para easy bug reporting. Collect metrics: session completion rates, crash frequency, feature usage. Iterate basado en feedback antes production launch.",
@@ -2761,7 +2761,7 @@
         "expansionPrompt": "Dividir en: configuración de distribución beta en plataformas, reclutamiento de testers y creación de guidelines, e implementación de feedback collection y métricas"
       },
       {
-        "id": "52",
+        "id": 52,
         "title": "Configurar monitoreo de app con analytics custom",
         "description": "Implementar tracking de eventos críticos para product insights y funnel analysis",
         "details": "Implementar custom analytics events: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown. Usar Supabase analytics_events table y/o third-party service (Mixpanel/Amplitude). Create analytics dashboard para track: completion rates por plan type, panic button usage correlation, conversion funnels. Implement privacy-compliant tracking (no PII).",
@@ -2812,7 +2812,7 @@
         "expansionPrompt": "Dividir en implementación de tracking de eventos, configuración de analytics backend (Supabase/terceros), y creación de dashboard para visualización de métricas"
       },
       {
-        "id": "53",
+        "id": 53,
         "title": "Optimizar performance y memory usage",
         "description": "Realizar optimizaciones finales para asegurar fluidez en dispositivos de gama media y bajo consumo de memoria",
         "details": "Profile app con Flutter DevTools para identify bottlenecks. Optimize Riverpod providers para avoid unnecessary rebuilds. Implement lazy loading para learning content images. Optimize Lottie animations para smooth playback. Use const constructors where possible. Implement image caching strategies. Monitor memory leaks con Dart DevTools. Target: <100MB RAM usage, 60fps animations, <2s cold start.",
@@ -2862,7 +2862,7 @@
         "expansionPrompt": "Dividir en: profiling y análisis de performance con Flutter DevTools, optimización de Riverpod providers y lazy loading, y optimización de animaciones con estrategias de caching"
       },
       {
-        "id": "54",
+        "id": 54,
         "title": "Finalizar preparación para production launch",
         "description": "Completar checklist final para submission a app stores incluyendo compliance, security y polish",
         "details": "Complete app store compliance checklist: metadata, screenshots, descriptions, ratings. Final security audit: no hardcoded secrets, proper certificate pinning, secure API communication. Polish UI: consistent spacing, proper loading states, error handling. Verify accessibility compliance. Test en production environment con real Supabase/OneSignal. Create launch plan con marketing timeline.",
@@ -2914,7 +2914,7 @@
         "expansionPrompt": "Dividir en: completar checklist de compliance para app stores, realizar auditoría de seguridad y certificados, y pulir UI con testing en production environment"
       },
       {
-        "id": "55",
+        "id": 55,
         "title": "Ejecutar submission a App Store y Google Play",
         "description": "Realizar submission final a las tiendas de aplicaciones con todos los assets y configuraciones necesarias",
         "details": "Submit iOS app a App Store Connect con: production build obfuscado, all required screenshots, app preview video, optimized description, proper categorization (Health & Fitness), age rating (4+). Submit Android app a Google Play Console con: production AAB, feature graphic, screenshots, content rating, privacy policy link. Monitor review process y respond a feedback si necesario.",
@@ -2964,7 +2964,7 @@
         "expansionPrompt": "Dividir en: preparación y upload de iOS a App Store Connect, configuración y upload de Android a Google Play Console, y monitoreo del proceso de revisión"
       },
       {
-        "id": "56",
+        "id": 56,
         "title": "Configurar go_router con guards de autenticación y deep linking completo",
         "description": "Implementar sistema completo de rutas protegidas con guards de autenticación, deep linking para notificaciones push y enlaces externos, y navegación tipo-segura para toda la aplicación",
         "details": "Extender el actual app_router.dart existente para incluir rutas completas de la aplicación: /home, /fasting (con subrutas /start, /progress), /hydration, /learning (con subrutas /articles/:id), /profile, /settings. Implementar AuthGuard middleware que verifique isAuthenticatedProvider antes de permitir acceso a rutas protegidas. Configurar deep linking handlers para notificaciones: fast_milestone -> /fasting/progress, hydration_reminder -> /hydration, learning_content -> /learning/articles/:id. Configurar Universal Links para iOS (apple-app-site-association) y App Links para Android (assetlinks.json) en dominio zendfast.app. Implementar typed navigation con rutas nombradas y parámetros tipo-seguro usando go_router extensions. Agregar manejo de rutas no encontradas (404) y redirecciones apropiadas para usuarios no autenticados que intentan acceder a rutas protegidas. Configurar refresh listener que detecte cambios en authState y redirija automáticamente.",
@@ -3028,7 +3028,7 @@
         "expansionPrompt": "Break down this task with a focus on configurar go_router con guards de autenticación y deep linking completo."
       },
       {
-        "id": "57",
+        "id": 57,
         "title": "Implementar sistema completo de analytics y tracking de eventos en analytics_events de Supabase",
         "description": "Desarrollar un sistema robusto de analytics que rastree eventos críticos del usuario, implemente embudo de conversión, métricas de retención y sincronización offline/online",
         "details": "Crear AnalyticsService que maneje tracking de eventos críticos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, app_opened, user_registered. Implementar AnalyticsEvent model con fields: id, user_id, event_name, properties (JSON), timestamp, session_id, platform, app_version. Crear AnalyticsRepository con Isar para storage offline y sync automático con analytics_events table en Supabase. Implementar FunnelAnalytics class para trackear conversion funnel: registration → first_fast → fast_completion → premium_trial → premium_conversion. Desarrollar RetentionMetrics para calcular day 1, 7, 30 retention rates. Crear EngagementMetrics para session duration, feature usage frequency, panic button correlation. Implementar EventBatcher para optimizar network requests enviando eventos en batch cada 30 segundos o 10 eventos. Agregar offline queue con retry logic para eventos fallidos. Crear AnalyticsDashboard widget para visualizar métricas key con charts usando fl_chart package. Implementar privacy-compliant tracking sin PII, hash user identifiers. Configurar automated funnel analysis con cohort tracking mensual.",
@@ -3093,7 +3093,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar sistema completo de analytics y tracking de eventos en analytics_events de supabase."
       },
       {
-        "id": "58",
+        "id": 58,
         "title": "Implementar features de GDPR compliance incluyendo exportación de datos del usuario, eliminación completa de cuenta con cascada en todas las tablas relacionadas, gestión de consentimientos explícitos, política de privacidad accesible, y cumplimiento con CCPA",
         "description": "Desarrollar sistema completo de cumplimiento GDPR/CCPA con exportación de datos, eliminación en cascada, gestión de consentimientos y política de privacidad para ejercer derechos de privacidad desde el perfil del usuario",
         "details": "Implementar DataPrivacyService con exportUserData() que genere JSON/CSV de FastingSession, UserProfile, HydrationLog y ContentItem favoritos. Crear AccountDeletionService con deleteUserAccount() que ejecute cascada en Supabase (user_profiles, fasting_sessions, hydration_logs, analytics_events) y Isar local. Desarrollar ConsentManager con toggles para analytics tracking, marketing communications, data processing con storage en user_consents table. Crear PrivacyPolicyScreen accesible desde Settings con texto actualizable desde Supabase. Implementar DataRightsScreen en UserProfile con botones: 'Exportar mis datos', 'Eliminar cuenta permanentemente', 'Gestionar consentimientos'. Para CCPA: agregar 'Do Not Sell My Data' toggle. Usar flutter_file_saver para export downloads. Implementar confirmación multi-step para account deletion con password verification. Asegurar compliance con retention periods y audit logging.",
@@ -3162,7 +3162,7 @@
         "updatedAt": "2025-10-31T20:44:55.353Z"
       },
       {
-        "id": "59",
+        "id": 59,
         "title": "Implementar sistema de estado global UI para Loading, Error y Empty states",
         "description": "Desarrollar sistema integral de estados UI consistente con widgets reutilizables LoadingState, ErrorState y EmptyState, providers Riverpod para gestión global, y cumplimiento WCAG 2.1 AA en toda la aplicación",
         "details": "Crear archivo lib/widgets/ui_states/loading_state.dart con widget LoadingState que use CircularProgressIndicator con colores ZendfastColors.primary, animaciones ZendfastAnimations.standard, y texto descriptivo opcional. Implementar lib/widgets/ui_states/error_state.dart con ErrorState que muestre ícono de error, mensaje personalizable, botón retry opcional con PrimaryButton style, y colores semánticos ZendfastColors.error. Desarrollar lib/widgets/ui_states/empty_state.dart con EmptyState siguiendo patrón existente del Frontend Guidelines pero extendido con ilustraciones opcionales, acciones múltiples, y variantes para diferentes contextos (no data, no results, offline). Crear lib/providers/ui_state_provider.dart con Riverpod StateNotifierProvider para gestionar estados globales: isLoading, errorMessage, isEmpty con métodos setLoading(), setError(), setEmpty(), clearState(). Implementar lib/widgets/ui_states/adaptive_state_wrapper.dart que combine los tres estados y los muestre automáticamente basado en provider state. Asegurar cumplimiento WCAG 2.1 AA: contrastaratio mínimo 4.5:1, Semantics labels, touch targets 44dp mínimo, support para screen readers con announcements, y text scaling compatible. Integrar con sistema de colores ZendfastColors, tipografía ZendfastTypography, y espaciado ZendfastSpacing existentes. Proporcionar examples de uso con diferentes servicios (auth, timer, database) y documentar patterns de implementación.",
@@ -3214,7 +3214,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar sistema de estado global ui para loading, error y empty states."
       },
       {
-        "id": "60",
+        "id": 60,
         "title": "Implementar sistema de backup automático de datos con exportación periódica a Supabase Storage",
         "description": "Desarrollar sistema completo de backup automático diario para datos Isar locales con exportación cifrada a Supabase Storage y funcionalidad de restauración.",
         "details": "Crear BackupService singleton con métodos createBackup(), uploadToSupabase(), downloadBackup(), restoreFromBackup(). Implementar backup diario usando flutter_background_service scheduler que exporte todas las colecciones Isar (FastingSession, UserProfile, HydrationLog, ContentItem) a JSON. Cifrar backups usando dart:convert y crypto package con AES-256-GCM antes de upload a Supabase Storage bucket 'user-backups'. Structure: /backups/{userId}/{timestamp}_backup.json.encrypted. Implementar BackupManager con BackupMetadata model para tracking: timestamp, fileSize, collections, isEncrypted. Crear UI en settings para manual backup, restore, y download complete data (GDPR). Implementar conflict resolution para restore (user choice to overwrite/merge). Usar shared_preferences para backup schedule config y last backup timestamp. Agregar compression con gzip antes encryption para optimize storage.",
@@ -3266,7 +3266,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar sistema de backup automático de datos con exportación periódica a supabase storage."
       },
       {
-        "id": "61",
+        "id": 61,
         "title": "Implementar Edge Function 'calculate-user-metrics' en Supabase",
         "description": "Desarrollar función Edge Function en Supabase que calcule métricas de usuario incluyendo racha actual, horas totales de ayuno, tasa de éxito y efectividad del botón de pánico",
         "details": "Crear archivo supabase/functions/calculate-user-metrics/index.ts implementando la lógica definida en Backend Structure Document líneas 320-434. Incluir funciones utilitarias: calculateTotalHours() para sumar horas de ayunos completados, calculateCurrentStreak() para racha consecutiva de días, calculateSuccessRate() para porcentaje de ayunos exitosos, calculatePanicUsage() para efectividad del botón pánico cuando es usado. La función debe: 1) Validar entrada JSON con userId, 2) Conectar con Supabase usando SERVICE_ROLE_KEY, 3) Consultar fasting_sessions y hydration_logs del usuario, 4) Calcular todas las métricas usando las funciones helper, 5) Actualizar tabla user_metrics con resultados, 6) Implementar manejo de errores robusto con logging detallado, 7) Retornar respuesta JSON con métricas calculadas. Configurar deployment automático y testing con datos mock. Implementar rate limiting y validación de permisos para seguridad.",
@@ -3318,7 +3318,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'calculate-user-metrics' en supabase."
       },
       {
-        "id": "62",
+        "id": 62,
         "title": "Implementar Edge Function 'schedule-notifications' en Supabase para integración con OneSignal",
         "description": "Desarrollar función Edge Function en Supabase que programe notificaciones push personalizadas según el tipo de plan de ayuno del usuario y sus preferencias",
         "details": "Crear archivo supabase/functions/schedule-notifications/index.ts implementando la estructura definida en Backend Structure Document líneas 436-543. La función debe: 1) Recibir parámetros userId, sessionId, planType via POST request, 2) Validar entrada JSON y autenticación, 3) Consultar user_profiles para obtener notification_preferences y timezone, 4) Generar schedule de notificaciones basado en planType: inicio/fin de ayuno, recordatorios de hidratación cada 2-3h, mensajes motivacionales cada 4-6h, contenido educativo personalizado, 5) Integrar con OneSignal REST API v1 usando include_external_user_ids para targeting, 6) Programar notificaciones con send_after timestamp respetando user timezone, 7) Implementar lógica para cancelar notificaciones existentes si fast es interrumpido, 8) Manejar diferentes templates según planType (16:8, 18:6, OMAD, 24h), 9) Incluir data payload para deep linking (type: fasting_start/end/hydration/motivation), 10) Error handling robusto con logs structured y response codes apropiados",
@@ -3370,7 +3370,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'schedule-notifications' en supabase para integración con onesignal."
       },
       {
-        "id": "63",
+        "id": 63,
         "title": "Implementar Edge Function 'sync-user-data' en Supabase para sincronización bidireccional",
         "description": "Desarrollar función Edge Function en Supabase que sincronice bidireccionalmente datos entre base de datos local Isar y Supabase con resolución de conflictos, batch sync y manejo de errores de red.",
         "details": "Crear archivo supabase/functions/sync-user-data/index.ts implementando la lógica definida en Backend Structure Document líneas 547-618. La función debe: 1) Implementar endpoint POST que reciba array de cambios locales con estructura {table: string, action: 'insert'|'update'|'delete', data: object, localTimestamp: string}, 2) Implementar resolución de conflictos usando timestamp más reciente (last-write-wins) comparando createdAt/updatedAt entre datos locales y remotos, 3) Sincronizar tablas: fasting_sessions (startTime, endTime, completed, interrupted, planType), hydration_logs (amountMl, timestamp), user_metrics (streak, totalHours, successRate), 4) Implementar batch processing para procesar hasta 100 registros por request, 5) Retornar estructura {success: boolean, conflicts: array, serverChanges: array, errors: array} con cambios del servidor que el cliente debe aplicar, 6) Manejar errores de red con retry exponential backoff, timeouts de 30 segundos, y logging detallado, 7) Validar autenticación usando JWT del header Authorization, 8) Implementar rate limiting (100 requests/minuto por usuario), 9) Usar transacciones de base de datos para operaciones atómicas. Estructura de respuesta debe incluir timestamp del servidor para próximas sincronizaciones incrementales.",
@@ -3422,7 +3422,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'sync-user-data' en supabase para sincronización bidireccional."
       },
       {
-        "id": "64",
+        "id": 64,
         "title": "Implementar Edge Function 'handle-superwall-webhook' en Supabase para procesar webhooks de Superwall",
         "description": "Desarrollar función Edge Function en Supabase que procese webhooks de Superwall para actualizar estado de suscripción del usuario, trackear conversiones y manejar eventos de renovación/cancelación con sincronización a tabla user_profiles.",
         "details": "Crear archivo supabase/functions/handle-superwall-webhook/index.ts implementando la lógica definida en Backend Structure Document líneas 1148-1202. La función debe: 1) Implementar endpoint POST que reciba webhooks de Superwall con estructura SuperwallWebhook interface incluyendo event_type ('subscription_started' | 'subscription_cancelled' | 'subscription_renewed'), user_id, product_id ('monthly_premium' | 'yearly_premium') y transaction_data, 2) Validar firma de webhook usando crypto.subtle API para verificar autenticidad del request con secret compartido, 3) Actualizar tabla user_profiles con campos subscription_status, subscription_type y subscription_expires_at basado en el event_type recibido, 4) Insertar eventos en tabla analytics_events para tracking de conversiones con event_type 'subscription_converted', 'subscription_cancelled', 'subscription_renewed', 5) Implementar manejo robusto de errores con logging detallado de eventos procesados y fallos, 6) Configurar CORS headers apropiados para permitir requests desde Superwall servers, 7) Retornar respuestas HTTP adecuadas (200 para éxito, 400/401 para errores) en formato JSON, 8) Implementar rate limiting básico para prevenir abuse, 9) Usar createClient con SUPABASE_SERVICE_ROLE_KEY para operaciones administrativas en user_profiles.",
@@ -3473,7 +3473,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'handle-superwall-webhook' en supabase para procesar webhooks de superwall."
       },
       {
-        "id": "65",
+        "id": 65,
         "title": "Implementar Edge Function 'backup-data' en Supabase para respaldos automáticos diarios",
         "description": "Desarrollar función Edge Function en Supabase que realice respaldos automáticos diarios de datos críticos de usuario con compresión, encriptación y retención de 30 días",
         "details": "Crear archivo supabase/functions/backup-data/index.ts implementando la lógica definida en Backend Structure Document líneas 1114-1141. La función debe: 1) Implementar endpoint GET/POST que ejecute función PostgreSQL backup_critical_data() para extraer datos de fasting_sessions, user_profiles, hydration_logs de últimas 24 horas, 2) Comprimir datos usando gzip/deflate antes del almacenamiento para optimizar espacio, 3) Encriptar backup usando AES-256 con key derivada de BACKUP_ENCRYPTION_KEY environment variable, 4) Subir archivo encriptado a almacenamiento externo (AWS S3/Supabase Storage) con naming convention: backup_YYYYMMDD_HHMMSS.json.gz.enc, 5) Implementar política de retención automática eliminando backups >30 días, 6) Registrar evento en system_logs table con status y tamaño del backup, 7) Configurar notificación vía OneSignal/email en caso de fallos usando existing notification service, 8) Implementar rate limiting para prevenir ejecución múltiple simultánea, 9) Validar autenticación service role para security. Usar librerías: crypto-js para encriptación, node-gzip para compresión. Configurar como cron job diario via Supabase pg_cron extension.",
@@ -3525,7 +3525,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'backup-data' en supabase para respaldos automáticos diarios."
       },
       {
-        "id": "66",
+        "id": 66,
         "title": "Implementar Edge Function 'track-analytics-event' en Supabase para registrar eventos de usuario en tabla analytics_events",
         "description": "Desarrollar función Edge Function en Supabase que registre eventos críticos de usuario (inicio/fin ayuno, botón pánico, conversiones paywall, interacción contenido) con batching, validación de esquema y rate limiting.",
         "details": "Crear archivo supabase/functions/track-analytics-event/index.ts implementando la lógica definida en Backend Structure Document líneas 1241-1271. La función debe: 1) Implementar endpoint POST que reciba eventos con estructura {userId, eventType, parameters, timestamp}, 2) Validar esquema de entrada usando Joi o similar validando tipos de eventos permitidos: fast_started, fast_completed, fast_interrupted, panic_button_used, meditation_completed, premium_conversion, paywall_shown, content_interaction, 3) Implementar rate limiting por usuario (máximo 100 eventos por minuto) usando Redis o in-memory store, 4) Implementar batching de eventos para optimizar inserts en analytics_events table - acumular eventos por 30 segundos antes de hacer batch insert, 5) Conectar con Supabase usando createClient() con SERVICE_ROLE_KEY para permisos completos, 6) Insertar eventos en tabla analytics_events con campos: user_id, event_type, event_data (JSON), timestamp, session_id (opcional), 7) Implementar manejo robusto de errores con logs específicos para debugging, 8) Agregar CORS headers para requests desde app Flutter, 9) Implementar autenticación verificando JWT token en Authorization header, 10) Opcional: integrar con Firebase Analytics usando sendToFirebaseAnalytics() helper. Estructura de respuesta: {success: boolean, message?: string, eventId?: string}. La función debe ser eficiente y manejar alta concurrencia de eventos.",
@@ -3578,7 +3578,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'track-analytics-event' en supabase para registrar eventos de usuario en tabla analytics_events."
       },
       {
-        "id": "67",
+        "id": 67,
         "title": "Implementar Edge Function 'sentry-error-report' en Supabase para relay de errores a Sentry",
         "description": "Desarrollar función Edge Function en Supabase que capture errores de otras Edge Functions, formatee contexto y los reenvíe a Sentry con filtrado de información sensible, rate limiting y manejo robusto de errores.",
         "details": "Crear archivo supabase/functions/sentry-error-report/index.ts implementando la funcionalidad definida en Backend Structure Document líneas 1024-1050. La función debe: 1) Implementar endpoint POST que reciba estructura {error: string, userId: string, context: object, stackTrace?: string, functionName?: string, timestamp?: number}, 2) Validar entrada JSON y sanitizar datos sensibles eliminando campos como passwords, tokens, keys y PII usando allowlist approach, 3) Implementar rate limiting por usuario (máx 10 errores/minuto, 100 errores/hora) usando Map temporal o Redis, 4) Formatear payload para Sentry API incluyendo user.id, message, extra context, timestamp, platform: 'edge-function', environment basado en SUPABASE_ENV, 5) Enviar a Sentry vía fetch POST a https://sentry.io/api/YOUR_PROJECT_ID/store/ con headers X-Sentry-Auth correctos usando SENTRY_API_KEY, 6) Implementar circuit breaker pattern - si Sentry falla 5 veces consecutivas, pausar envíos por 5 minutos, 7) Logging structured con console.log para debugging local incluyendo error_id, user_id, sent_to_sentry boolean, 8) Manejo de errores del propio error handler retornando 500 pero sin causar loops infinitos, 9) Configurar CORS headers para permitir llamadas desde otras Edge Functions, 10) Incluir timeout de 10 segundos para requests a Sentry.",
@@ -3630,7 +3630,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar edge function 'sentry-error-report' en supabase para relay de errores a sentry."
       },
       {
-        "id": "68",
+        "id": 68,
         "title": "Crear tabla 'analytics_events' en Supabase con tracking de eventos de usuario",
         "description": "Implementar tabla PostgreSQL analytics_events con campos especificados, políticas RLS por usuario, índices optimizados y particionamiento por fecha para tracking de eventos.",
         "details": "Crear migración SQL en Supabase para tabla analytics_events con campos: event_id (UUID PRIMARY KEY con gen_random_uuid()), user_id (UUID FK a auth.users), event_type (TEXT con CHECK constraint para valores válidos: 'fasting_started', 'fasting_completed', 'fasting_interrupted', 'panic_button_used', 'meditation_attempted', 'meditation_completed', 'hydration_logged', 'plan_changed', 'content_viewed', 'subscription_converted'), event_data (JSONB para datos flexibles), timestamp (TIMESTAMPTZ DEFAULT NOW()), session_id (TEXT). Implementar RLS con políticas: 'users_own_analytics_only' permitiendo solo acceso a eventos propios, 'admin_aggregate_analytics_only' para agregaciones. Crear índices: idx_analytics_events_user_type (user_id, event_type), idx_analytics_events_type_timestamp (event_type, timestamp). Implementar particionamiento por rango de fecha mensual usando PARTITION BY RANGE (timestamp) con particiones automáticas. Agregar trigger para actualización de updated_at. Configurar retention de 2 años para optimizar storage.",
@@ -3681,7 +3681,7 @@
         "expansionPrompt": "Break down this task with a focus on crear tabla 'analytics_events' en supabase con tracking de eventos de usuario."
       },
       {
-        "id": "69",
+        "id": 69,
         "title": "Crear tabla 'user_content_interactions' para rastrear interacciones con contenido educativo",
         "description": "Implementar tabla PostgreSQL/Supabase para rastrear interacciones de usuarios con contenido educativo incluyendo vistas, favoritos y contenido compartido",
         "details": "Crear tabla 'user_content_interactions' en Supabase con campos: interaction_id (UUID PRIMARY KEY), user_id (UUID FK a auth.users), content_id (UUID FK a learning_content), interaction_type (ENUM: 'viewed', 'favorited', 'shared', 'completed'), timestamp (TIMESTAMPTZ DEFAULT NOW()), time_spent_seconds (INTEGER), progress_percentage (INTEGER 0-100). Implementar constraint UNIQUE(user_id, content_id, interaction_type) para evitar duplicados. Configurar RLS policy 'Users can manage own content interactions' usando auth.uid() = user_id. Crear índices compuestos: idx_user_content_interactions_user_type (user_id, interaction_type), idx_user_content_interactions_content_type (content_id, interaction_type), idx_user_content_interactions_timestamp (timestamp DESC). Implementar trigger 'update_content_popularity_metrics' que actualice automáticamente campos popularity_score y interaction_count en tabla learning_content cuando se inserten/actualicen interacciones. Configurar función PL/pgSQL que calcule popularity_score basado en: views * 1 + favorites * 3 + shares * 5 + completions * 2. Implementar soft delete mediante campo 'deleted_at' para mantener historial de analytics. Agregar validaciones CHECK para progress_percentage (0-100) y time_spent_seconds (>= 0).",
@@ -3733,7 +3733,7 @@
         "expansionPrompt": "Break down this task with a focus on crear tabla 'user_content_interactions' para rastrear interacciones con contenido educativo."
       },
       {
-        "id": "70",
+        "id": 70,
         "title": "Crear tabla 'system_logs' en PostgreSQL/Supabase para logs de debugging del sistema",
         "description": "Implementar tabla system_logs con campos log_id, severity, service, message, metadata (JSONB) y timestamp, incluyendo política de retención de 90 días, índices optimizados y configuración sin RLS para acceso administrativo exclusivo",
         "details": "Crear migración SQL para tabla system_logs en Supabase con campos: log_id (UUID PRIMARY KEY con gen_random_uuid()), severity (ENUM con valores 'info', 'warning', 'error', 'critical'), service (ENUM con valores 'edge_function', 'database', 'auth'), message (TEXT NOT NULL), metadata (JSONB para datos estructurados adicionales), timestamp (TIMESTAMPTZ DEFAULT NOW()). Implementar índices: CREATE INDEX idx_system_logs_severity ON system_logs(severity), CREATE INDEX idx_system_logs_timestamp ON system_logs(timestamp), CREATE INDEX idx_system_logs_service ON system_logs(service). Configurar política de retención automática con trigger PostgreSQL que elimine logs >90 días: CREATE OR REPLACE FUNCTION cleanup_old_logs() que ejecute DELETE FROM system_logs WHERE timestamp < NOW() - INTERVAL '90 days', programado con pg_cron extension daily. NO habilitar RLS en esta tabla (acceso solo para service_role y admins). Crear función helper log_system_event(severity, service, message, metadata) para inserción consistente desde Edge Functions. Integrar con existing SupabaseConfig.from('system_logs') para queries desde Flutter app.",
@@ -3784,7 +3784,7 @@
         "expansionPrompt": "Break down this task with a focus on crear tabla 'system_logs' en postgresql/supabase para logs de debugging del sistema."
       },
       {
-        "id": "71",
+        "id": 71,
         "title": "Crear datos seed para tabla 'fasting_plans' en Supabase",
         "description": "Implementar script de migración SQL que populate la tabla fasting_plans con los 6 planes predefinidos (12/12, 14/10, 16/8, 18/6, 24h, 48h) más el plan de desintoxicación de 48h carnívoro",
         "details": "Crear migración SQL supabase/migrations/YYYYMMDDHHMMSS_seed_fasting_plans.sql que: 1) Verifique si la tabla fasting_plans existe, si no existe crearla con esquema: id UUID PRIMARY KEY DEFAULT gen_random_uuid(), plan_name TEXT NOT NULL UNIQUE, fasting_hours INT NOT NULL, eating_hours INT NOT NULL, description TEXT, difficulty_level TEXT CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')), recommended_for TEXT, is_default BOOLEAN DEFAULT false, created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ DEFAULT NOW(). 2) Insertar los 7 planes con datos: ('12/12', 12, 12, 'Plan principiante: ayuna 12 horas, come 12 horas. Ideal para alineación del ritmo circadiano.', 'beginner', 'Alineación del ritmo circadiano', true), ('14/10', 14, 10, 'Paso intermedio: ayuna 14 horas, come 10 horas. Suave entrada a la quema de grasa.', 'beginner', 'Quema suave de grasa', false), ('16/8', 16, 8, 'Más popular: ayuna 16 horas, come 8 horas. Equilibrio perfecto entre pérdida de grasa y autofagia.', 'intermediate', 'Pérdida de grasa y autofagia', false), ('18/6', 18, 6, 'Avanzado: ayuna 18 horas, come 6 horas. Cetosis profunda y mayor autofagia.', 'advanced', 'Cetosis profunda', false), ('24h', 24, 0, 'OMAD (Una Comida Al Día): ayuno de 24 horas. Máxima autofagia y regeneración celular.', 'advanced', 'Máxima autofagia', false), ('48h', 48, 0, 'Ayuno extendido: 48 horas solo agua. Reparación celular profunda y renovación.', 'advanced', 'Reparación celular', false), ('Desintoxicación 48h', 48, 0, 'Plan carnívoro de 48h: solo carne, huevos, pescado, sal y agua. Elimina antojos de azúcar antes del ayuno intermitente.', 'beginner', 'Reducción de antojos de azúcar', false). 3) Configurar RLS con política 'Public read access' ON fasting_plans FOR SELECT USING (true). 4) Usar ON CONFLICT (plan_name) DO UPDATE para evitar duplicados en múltiples ejecuciones. 5) Agregar trigger para updated_at automático.\n<info added on 2025-10-27T12:41:55.863Z>\nACTUALIZACIÓN COMPLETADA (27 de octubre de 2025)\n\nLa migración SQL ha sido implementada y aplicada exitosamente con todas las funcionalidades requeridas:\n\nARCHIVO CREADO: supabase/migrations/20251027122709_seed_fasting_plans.sql\n\nIMPLEMENTACIÓN VERIFICADA:\n- Tabla fasting_plans creada con esquema completo incluyendo UUID, columnas requeridas, constraints CHECK y índices de rendimiento\n- 7 planes de ayuno insertados con descripciones en español y datos correctos\n- Configuración RLS habilitada con políticas de acceso público para lectura y gestión por service_role\n- Trigger automático para updated_at funcionando correctamente\n- Manejo ON CONFLICT implementado para prevenir duplicados en re-ejecuciones\n- Comentarios documentativos agregados para mantenibilidad\n\nPLANES CONFIRMADOS EN BASE DE DATOS:\n1. 12/12 (Principiante, Plan por defecto) - Alineación circadiana\n2. 14/10 (Principiante) - Quema suave de grasa  \n3. 16/8 (Intermedio) - Pérdida de grasa y autofagia\n4. 18/6 (Avanzado) - Cetosis profunda\n5. 24h OMAD (Avanzado) - Máxima autofagia\n6. 48h Extendido (Avanzado) - Reparación celular\n7. Desintoxicación 48h Carnívoro (Principiante) - Reducción antojos azúcar\n\nPRUEBAS SUPERADAS:\n- Migración aplicada sin errores usando Supabase MCP\n- 7 registros insertados correctamente verificados\n- Solo plan 12/12 marcado como is_default=true\n- RLS y políticas activas confirmadas en pg_policies\n- Trigger updated_at probado y funcional\n- Prevención de duplicados confirmada\n\nBase de datos productiva (rwsoddkrhdzdbthzszby.supabase.co) actualizada correctamente.\n</info added on 2025-10-27T12:41:55.863Z>",
@@ -3835,7 +3835,7 @@
         "expansionPrompt": "Break down this task with a focus on crear datos seed para tabla 'fasting_plans' en supabase."
       },
       {
-        "id": "72",
+        "id": 72,
         "title": "Implementar función PostgreSQL 'validate_fasting_duration' en Supabase para prevenir ayunos peligrosos",
         "description": "Desarrollar función PostgreSQL robusta que valide duraciones de ayuno seguras, requiera confirmación explícita para ayunos >48h, analice historial de riesgo y bloquee usuarios con condiciones médicas registradas",
         "details": "Crear archivo supabase/migrations/20250125000000_enhanced_fasting_validation.sql implementando función validate_fasting_duration() mejorada según Backend Structure Document líneas 656-707. La función debe: 1) Extender validación existente agregando parámetro opcional 'explicit_confirmation' para ayunos >48h que retorne FALSE si no se proporciona confirmación explícita, 2) Implementar análisis de historial agregando consulta a fasting_sessions para detectar patrones de riesgo como >3 interrupciones por panic_button en últimos 7 días o >5 ayunos interrumpidos en último mes, 3) Agregar tabla medical_conditions con campos: user_id UUID, condition_type TEXT (diabetes, eating_disorder, pregnancy, underweight), severity TEXT (mild, moderate, severe), created_at TIMESTAMP, 4) Implementar bloqueo automático consultando medical_conditions donde severity='severe' retorna FALSE inmediatamente, 5) Agregar logging de intentos bloqueados en tabla fasting_validation_logs para auditoría médica, 6) Mantener compatibilidad con función actual mientras extiende funcionalidad, 7) Implementar rate limiting para prevenir bypass via múltiples intentos. Función debe retornar BOOLEAN con casos: TRUE para ayunos seguros, FALSE para rechazados, y trigger exception con mensaje específico para cada tipo de bloqueo.",
@@ -3887,7 +3887,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar función postgresql 'validate_fasting_duration' en supabase para prevenir ayunos peligrosos."
       },
       {
-        "id": "73",
+        "id": 73,
         "title": "Implementar trigger PostgreSQL 'validate_fasting_limits' en Supabase sobre tabla fasting_sessions",
         "description": "Crear trigger automático que ejecute validación de duración de ayuno en INSERT/UPDATE de fasting_sessions, registre advertencias en system_logs y opcionalmente bloquee sesiones inseguras",
         "details": "Crear archivo supabase/migrations/20250125000001_validate_fasting_limits_trigger.sql implementando: 1) Trigger BEFORE INSERT OR UPDATE en tabla fasting_sessions que llame automáticamente a función validate_fasting_duration(), 2) Agregar parámetro 'block_unsafe_sessions' (boolean) que determine si rechazar INSERT/UPDATE cuando validación falla o solo registrar warning, 3) Implementar función trigger validate_fasting_limits_trigger() que: extraiga planned_duration de NEW record, llame validate_fasting_duration(NEW.user_id, NEW.planned_duration, NEW.explicit_confirmation), registre resultado en system_logs con nivel WARNING/ERROR según corresponda, retorne NEW si block_unsafe_sessions=false o NULL si debe bloquear, 4) Manejar excepciones con EXCEPTION clause capturando errores de validación y registrándolos en system_logs antes de permitir/rechazar operación, 5) Agregar logging detallado incluyendo user_id, planned_duration, validation_result, timestamp en cada ejecución, 6) Configurar trigger para activarse en todas las operaciones de fasting_sessions manteniendo performance óptima",
@@ -3939,7 +3939,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar trigger postgresql 'validate_fasting_limits' en supabase sobre tabla fasting_sessions."
       },
       {
-        "id": "74",
+        "id": 74,
         "title": "Implementar modales de confirmación en Flutter para acciones críticas",
         "description": "Crear sistema de modales de confirmación para acciones críticas del ayuno usando ZendfastDialog con animaciones, botones diferenciados y feedback háptico.",
         "details": "Crear lib/widgets/dialogs/zendfast_dialog.dart implementando widget ZendfastDialog que extienda AlertDialog con Material 3 design system siguiendo tema existente en theme.dart. Incluir propiedades: title (Widget), content (Widget), confirmButtonText (String), cancelButtonText (String), onConfirm (VoidCallback), onCancel (VoidCallback), confirmButtonColor (Color), showCloseButton (bool). Implementar animaciones de entrada/salida usando AnimatedScale y AnimatedOpacity con duration 300ms y curve Curves.easeInOut. Crear tipos específicos: StartFastingDialog, ChangePlanDialog, BreakFastingDialog, DeleteHistoryDialog con copy diferenciado y colores semánticos (error para acciones destructivas, primary para acciones normales). Agregar HapticFeedback.lightImpact() en onConfirm y HapticFeedback.selectionClick() en onCancel. Implementar método estático ZendfastDialog.show() para mostrar modales con barrier dismissible configurables. Botones deben usar FilledButton para confirmación (elevated visualmente) y TextButton para cancelación, con spacing ZendfastSpacing.m entre ellos. Usar colorScheme del contexto para consistencia visual.",
@@ -3992,7 +3992,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar modales de confirmación en flutter para acciones críticas."
       },
       {
-        "id": "75",
+        "id": 75,
         "title": "Implementar encuesta rápida post-interrupción de ayuno en Flutter",
         "description": "Crear modal de encuesta que aparece cuando usuario selecciona 'Rompí el ayuno' o 'No aguanto' con 4-5 opciones predefinidas y campo de texto opcional para registrar en analytics.",
         "details": "Crear archivo lib/widgets/dialogs/fasting_interruption_survey_dialog.dart que implemente SurveyDialog extendiendo ZendfastDialog (de task 74). El modal debe: 1) Incluir título 'Cuéntanos qué pasó' y descripción explicativa, 2) Implementar ListView con RadioListTile para opciones: 'Hambre extrema', 'Evento social', 'Malestar físico', 'Ansiedad/estrés', 'Otro motivo', 3) Agregar TextField opcional con hint 'Detalles adicionales (opcional)' que aparece cuando se selecciona cualquier opción, 4) Botones 'Omitir' (TextButton) y 'Enviar' (FilledButton con colores de theme.dart), 5) Implementar animaciones de entrada con AnimatedScale duration 300ms. Crear InterruptionSurveyData model con campos: reason (String), details (String?), timestamp (DateTime). Integrar con analytics creando método logFastingInterruption() en analytics service que registre evento 'fast_interrupted' en analytics_events table (referencia task 52) con campos: user_id, reason, details, timestamp. Usar colors.dart para consistencia visual (tertiary: panicOrange para botón enviar). Mostrar modal automáticamente cuando FastingSession.endSession() se llama con wasInterrupted=true desde botón pánico (task 11).",
@@ -4049,7 +4049,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar encuesta rápida post-interrupción de ayuno en flutter."
       },
       {
-        "id": "76",
+        "id": 76,
         "title": "Implementar sistema de micro-interacciones en Flutter usando Lottie y animaciones nativas",
         "description": "Crear sistema completo de micro-interacciones para mejorar la UX incluyendo efectos ripple, animaciones de confetti, pulso en botón pánico, transiciones suaves y feedback háptico al registrar hidratación.",
         "details": "Crear archivo lib/widgets/animations/micro_interactions.dart implementando: 1) RippleEffect widget para botones usando Material InkWell con customSplashFactory y ColorScheme.primary, 2) ConfettiAnimation widget usando package:confetti o Lottie para celebración al completar ayuno, integrado con FastingSession completion events, 3) PulseButton widget para botón pánico con AnimationController y ScaleTransition (scale 1.0 to 1.05, duration 1000ms, repeat infinitely), 4) SmoothPageTransition para go_router usando CustomTransitionPage con SlideTransition y easeInOut curve (250ms duration), 5) HydrationFeedback usando HapticFeedback.lightImpact() + subtle scale animation al registrar hidratación. Crear archivo lib/widgets/animations/animation_constants.dart con duraciones estándar: quickFeedback(150ms), standardTransition(250ms), slowTransition(350ms), curves: easeInOut, bounceIn. Integrar con theme.dart existente para colores consistentes. Implementar AnimationMixin para cleanup automático de AnimationControllers. Seguir guidelines no intrusivas del Tech Stack Document líneas 194-200.",
@@ -4101,7 +4101,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar sistema de micro-interacciones en flutter usando lottie y animaciones nativas."
       },
       {
-        "id": "77",
+        "id": 77,
         "title": "Implementar detección y ajuste automático de zona horaria en Flutter",
         "description": "Desarrollar sistema que detecte cambios de zona horaria del dispositivo usando plugin timezone, ajuste automáticamente timers de ayuno activos, notifique al usuario sobre los ajustes realizados y registre eventos en analytics.",
         "details": "Crear archivo lib/services/timezone_service.dart implementando TimeZoneService con flutter_timezone plugin para detectar cambios de zona horaria del dispositivo. Implementar TimezoneChangeListener que use zone_detector para monitorear cambios automáticos y manuales. Al detectar cambio: 1) Pausar timers activos usando FastingTimerService, 2) Calcular diferencia horaria y ajustar start_time y end_time de sesiones activas en Isar database, 3) Reiniciar timers con nuevos timestamps, 4) Mostrar notification usando local_notifications explicando el ajuste realizado con detalles de zona anterior/nueva. Manejar edge cases: viajes internacionales con múltiples cambios rápidos (throttling de 5 minutos), cambios de horario de verano automáticos, sincronización con Supabase respetando UTC timestamps. Integrar con analytics service (task 52) registrando eventos timezone_change_detected y timezone_adjustment_completed con metadata de zonas y duración de ajuste. Implementar configuración en user preferences para habilitar/deshabilitar ajustes automáticos.",
@@ -4153,7 +4153,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar detección y ajuste automático de zona horaria en flutter."
       },
       {
-        "id": "78",
+        "id": 78,
         "title": "Implementar manejo de conectividad en sección Learning de Flutter",
         "description": "Desarrollar sistema completo de detección de conectividad para la sección Learning usando connectivity_plus, incluyendo empty states apropiados para offline, caché de metadatos y funcionalidad de favoritos offline con sincronización posterior.",
         "details": "Crear archivo lib/services/connectivity_service.dart implementando ConnectivityService usando connectivity_plus para monitorear estado de conexión. Implementar lib/providers/connectivity_provider.dart usando Riverpod para exponer ConnectivityNotifier que mantenga estado de conexión actual y stream de cambios. En lib/screens/learning/, crear LearningScreen con manejo de estados offline: mostrar empty state 'Este contenido requiere conexión' cuando offline usando widget EmptyStateWidget con ícono de red y botón retry. Implementar LearningContentCache en lib/services/ para cachear metadatos de ContentItem (título, descripción, thumbnailUrl, categoría) usando Isar database local. Crear FavoritesManager para marcar favoritos offline almacenándolos en tabla local favorites_cache con flag needsSync para sincronizar posteriormente con Supabase. Agregar ConnectivityBanner widget que muestre estado de conexión en top de pantalla con animación fade y colores apropiados (rojo offline, verde online). Implementar retry logic con exponential backoff cuando conexión se restaure. Integrar con sistema de analytics existente para trackear eventos connectivity_lost y connectivity_restored.",
@@ -4207,7 +4207,7 @@
         "expansionPrompt": "Break down this task with a focus on implementar manejo de conectividad en sección learning de flutter."
       },
       {
-        "id": "79",
+        "id": 79,
         "title": "Crear suite de unit tests para Riverpod providers críticos",
         "description": "Implementar tests unitarios completos para TimerProvider, MetricsProvider, HydrationProvider y FastingSessionProvider usando riverpod_test y mockito para alcanzar mínimo 80% de cobertura.",
         "details": "Crear archivo test/providers/timer_provider_test.dart implementando tests para TimerNotifier usando ProviderContainer.overrideWith() para mockear TimerService. Probar métodos: startTimer(), pauseTimer(), resumeTimer(), cancelTimer(), syncState() y getters: isRunning, progress, remainingMilliseconds, formattedTimes. Crear test/providers/metrics_provider_test.dart para MetricsProvider testeando cálculo de racha consecutiva, estadísticas totales, tasa de completación usando mocks de Isar database queries. Implementar test/providers/hydration_provider_test.dart verificando cálculo de ingesta diaria, progreso hacia meta, recordatorios, logs de hidratación con mocks de HydrationLog e Isar. Crear test/providers/fasting_session_provider_test.dart testeando inicio/fin de sesiones, validaciones de estado, persistencia usando mocks de FastingSession e Isar. Agregar dependencias dev: riverpod_test: ^2.0.0, mockito: ^5.4.4, build_runner para code generation. Usar @GenerateMocks() para TimerService, DatabaseService, Isar interfaces. Configurar tearDown() para ProviderContainer.dispose(). Implementar coverage con flutter test --coverage y genhtml para reportes HTML.",
@@ -4259,7 +4259,7 @@
         "expansionPrompt": "Break down this task with a focus on crear suite de unit tests para riverpod providers críticos."
       },
       {
-        "id": "80",
+        "id": 80,
         "title": "Crear suite de widget tests para componentes UI críticos en Flutter",
         "description": "Implementar tests de widgets completos para TimerDisplay, PanicButton, HydrationTracker y ZendfastDialog usando flutter_test y golden tests para verificación visual, alcanzando 70% de cobertura en componentes UI.",
         "details": "Crear directorio test/widgets/ e implementar archivos: test/widgets/timer_display_test.dart verificando renderizado correcto del tiempo formateado (HH:MM:SS), actualización cada segundo usando testWidgets y FakeTimer, progress indicator actualización durante ayuno activo. test/widgets/panic_button_test.dart probando accesibilidad con semantics labels, estados habilitado/deshabilitado según fastingState, animaciones pulse usando AnimationController. test/widgets/hydration_tracker_test.dart verificando visualización de progreso usando LinearProgressIndicator, interacción táctil para logging, color changes (azul->verde al 100%). test/widgets/zendfast_dialog_test.dart testeando renderizado con showDialog, acciones de botones onPressed callbacks, dismissal con Navigator.pop(). Implementar golden tests usando flutter_test goldens comparando screenshots pixelPerfect. Configurar flutter_test_config.dart para golden file updates. Usar ProviderContainer.overrideWith() para mockear providers dependencies. Instalar coverage package y ejecutar flutter test --coverage para generar lcov.info alcanzando mínimo 70% line coverage en lib/widgets/.",
@@ -4312,7 +4312,7 @@
         "expansionPrompt": "Break down this task with a focus on crear suite de widget tests para componentes ui críticos en flutter."
       },
       {
-        "id": "81",
+        "id": 81,
         "title": "Crear datos seed iniciales para tabla learning_content con contenido educativo curado",
         "description": "Desarrollar script SQL de migración que inserte 25-30 piezas curadas de contenido educativo sobre ayuno intermitente en la tabla learning_content de Supabase",
         "details": "Crear archivo de migración SQL en supabase/migrations/ que inserte contenido educativo curado en tabla learning_content existente. Incluir 25-30 entradas con: artículos sobre beneficios del ayuno intermitente (8-10 piezas), estudios científicos sobre autofagia y metabolismo (6-8 piezas), videos de YouTube sobre técnicas de ayuno (8-10 piezas), guías sobre hidratación durante ayuno (4-5 piezas). Cada entrada debe contener: content_id (UUID), title (texto descriptivo en español), content_type (article/study/video), category (basics/science/tips/success_stories), content_url (URLs reales y funcionales), description (resumen 100-150 caracteres), difficulty_level (beginner/intermediate/advanced), estimated_read_time (minutos para artículos/estudios, duration_minutes para videos), is_premium (distribuir 70% gratuito, 30% premium). Implementar INSERT statements con datos reales verificados: artículos de sitios confiables como Healthline, estudios de PubMed, videos de canales educativos de YouTube. Incluir validaciones CHECK constraints para content_type y category según esquema existente. Agregar comentarios SQL explicando categorización y fuentes.",
@@ -4371,7 +4371,10 @@
       "completedCount": 20,
       "tags": [
         "master"
-      ]
+      ],
+      "created": "2025-11-09T16:12:49.138Z",
+      "description": "Tasks for master context",
+      "updated": "2025-11-09T16:13:05.338Z"
     }
   }
 }
