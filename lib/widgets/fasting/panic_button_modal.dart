@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zendfast_1/models/motivational_phrase.dart';
 import 'package:zendfast_1/providers/timer_provider.dart';
+import 'package:zendfast_1/repositories/motivational_phrases_repository.dart';
+import 'package:zendfast_1/services/analytics_service.dart';
 import 'package:zendfast_1/theme/colors.dart';
 import 'package:zendfast_1/theme/spacing.dart';
 
 /// Modal bottom sheet that provides emotional support during fasting.
 ///
 /// This modal appears when the user taps the panic button and offers:
-/// - Motivational phrases to encourage continuation
-/// - Breathing meditation guide
+/// - Dynamic motivational phrases from repository
+/// - Breathing meditation guide (navigates to breathing screen)
 /// - Option to stop the fast if truly needed
 ///
 /// The modal uses warm, supportive language and provides multiple
@@ -27,35 +31,6 @@ class PanicButtonModal extends ConsumerWidget {
       builder: (context) => const PanicButtonModal._(),
     );
   }
-
-  /// List of motivational phrases to display.
-  static const List<Map<String, dynamic>> _motivationalPhrases = [
-    {
-      'icon': Icons.favorite,
-      'title': 'Eres más fuerte de lo que crees',
-      'subtitle': 'Este momento pasará y te sentirás orgulloso',
-    },
-    {
-      'icon': Icons.water_drop,
-      'title': 'Bebe agua lentamente',
-      'subtitle': 'A veces la sed se confunde con hambre',
-    },
-    {
-      'icon': Icons.self_improvement,
-      'title': 'Toma 5 respiraciones profundas',
-      'subtitle': 'Oxigena tu cuerpo y calma tu mente',
-    },
-    {
-      'icon': Icons.wb_sunny,
-      'title': 'Sal a caminar 5 minutos',
-      'subtitle': 'Cambia de ambiente y despeja tu mente',
-    },
-    {
-      'icon': Icons.phone,
-      'title': 'Llama a un amigo',
-      'subtitle': 'Comparte cómo te sientes, no estás solo',
-    },
-  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,31 +90,59 @@ class PanicButtonModal extends ConsumerWidget {
 
               const SizedBox(height: ZendfastSpacing.l),
 
-              // Motivational phrases
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _motivationalPhrases.length,
-                itemBuilder: (context, index) {
-                  final phrase = _motivationalPhrases[index];
-                  return ListTile(
-                    leading: Icon(
-                      phrase['icon'] as IconData,
-                      color: ZendfastColors.secondaryGreen,
-                    ),
-                    title: Text(
-                      phrase['title'] as String,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+              // Motivational phrases (loaded from repository)
+              FutureBuilder<List<MotivationalPhrase>>(
+                future: MotivationalPhrasesRepository.instance.getMotivationalPhrases(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.all(ZendfastSpacing.l),
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
-                    ),
-                    subtitle: Text(
-                      phrase['subtitle'] as String,
-                      style: theme.textTheme.bodySmall,
-                    ),
-                    onTap: () {
-                      // Close modal when phrase is selected
-                      Navigator.of(context).pop();
+                    );
+                  }
+
+                  final phrases = snapshot.data ?? [];
+
+                  if (phrases.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(ZendfastSpacing.l),
+                      child: Text(
+                        'No hay frases disponibles en este momento',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: phrases.length,
+                    itemBuilder: (context, index) {
+                      final phrase = phrases[index];
+                      return ListTile(
+                        leading: Icon(
+                          _getIconFromName(phrase.iconName),
+                          color: ZendfastColors.secondaryGreen,
+                        ),
+                        title: Text(
+                          phrase.text,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: phrase.subtitle != null
+                            ? Text(
+                                phrase.subtitle!,
+                                style: theme.textTheme.bodySmall,
+                              )
+                            : null,
+                        onTap: () => _handlePhraseTap(context, ref, phrase),
+                      );
                     },
                   );
                 },
@@ -182,6 +185,62 @@ class PanicButtonModal extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Handles phrase tap - navigates to breathing screen or closes modal
+  void _handlePhraseTap(
+    BuildContext context,
+    WidgetRef ref,
+    MotivationalPhrase phrase,
+  ) {
+    // Track analytics
+    AnalyticsService.instance.logEvent(
+      'phrase_tapped',
+      parameters: {
+        'phrase_id': phrase.id,
+        'phrase_text': phrase.text,
+        'category': phrase.category ?? 'unknown',
+        'action': phrase.text.contains('Medita') ? 'navigate_breathing' : 'close_modal',
+      },
+    );
+
+    // Special handling for meditation phrase
+    if (phrase.text.contains('Medita')) {
+      // Close modal
+      Navigator.of(context).pop();
+      // Navigate to breathing screen
+      context.go('/breathing-exercise');
+    } else {
+      // Just close modal for other phrases
+      Navigator.of(context).pop();
+    }
+  }
+
+  /// Maps icon name string to IconData
+  IconData _getIconFromName(String iconName) {
+    // Map common Material icon names to IconData
+    switch (iconName.toLowerCase()) {
+      case 'favorite':
+        return Icons.favorite;
+      case 'water_drop':
+        return Icons.water_drop;
+      case 'air':
+        return Icons.air;
+      case 'directions_walk':
+        return Icons.directions_walk;
+      case 'phone':
+        return Icons.phone;
+      case 'self_improvement':
+        return Icons.self_improvement;
+      case 'spa':
+        return Icons.spa;
+      case 'block':
+        return Icons.block;
+      case 'check':
+        return Icons.check;
+      default:
+        return Icons.help_outline;
+    }
   }
 
   /// Shows confirmation dialog before stopping the fast.

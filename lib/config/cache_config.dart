@@ -19,19 +19,19 @@ class LearningContentCacheManager extends CacheManager {
   }
 
   LearningContentCacheManager._()
-      : super(
-          Config(
-            key,
-            // Cache images for 30 days
-            stalePeriod: const Duration(days: 30),
-            // Maximum 200 cached objects
-            maxNrOfCacheObjects: 200,
-            // Repository implementation (uses default)
-            repo: JsonCacheInfoRepository(databaseName: key),
-            // File service for downloads
-            fileService: HttpFileService(),
-          ),
-        );
+    : super(
+        Config(
+          key,
+          // Cache images for 30 days
+          stalePeriod: const Duration(days: 30),
+          // Maximum 200 cached objects
+          maxNrOfCacheObjects: 200,
+          // Repository implementation (uses default)
+          repo: JsonCacheInfoRepository(databaseName: key),
+          // File service for downloads
+          fileService: HttpFileService(),
+        ),
+      );
 }
 
 /// Cache configuration constants

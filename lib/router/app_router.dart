@@ -16,6 +16,7 @@ import '../screens/home/home_screen.dart';
 import '../screens/fasting/fasting_screen.dart';
 import '../screens/fasting/fasting_start_screen.dart';
 import '../screens/fasting/fasting_progress_screen.dart';
+import '../screens/breathing/breathing_exercise_screen.dart';
 import '../screens/hydration/hydration_screen.dart';
 import '../screens/learning/learning_screen.dart';
 import '../screens/learning/article_detail_screen.dart';
@@ -168,6 +169,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const FastingProgressScreen(),
           ),
         ],
+      ),
+
+      // Breathing exercise route (protected)
+      GoRoute(
+        path: '/breathing-exercise',
+        name: 'breathing-exercise',
+        builder: (context, state) => const BreathingExerciseScreen(),
       ),
 
       // Hydration route (protected)
