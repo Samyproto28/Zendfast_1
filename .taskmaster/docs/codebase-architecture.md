@@ -1,6 +1,6 @@
 # Zendfast - Complete Codebase Architecture
 
-> **Last Updated:** 2025-01-10 | Task 10 completed
+> **Last Updated:** 2025-01-10 | Task 11 completed
 > **Purpose:** Comprehensive codebase reference to eliminate extensive research on each task
 > **Auto-updated:** by Claude Code after each completed task
 
@@ -20,9 +20,9 @@
 - Dart Files: 100+
 - Models: 17
 - Providers: 8
-- Services: 12
+- Services: 13
 - Screens: 15+
-- Reusable Widgets: 20+
+- Reusable Widgets: 22+
 
 ---
 
@@ -598,8 +598,29 @@ class IsarService {
 }
 ```
 
-### 6-12. Additional Services
-- **AnalyticsService** - Event tracking
+### 6. AnalyticsService (Singleton)
+**Path:** `lib/services/analytics_service.dart`
+**Task:** 11.3
+
+```dart
+class AnalyticsService {
+  static final AnalyticsService instance = AnalyticsService._internal();
+
+  // Methods
+  Future<void> logEvent(
+    String eventName, {
+    Map<String, dynamic>? parameters,
+  });
+}
+```
+
+**Current Implementation:** Minimal stub with console logging. Ready for Firebase Analytics or other analytics SDK integration.
+
+**Key Events:**
+- `panic_button_used` - Tracks when user taps panic button during active fasting
+  - Parameters: timestamp, fasting_duration_minutes, plan_type, elapsed_minutes
+
+### 7-13. Additional Services
 - **NotificationService** - Push notifications
 - **SyncService** - Supabase sync
 - **CacheService** - Data caching
@@ -985,6 +1006,60 @@ class FastingPlanCard extends StatelessWidget {
 }
 ```
 
+#### PanicButton (Task 11.1 & 11.2)
+**Path:** `lib/widgets/fasting/panic_button.dart`
+**Type:** `ConsumerStatefulWidget`
+**Purpose:** Emotional support FAB during active fasting
+
+```dart
+class PanicButton extends ConsumerStatefulWidget {
+  // Features:
+  // - Only visible when fastingState.isActive (fasting or paused)
+  // - Orange color (#FFB366 - panicOrange)
+  // - Heart icon (white)
+  // - Pulse animation (1.0 to 1.1 scale, 1500ms, repeating)
+  // - Haptic feedback on tap
+  // - Opens PanicButtonModal
+  // - Tracks analytics event 'panic_button_used'
+  // - 6.0dp elevation
+
+  // Animation:
+  // - AnimationController with SingleTickerProviderStateMixin
+  // - Tween<double>(1.0, 1.1) with Curves.easeInOut
+  // - AnimatedBuilder wrapping Transform.scale
+  // - Repeats infinitely (reverse: true)
+}
+```
+
+#### PanicButtonModal (Task 11)
+**Path:** `lib/widgets/fasting/panic_button_modal.dart`
+**Type:** `ConsumerWidget`
+**Purpose:** Bottom sheet with emotional support content
+
+```dart
+class PanicButtonModal extends ConsumerWidget {
+  // Static method:
+  static Future<void> show({required BuildContext context});
+
+  // Features:
+  // - Bottom sheet with rounded top corners (24dp)
+  // - Handle bar (40w × 4h dp)
+  // - Title: "Apoyo Emocional"
+  // - 5 motivational phrases with icons:
+  //   1. "Eres más fuerte de lo que crees"
+  //   2. "Bebe agua lentamente"
+  //   3. "Toma 5 respiraciones profundas"
+  //   4. "Sal a caminar 5 minutos"
+  //   5. "Llama a un amigo"
+  // - Each phrase closes modal on tap
+  // - "No puedo continuar" destructive button (red)
+  // - Confirmation dialog before interrupting fast
+  // - Calls timerProvider.notifier.interruptFast()
+  // - SingleChildScrollView for content
+  // - Draggable and dismissible
+}
+```
+
 ### Common Widgets
 
 #### LoadingOverlay
@@ -1312,6 +1387,41 @@ flutter:
 
 ## 🔄 Recent Changes (Last 5 Tasks)
 
+### Task 11: Panic Button Implementation (Completed 2025-01-10)
+**Files Created:**
+- `lib/services/analytics_service.dart`
+- `lib/widgets/fasting/panic_button.dart`
+- `lib/widgets/fasting/panic_button_modal.dart`
+- `test/services/analytics_service_test.dart`
+- `test/widgets/fasting/panic_button_test.dart`
+- `test/widgets/fasting/panic_button_modal_test.dart`
+
+**Files Modified:**
+- `lib/screens/fasting/fasting_home_screen.dart` (added floatingActionButton)
+
+**Features:**
+- Emotional support FAB visible only during active fasting (fasting or paused states)
+- Smooth pulse animation (1.0 to 1.1 scale, 1500ms repeating)
+- Haptic feedback on button tap
+- Bottom sheet modal with 5 motivational phrases
+- Confirmation dialog before interrupting fast
+- Analytics event tracking (panic_button_used with metadata)
+- Fully scrollable modal content
+- Draggable and dismissible bottom sheet
+
+**Test Coverage:**
+- 34 total tests (5 analytics + 17 panic button + 12 modal)
+- Full TDD implementation with Red-Green-Refactor cycles
+- All tests passing
+
+**Patterns Followed:**
+- ConsumerStatefulWidget with SingleTickerProviderStateMixin
+- AnimationController lifecycle management
+- State-based visibility logic (FastingState.isActive)
+- Confirmation dialogs for destructive actions
+- Analytics integration with contextual metadata
+- Orange color (#FFB366) for urgency but warmth
+
 ### Task 10: FastingHomeScreen (Completed 2025-01-10)
 **Files Created:**
 - `lib/screens/fasting/fasting_home_screen.dart`
@@ -1401,6 +1511,7 @@ flutter:
 | AuthService | auth_service.dart | Singleton | signIn(), signUp(), signOut(), resetPassword() |
 | TimerService | timer_service.dart | Singleton | startFast(), pauseFast(), resumeFast(), completeFast() |
 | ConsentManager | consent_manager.dart | Singleton | saveConsent(), updateConsent(), getCurrentConsent() |
+| AnalyticsService | analytics_service.dart | Singleton | logEvent() |
 | IsarService | isar_service.dart | Static | initialize(), fastingSessions, consentRecords |
 
 ### Model Quick Reference
