@@ -9,6 +9,7 @@ import '../../theme/spacing.dart';
 import '../../widgets/fasting/circular_progress_ring.dart';
 import '../../widgets/fasting/fasting_context_info.dart';
 import '../../widgets/fasting/fasting_control_buttons.dart';
+import '../../widgets/fasting/panic_button.dart';
 
 /// Main fasting home screen with timer, progress, and controls
 ///
@@ -105,6 +106,7 @@ class FastingHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: const PanicButton(),
       body: SafeArea(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
