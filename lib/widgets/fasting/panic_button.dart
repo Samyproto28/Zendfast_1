@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zendfast_1/models/fasting_state.dart';
 import 'package:zendfast_1/providers/timer_provider.dart';
 import 'package:zendfast_1/theme/colors.dart';
+import 'package:zendfast_1/widgets/fasting/panic_button_modal.dart';
 
 /// Panic button that appears as a FloatingActionButton during active fasting.
 ///
@@ -84,8 +85,8 @@ class _PanicButtonState extends ConsumerState<PanicButton>
           // Trigger haptic feedback for tactile response
           HapticFeedback.mediumImpact();
 
-          // TODO: Show panic button modal
-          // Will be implemented in next phase
+          // Show panic button modal with emotional support
+          PanicButtonModal.show(context: context);
         },
         backgroundColor: ZendfastColors.panicOrange,
         elevation: 6.0,
