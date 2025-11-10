@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zendfast_1/models/fasting_state.dart';
 import 'package:zendfast_1/providers/timer_provider.dart';
+import 'package:zendfast_1/services/analytics_service.dart';
 import 'package:zendfast_1/theme/colors.dart';
 import 'package:zendfast_1/widgets/fasting/panic_button_modal.dart';
 
@@ -84,6 +85,18 @@ class _PanicButtonState extends ConsumerState<PanicButton>
         onPressed: () {
           // Trigger haptic feedback for tactile response
           HapticFeedback.mediumImpact();
+
+          // Track analytics event
+          final timerState = ref.read(timerProvider);
+          AnalyticsService.instance.logEvent(
+            'panic_button_used',
+            parameters: {
+              'timestamp': DateTime.now().toIso8601String(),
+              'fasting_duration_minutes': timerState?.durationMinutes,
+              'plan_type': timerState?.planType,
+              'elapsed_minutes': (timerState?.elapsedMilliseconds ?? 0) ~/ 60000,
+            },
+          );
 
           // Show panic button modal with emotional support
           PanicButtonModal.show(context: context);
