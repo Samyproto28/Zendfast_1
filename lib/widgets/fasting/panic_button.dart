@@ -14,13 +14,54 @@ import 'package:zendfast_1/theme/colors.dart';
 /// Features:
 /// - Orange color (#FFB366) for warmth and urgency
 /// - Heart icon for emotional support
+/// - Subtle pulse animation (scale 1.0 to 1.1)
 /// - Haptic feedback on tap
 /// - Shows support modal when tapped
-class PanicButton extends ConsumerWidget {
+class PanicButton extends ConsumerStatefulWidget {
   const PanicButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PanicButton> createState() => _PanicButtonState();
+}
+
+class _PanicButtonState extends ConsumerState<PanicButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create animation controller with 1500ms duration
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    // Create tween animation from 1.0 to 1.1 scale
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Start repeating animation
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final timerState = ref.watch(timerProvider);
 
     // Only show button when fasting session is active
@@ -30,20 +71,29 @@ class PanicButton extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return FloatingActionButton(
-      onPressed: () {
-        // Trigger haptic feedback for tactile response
-        HapticFeedback.mediumImpact();
-
-        // TODO: Show panic button modal
-        // Will be implemented in next phase
+    return AnimatedBuilder(
+      animation: _scaleAnimation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: child,
+        );
       },
-      backgroundColor: ZendfastColors.panicOrange,
-      elevation: 6.0,
-      tooltip: 'Apoyo emocional',
-      child: const Icon(
-        Icons.favorite,
-        color: Colors.white,
+      child: FloatingActionButton(
+        onPressed: () {
+          // Trigger haptic feedback for tactile response
+          HapticFeedback.mediumImpact();
+
+          // TODO: Show panic button modal
+          // Will be implemented in next phase
+        },
+        backgroundColor: ZendfastColors.panicOrange,
+        elevation: 6.0,
+        tooltip: 'Apoyo emocional',
+        child: const Icon(
+          Icons.favorite,
+          color: Colors.white,
+        ),
       ),
     );
   }
